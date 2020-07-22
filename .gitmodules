@@ -1,0 +1,3 @@
+[submodule "vendor/polkadot-apps"]
+	path = vendor/polkadot-apps
+	url = https://github.com/polkadot-js/apps.git

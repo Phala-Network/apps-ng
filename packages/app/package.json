@@ -1,0 +1,22 @@
+{
+  "name": "@phala/app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@skatejs/ssr": "^0.19.11",
+    "cross-blob": "^2.0.0",
+    "next": "latest",
+    "next-transpile-modules": "^3.0.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3"
+  },
+  "license": "Apache-2",
+  "devDependencies": {
+    "next-compose-plugins": "^2.2.0",
+    "next-images": "^1.4.0"
+  }
+}

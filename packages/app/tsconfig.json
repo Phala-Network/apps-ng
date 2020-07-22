@@ -1,0 +1,219 @@
+{
+  "extends": "@polkadot/dev/config/tsconfig",
+  "exclude": [
+    "build/**/*",
+    "**/build/**/*"
+  ],
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/components/*": ["src/components/*"],
+      "@polkadot/apps/*": [
+        "../../vendor/polkadot-apps/packages/apps/src/*"
+      ],
+      "@polkadot/apps": [
+        "../../vendor/polkadot-apps/packages/apps/src"
+      ],
+      "@polkadot/apps-config/*": [
+        "../../vendor/polkadot-apps/packages/apps-config/src/*"
+      ],
+      "@polkadot/apps-routing": [
+        "../../vendor/polkadot-apps/packages/apps-routing/src"
+      ],
+      "@polkadot/apps-routing/*": [
+        "../../vendor/polkadot-apps/packages/apps-routing/src/*"
+      ],
+      "@polkadot/app-accounts": [
+        "../../vendor/polkadot-apps/packages/page-accounts/src"
+      ],
+      "@polkadot/app-accounts/*": [
+        "../../vendor/polkadot-apps/packages/page-accounts/src/*"
+      ],
+      "@polkadot/app-claims": [
+        "../../vendor/polkadot-apps/packages/page-claims/src"
+      ],
+      "@polkadot/app-claims/*": [
+        "../../vendor/polkadot-apps/packages/page-claims/src/*"
+      ],
+      "@polkadot/app-contracts": [
+        "../../vendor/polkadot-apps/packages/page-contracts/src"
+      ],
+      "@polkadot/app-contracts/*": [
+        "../../vendor/polkadot-apps/packages/page-contracts/src/*"
+      ],
+      "@polkadot/app-council": [
+        "../../vendor/polkadot-apps/packages/page-council/src"
+      ],
+      "@polkadot/app-council/*": [
+        "../../vendor/polkadot-apps/packages/page-council/src/*"
+      ],
+      "@polkadot/app-dashboard": [
+        "../../vendor/polkadot-apps/packages/page-dashboard/src"
+      ],
+      "@polkadot/app-dashboard/*": [
+        "../../vendor/polkadot-apps/packages/page-dashboard/src/*"
+      ],
+      "@polkadot/app-democracy": [
+        "../../vendor/polkadot-apps/packages/page-democracy/src"
+      ],
+      "@polkadot/app-democracy/*": [
+        "../../vendor/polkadot-apps/packages/page-democracy/src/*"
+      ],
+      "@polkadot/app-extrinsics": [
+        "../../vendor/polkadot-apps/packages/page-extrinsics/src"
+      ],
+      "@polkadot/app-extrinsics/*": [
+        "../../vendor/polkadot-apps/packages/page-extrinsics/src/*"
+      ],
+      "@polkadot/app-explorer": [
+        "../../vendor/polkadot-apps/packages/page-explorer/src"
+      ],
+      "@polkadot/app-explorer/*": [
+        "../../vendor/polkadot-apps/packages/page-explorer/src/*"
+      ],
+      "@polkadot/app-generic-asset": [
+        "../../vendor/polkadot-apps/packages/page-generic-asset/src"
+      ],
+      "@polkadot/app-generic-asset/*": [
+        "../../vendor/polkadot-apps/packages/page-generic-asset/src/*"
+      ],
+      "@polkadot/app-i18n": [
+        "../../vendor/polkadot-apps/packages/page-i18n/src"
+      ],
+      "@polkadot/app-i18n/*": [
+        "../../vendor/polkadot-apps/packages/page-i18n/src/*"
+      ],
+      "@polkadot/app-js": [
+        "../../vendor/polkadot-apps/packages/page-js/src"
+      ],
+      "@polkadot/app-js/*": [
+        "../../vendor/polkadot-apps/packages/page-js/src/*"
+      ],
+      "@polkadot/app-parachains": [
+        "../../vendor/polkadot-apps/packages/page-parachains/src"
+      ],
+      "@polkadot/app-parachains/*": [
+        "../../vendor/polkadot-apps/packages/page-parachains/src/*"
+      ],
+      "@polkadot/app-poll": [
+        "../../vendor/polkadot-apps/packages/page-poll/src"
+      ],
+      "@polkadot/app-poll/*": [
+        "../../vendor/polkadot-apps/packages/page-poll/src/*"
+      ],
+      "@polkadot/app-settings": [
+        "../../vendor/polkadot-apps/packages/page-settings/src"
+      ],
+      "@polkadot/app-settings/*": [
+        "../../vendor/polkadot-apps/packages/page-settings/src/*"
+      ],
+      "@polkadot/app-society": [
+        "../../vendor/polkadot-apps/packages/page-society/src"
+      ],
+      "@polkadot/app-society/*": [
+        "../../vendor/polkadot-apps/packages/page-society/src/*"
+      ],
+      "@polkadot/app-staking": [
+        "../../vendor/polkadot-apps/packages/page-staking/src"
+      ],
+      "@polkadot/app-staking/*": [
+        "../../vendor/polkadot-apps/packages/page-staking/src/*"
+      ],
+      "@polkadot/app-storage": [
+        "../../vendor/polkadot-apps/packages/page-storage/src"
+      ],
+      "@polkadot/app-storage/*": [
+        "../../vendor/polkadot-apps/packages/page-storage/src/*"
+      ],
+      "@polkadot/app-sudo": [
+        "../../vendor/polkadot-apps/packages/page-sudo/src"
+      ],
+      "@polkadot/app-sudo/*": [
+        "../../vendor/polkadot-apps/packages/page-sudo/src/*"
+      ],
+      "@polkadot/app-tech-comm": [
+        "../../vendor/polkadot-apps/packages/page-tech-comm/src"
+      ],
+      "@polkadot/app-tech-comm/*": [
+        "../../vendor/polkadot-apps/packages/page-tech-comm/src/*"
+      ],
+      "@polkadot/app-toolbox": [
+        "../../vendor/polkadot-apps/packages/page-toolbox/src"
+      ],
+      "@polkadot/app-toolbox/*": [
+        "../../vendor/polkadot-apps/packages/page-toolbox/src/*"
+      ],
+      "@polkadot/app-treasury": [
+        "../../vendor/polkadot-apps/packages/page-treasury/src"
+      ],
+      "@polkadot/app-treasury/*": [
+        "../../vendor/polkadot-apps/packages/page-treasury/src/*"
+      ],
+      "@polkadot/react-api": [
+        "../../vendor/polkadot-apps/packages/react-api/src"
+      ],
+      "@polkadot/react-api/*": [
+        "../../vendor/polkadot-apps/packages/react-api/src/*"
+      ],
+      "@polkadot/react-components": [
+        "../../vendor/polkadot-apps/packages/react-components/src"
+      ],
+      "@polkadot/react-components/*": [
+        "../../vendor/polkadot-apps/packages/react-components/src/*"
+      ],
+      "@polkadot/react-hooks": [
+        "../../vendor/polkadot-apps/packages/react-hooks/src"
+      ],
+      "@polkadot/react-hooks/*": [
+        "../../vendor/polkadot-apps/packages/react-hooks/src/*"
+      ],
+      "@polkadot/react-params": [
+        "../../vendor/polkadot-apps/packages/react-params/src"
+      ],
+      "@polkadot/react-params/*": [
+        "../../vendor/polkadot-apps/packages/react-params/src/*"
+      ],
+      "@polkadot/react-query": [
+        "../../vendor/polkadot-apps/packages/react-query/src"
+      ],
+      "@polkadot/react-query/*": [
+        "../../vendor/polkadot-apps/packages/react-query/src/*"
+      ],
+      "@polkadot/react-signer": [
+        "../../vendor/polkadot-apps/packages/react-signer/src"
+      ],
+      "@polkadot/react-signer/*": [
+        "../../vendor/polkadot-apps/packages/react-signer/src/*"
+      ],
+      "@polkadot/page-phala-poc2/*": [
+        "../../packages/phala-poc2/src/*"
+      ],
+      "@polkadot/page-phala-poc2": [
+        "../../packages/phala-poc2/src"
+      ]
+    },
+    "skipLibCheck": true,
+    "typeRoots": [
+      "./node_modules/@polkadot/ts",
+      "./node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
