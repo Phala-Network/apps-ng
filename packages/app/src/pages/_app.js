@@ -1,5 +1,6 @@
-import App from 'next/app'
-import { ThemeProvider } from 'styled-components'
+import App from "next/app"
+import { ThemeProvider } from "styled-components"
+import 'semantic-ui-css/semantic.min.css'
 
 const theme = {}
 

@@ -11,6 +11,12 @@
       "@/*": ["src/*"],
       "@/utils/*": ["src/utils/*"],
       "@/components/*": ["src/components/*"],
+      "@phala/wallet/*": [
+        "../../packages/wallet/src/*"
+      ],
+      "@phala/wallet": [
+        "../../packages/wallet/src"
+      ],
       "@polkadot/apps/*": [
         "../../vendor/polkadot-apps/packages/apps/src/*"
       ],

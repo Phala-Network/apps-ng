@@ -10,9 +10,7 @@
     "@skatejs/ssr": "^0.19.11",
     "cross-blob": "^2.0.0",
     "next": "latest",
-    "next-transpile-modules": "^3.0.2",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3"
+    "next-transpile-modules": "^3.0.2"
   },
   "license": "Apache-2",
   "devDependencies": {

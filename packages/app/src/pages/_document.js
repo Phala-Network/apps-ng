@@ -1,12 +1,9 @@
-import Document from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import ssrPolyfill from '@/utils/ssrPolyfill'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    if (typeof window === 'undefined') {
-      ssrPolyfill()
-    }
+
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
 

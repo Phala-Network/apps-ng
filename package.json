@@ -17,7 +17,6 @@
     "start": "yarn workspace @phala/app start"
   },
   "dependencies": {
-    "@polkadot/app-toolbox": "workspace:vendor/polkadot-apps/packages/page-toolbox",
     "next": "latest",
     "next-transpile-modules": "^3.3.0",
     "react": "^16.8.3",
