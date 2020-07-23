@@ -1,6 +1,6 @@
 import App from "next/app"
 import { ThemeProvider } from "styled-components"
-import 'semantic-ui-css/semantic.min.css'
+import GlobalStyle from '@/utils/GlobalStyle'
 
 const theme = {}
 
@@ -9,6 +9,7 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props
     return (
       <ThemeProvider theme={theme}>
+        <GlobalStyle />
         <Component {...pageProps} />
       </ThemeProvider>
     )
