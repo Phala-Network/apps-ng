@@ -6,7 +6,7 @@ export const isDynamicSymbol = Symbol('isDynamic')
 
 export const LAYOUT_ROUTE = '/[...slug]'
 
-export const DEFAULT_ROUTE_NAME = 'WALLET'
+export const DEFAULT_ROUTE = '/wallet'
 
 export const _findRouteComponent = (source, [ first, ...rest ]) => {
   const next = source[first]
