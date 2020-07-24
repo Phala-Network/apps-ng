@@ -1,11 +1,12 @@
 import { autorun, reaction, toJS } from 'mobx'
+import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import { useStore } from '@/store'
 import { createWalletStore } from '../utils/WalletStore'
 import * as Crypto from '@phala/runtime/crypto'
 import PRuntime, { measure, encryptObj } from '@phala/runtime'
 
-const WalletStoreInjector = ({ children }) => {
+const StoreInjector = (({ children }) => {
   const appStore = useStore()
   const [shouldRenderContent, setShouldRenderContent] = useState(false)
 
@@ -14,14 +15,11 @@ const WalletStoreInjector = ({ children }) => {
       return
     }
 
-    clearInterval(appStore.walletRuntime?.intervalRef || 0)
-
     appStore.walletRuntime = {
       ecdhChannel: null,
       ecdhShouldJoin: false,
       keypair: null,
       latency: 0,
-      intervalRef: 0,
       info: null,
       error: false,
       pApi: null
@@ -47,10 +45,11 @@ const WalletStoreInjector = ({ children }) => {
   )
 
   return shouldRenderContent ? children : null
-}
+})
 
-const WalletLoader = ({ children }) => {
-  const { wallet, walletRuntime } = useStore()
+const WalletInit = ({ children }) => {
+  const appStore = useStore()
+  const { wallet, walletRuntime } = appStore
 
   React.useEffect(() => {
     Crypto.newChannel()
@@ -105,40 +104,40 @@ const WalletLoader = ({ children }) => {
     []
   )
 
-  useEffect(
-    () =>
-      reaction(
-        () => walletRuntime.pApi,
-        () => {
-          clearInterval(walletRuntime.intervalRef)
-          if (!walletRuntime.pApi) {
-            return
-          }
-          walletRuntime.intervalRef = setInterval(() => {
-            measure((() =>
-              walletRuntime.pApi.getInfo()
-                .then(i => {
-                  walletRuntime.info = i
-                })
-                .catch(e => {
-                  walletRuntime.error = true
-                  console.warn('Error getting /info', e)
-                })
-            ))
-              .then(dt => {
-                walletRuntime.latency = (l => l ? l * 0.8 + dt * 0.2 : dt)(walletRuntime.latency)
-              })
-          }, 1500)
-        },
-        { fireImmediately: true }),
-    []
-  )
-
-  return children
+  return <>
+    <WalletLifecycle />
+    {children}
+  </>
 }
 
-export default ({ children }) => <WalletStoreInjector>
-  <WalletLoader>
-    {children}
-  </WalletLoader>
-</WalletStoreInjector>
+const WalletLifecycle = observer(() => {
+  const { walletRuntime } = useStore()
+  useEffect(() => {
+    if (!walletRuntime?.pApi) { return }
+    const interval = setInterval(() => {
+      measure((() =>
+        walletRuntime.pApi.getInfo()
+          .then(i => {
+            walletRuntime.info = i
+          })
+          .catch(e => {
+            walletRuntime.error = true
+            console.warn('Error getting /info', e)
+          })
+      ))
+        .then(dt => {
+          walletRuntime.latency = parseInt((l => l ? l * 0.8 + dt * 0.2 : dt)(walletRuntime.latency))
+        })
+    }, 1500)
+    return () => clearInterval(interval)
+  }, [walletRuntime?.pApi])
+  return null
+})
+
+export default ({ children }) => (
+  <StoreInjector>
+    <WalletInit>
+      {children}
+    </WalletInit>
+  </StoreInjector>
+)
