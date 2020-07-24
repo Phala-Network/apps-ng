@@ -8,5 +8,5 @@ export const COMPONENT_ROUTES = {
 
 export const MENU_ROUTES = {
   WALLET: '/wallet',
-  SETIINGS: '/settings'
+  SETTINGS: '/settings'
 }

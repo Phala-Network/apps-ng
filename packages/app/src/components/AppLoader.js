@@ -3,6 +3,8 @@ import { findRouteComponent } from '@/utils/route'
 import NotFound from '@/components/NotFound'
 import { useMemo } from "react"
 import Head from 'next/head'
+import { StoreProvider, useStore } from '@/store'
+import { observer } from 'mobx-react'
 
 import '@polkadot/apps/initSettings'
 
@@ -13,11 +15,11 @@ import Signer from '@polkadot/react-signer'
 
 import AppFrame from './AppFrame'
 
-const url = 'wss://dp.phala.network/ws' // todo
+const AppWrapper = observer(({ children }) => {
+  const { settings } = useStore()
 
-const AppWrapper = ({ children }) => {
   return <Queue>
-    <Api url={url}>
+    <Api url={settings.apiUrl}>
       <BlockAuthors>
         <Events>
           <Signer>
@@ -27,7 +29,7 @@ const AppWrapper = ({ children }) => {
       </BlockAuthors>
     </Api>
   </Queue>
-}
+})
 
 function InjectHead () {
   return <Head>
@@ -45,12 +47,16 @@ const AppLoader = props => {
     return findRouteComponent(router.query.slug) || NotFound
   }, [router?.query?.slug])
 
-  return <AppWrapper>
-    <AppFrame>
-      <InjectHead />
-      <RenderedComponent {...props} />
-    </AppFrame>
-  </AppWrapper>
+  return (
+    <StoreProvider>
+      <AppWrapper>
+        <AppFrame>
+          <InjectHead />
+          <RenderedComponent {...props} />
+        </AppFrame>
+      </AppWrapper>
+    </StoreProvider>
+  )
 }
 
 export default AppLoader

@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { Menu } from "semantic-ui-react"
+import { RouteLink } from '@/utils/route'
 
 const AppFrameWrapper = styled.div`
   display: flex;
@@ -39,8 +40,14 @@ const AppFrame = ({ children }) => {
         <Menu.Item header>
           Phala Apps
         </Menu.Item>
-        <Menu.Item as="a">Wallet</Menu.Item>
-        <Menu.Item as="a" position='right'>Settings</Menu.Item>
+        <RouteLink href="WALLET">
+          <Menu.Item as="a">Wallet</Menu.Item>
+        </RouteLink>
+        
+        <RouteLink href="SETTINGS">
+          <Menu.Item as="a" position='right'>Settings</Menu.Item>
+        </RouteLink>
+        
       </AppFrameMenu>
       <AppFrameContent>
         {children}

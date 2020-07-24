@@ -30,8 +30,8 @@ Live version: https://testnet.phala.network/
 │   ├── crypto            Cryptographic utilites
 │   │   ├── aead.ts       WebCrypto AEAD-AES-GCM 128
 │   │   ├── ecdh.ts       WebCrypto ECDH (secp256r1)
-│   │   └── index.ts
-│   ├── index.ts          PRuntime API class
+│   │   └── index.js
+│   ├── index.js          PRuntime API class
 │   └── models.ts         Structure definations
 ├── translate.ts
 ├── AccountSelector.tsx

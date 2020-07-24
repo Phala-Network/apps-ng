@@ -17,6 +17,12 @@
       "@phala/wallet": [
         "../../packages/wallet/src"
       ],
+      "@phala/runtime/*": [
+        "../../packages/runtime/src/*"
+      ],
+      "@phala/runtime": [
+        "../../packages/runtime/src"
+      ],
       "@polkadot/apps/*": [
         "../../vendor/polkadot-apps/packages/apps/src/*"
       ],

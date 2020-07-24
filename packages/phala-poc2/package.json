@@ -7,28 +7,5 @@
   "maintainers": [
     "Hang Yin <hangyin@phala.network>"
   ],
-  "license": "Apache-2.0",
-  "dependencies": {
-    "@babel/runtime": "^7.10.1",
-    "axios": "^0.19.2",
-    "base64-js": "^1.3.1",
-    "camelcase-keys": "^6.2.2",
-    "cids": "^0.7.1",
-    "downloadjs": "^1.4.7",
-    "ipfs-unixfs": "^0.2.0",
-    "ipld-dag-pb": "^0.18.1",
-    "js-base64": "^2.6.3",
-    "multihashing": "^0.3.3",
-    "papaparse": "^5.1.0",
-    "react-dropzone": "^10.2.1",
-    "react-hook-form": "^3.29.3",
-    "react-syntax-highlighter": "^12.2.1",
-    "snakecase-keys": "^3.2.0"
-  },
-  "devDependencies": {
-    "@types/base64-js": "^1.2.5",
-    "@types/js-base64": "^2.3.1",
-    "@types/papaparse": "^5.0.3",
-    "@types/react-syntax-highlighter": "^11.0.3"
-  }
+  "license": "Apache-2.0"
 }

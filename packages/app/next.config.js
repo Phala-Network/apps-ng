@@ -1,7 +1,6 @@
 const path = require('path')
 const withImages = require('next-images')
 const withPlugins = require('next-compose-plugins')
-const webpack = require('webpack')
 
 function resolve (...args) {
   return path.resolve( __dirname, '..', '..', ...args)
@@ -9,8 +8,7 @@ function resolve (...args) {
 
 const withTM = require('next-transpile-modules')([
   resolve('packages'),
-  resolve('vendor/polkadot-apps/packages'),
-  resolve('node_modules/react-syntax-highlighter/dist')
+  resolve('vendor/polkadot-apps/packages')
 ])
 
 module.exports = withPlugins([
