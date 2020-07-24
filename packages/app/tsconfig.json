@@ -199,12 +199,6 @@
       ],
       "@polkadot/react-signer/*": [
         "../../vendor/polkadot-apps/packages/react-signer/src/*"
-      ],
-      "@polkadot/page-phala-poc2/*": [
-        "../../packages/phala-poc2/src/*"
-      ],
-      "@polkadot/page-phala-poc2": [
-        "../../packages/phala-poc2/src"
       ]
     },
     "skipLibCheck": true,
