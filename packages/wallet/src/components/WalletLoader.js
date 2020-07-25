@@ -1,8 +1,9 @@
-import { autorun, reaction, toJS } from 'mobx'
+import { autorun, observable, reaction, toJS } from 'mobx'
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import { useStore } from '@/store'
 import { createWalletStore } from '../utils/WalletStore'
+import { createWalletRuntimeStore } from '../utils/WalletRuntimeStore'
 import * as Crypto from '@phala/runtime/crypto'
 import PRuntime, { measure, encryptObj } from '@phala/runtime'
 
@@ -15,15 +16,7 @@ const StoreInjector = (({ children }) => {
       return
     }
 
-    appStore.walletRuntime = {
-      ecdhChannel: null,
-      ecdhShouldJoin: false,
-      keypair: null,
-      latency: 0,
-      info: null,
-      error: false,
-      pApi: null
-    }
+    appStore.walletRuntime = createWalletRuntimeStore()
 
     if (typeof appStore.wallet !== 'undefined') {
       return

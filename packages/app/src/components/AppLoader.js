@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { StoreProvider, useStore } from '@/store'
 import { observer } from 'mobx-react'
 
-import '@polkadot/apps/initSettings'
+import '@/utils/initLegacySettings'
 
 import { Api } from "@polkadot/react-api"
 import Queue from "@polkadot/react-components/Status/Queue"

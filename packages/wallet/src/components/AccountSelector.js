@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { AccountIndex, Bubble, InputAddress } from '@polkadot/react-components'
-import { Balance, Nonce } from '@polkadot/react-query'
+import { InputAddress } from '@polkadot/react-components'
 
 function AccountSelector ({ className, onChange }) {
   const [accountId, setAccountId] = useState(null)
@@ -25,31 +23,8 @@ function AccountSelector ({ className, onChange }) {
           />
         </div>
       </div>
-      <div className='ui--row align-right'>
-        <div className='large'>
-            <Bubble color='teal' icon='address-card' label='index'>
-              <AccountIndex value={accountId} />
-            </Bubble>
-            <Bubble color='yellow' icon='adjust' label='balance'>
-              <Balance params={accountId} />
-            </Bubble>
-            <Bubble color='yellow' icon='dot-circle' label='transactions'>
-              <Nonce params={accountId} />
-            </Bubble>
-          </div>
-        </div>
     </section>
   )
 }
 
-export default styled(AccountSelector)`
-  align-items: flex-end;
-
-  .summary {
-    text-align: center;
-  }
-
-  .align-right {
-    text-align: right;
-  }
-`
+export default AccountSelector

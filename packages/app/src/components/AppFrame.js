@@ -43,6 +43,9 @@ const AppFrame = ({ children }) => {
         <RouteLink href="WALLET">
           <Menu.Item as="a">Wallet</Menu.Item>
         </RouteLink>
+        <RouteLink href="ACCOUNTS">
+          <Menu.Item as="a">Accounts</Menu.Item>
+        </RouteLink>
         
         <RouteLink href="SETTINGS">
           <Menu.Item as="a" position='right'>Settings</Menu.Item>

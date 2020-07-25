@@ -1,5 +1,8 @@
 {
   "name": "@phala/wallet",
   "version": "1.0.0",
-  "license": "Apache-2"
+  "license": "Apache-2",
+  "dependencies": {
+    "bn.js": "^5.1.2"
+  }
 }

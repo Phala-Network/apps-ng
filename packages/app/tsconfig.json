@@ -23,6 +23,12 @@
       "@phala/runtime": [
         "../../packages/runtime/src"
       ],
+      "@phala/accounts/*": [
+        "../../packages/accounts/src/*"
+      ],
+      "@phala/accounts": [
+        "../../packages/accounts/src"
+      ],
       "@polkadot/apps/*": [
         "../../vendor/polkadot-apps/packages/apps/src/*"
       ],

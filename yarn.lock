@@ -4511,6 +4511,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@phala/accounts@workspace:packages/accounts":
+  version: 0.0.0-use.local
+  resolution: "@phala/accounts@workspace:packages/accounts"
+  dependencies:
+    "@babel/runtime": ^7.10.4
+    "@polkadot/react-components": 0.48.1
+    "@polkadot/vanitygen": ^0.16.1
+    detect-browser: ^5.1.1
+    file-saver: ^2.0.2
+  languageName: unknown
+  linkType: soft
+
 "@phala/app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "@phala/app@workspace:packages/app"
@@ -4540,6 +4552,8 @@ __metadata:
 "@phala/wallet@workspace:packages/wallet":
   version: 0.0.0-use.local
   resolution: "@phala/wallet@workspace:packages/wallet"
+  dependencies:
+    bn.js: ^5.1.2
   languageName: unknown
   linkType: soft
 
@@ -5008,12 +5022,6 @@ __metadata:
   checksum: cbb23e1f6f64d528d368b73df5b084da96d66d0678d5f256bfb63321ab8bfcb899b45e88f8dde9dc56f26dd34cbdc113ed1cbfb50cc8e6889e8c277355673a00
   languageName: node
   linkType: hard
-
-"@polkadot/page-phala-poc2@workspace:packages/phala-poc2":
-  version: 0.0.0-use.local
-  resolution: "@polkadot/page-phala-poc2@workspace:packages/phala-poc2"
-  languageName: unknown
-  linkType: soft
 
 "@polkadot/react-api@0.48.1, @polkadot/react-api@workspace:vendor/polkadot-apps/packages/react-api":
   version: 0.0.0-use.local

@@ -1,9 +1,11 @@
+import stringToU8a from '@polkadot/util/string/toU8a'
+import u8aToString from '@polkadot/util/u8a/toString'
 import * as base64 from 'base64-js'
 import * as Models from './models'
 import { u8aToHex } from '@polkadot/util'
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto'
-import * as Aead from './crypto/aead';
-
+import * as Aead from './crypto/aead'
+import * as Crypto from './crypto'
 
 export function u8aToHexCompact(data) {
   return u8aToHex(data).substring(2)
