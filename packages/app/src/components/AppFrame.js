@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router'
+import React from 'react'
 import styled from "styled-components"
-import { Menu } from "semantic-ui-react"
-import { RouteLink } from '@/utils/route'
+import { Menu, Icon } from "semantic-ui-react"
+import { RouteLink, MENU_ROUTES } from '@/utils/route'
 
 const AppFrameWrapper = styled.div`
   display: flex;
@@ -8,7 +10,7 @@ const AppFrameWrapper = styled.div`
   min-height: 100vh;
   padding: 0;
   margin: 0;
-  flex-flow: column nowrap;
+  flex-direction: column;
   background: #e8e8e8;
 `
 
@@ -21,37 +23,48 @@ const AppFrameMenu = styled(Menu).attrs({
   margin: 15px 18px !important;
   border-radius: 12px !important;
   padding: 9px 6px;
+
+`
+
+const AppFrameMenuWrapper = styled.div`
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  background: #e8e8e8;
 `
 
 const AppFrameContent = styled.div`
-  flex: 1;
   height: 0;
+  flex: 1;
   box-sizing: border-box;
   background-color: white;
-  margin: 6px 18px 21px;
+  margin: 96px 18px 21px;
   border-radius: 12px;
   padding: 15px 21px;
 `
 
+const AppFrameRouteLink = ({ href, icon, name, position = undefined }) => {
+  const router = useRouter()
+  return <RouteLink href={href} >
+    <Menu.Item position={position} active={MENU_ROUTES[href] === `/${router?.query.slug?.[0]}`} as="a">
+      <Icon name={icon} />{name}
+    </Menu.Item>
+  </RouteLink>
+}
+
 const AppFrame = ({ children }) => {
   return (
     <AppFrameWrapper>
-      <AppFrameMenu>
-        <Menu.Item header>
-          Phala Apps
-        </Menu.Item>
-        <RouteLink href="WALLET">
-          <Menu.Item as="a">Wallet</Menu.Item>
-        </RouteLink>
-        <RouteLink href="ACCOUNTS">
-          <Menu.Item as="a">Accounts</Menu.Item>
-        </RouteLink>
-        
-        <RouteLink href="SETTINGS">
-          <Menu.Item as="a" position='right'>Settings</Menu.Item>
-        </RouteLink>
-        
-      </AppFrameMenu>
+      <AppFrameMenuWrapper>
+        <AppFrameMenu>
+          <Menu.Item header>
+            Phala Apps
+          </Menu.Item>
+          <AppFrameRouteLink href="WALLET" name="Wallet" icon="bullseye" />
+          <AppFrameRouteLink href="ACCOUNTS" name="Accounts" icon="id card outline" />
+          <AppFrameRouteLink href="SETTINGS" name="Settings" icon="cog" position='right' />
+        </AppFrameMenu>
+      </AppFrameMenuWrapper>
       <AppFrameContent>
         {children}
       </AppFrameContent>

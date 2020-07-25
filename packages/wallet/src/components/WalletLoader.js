@@ -52,6 +52,11 @@ const WalletInit = ({ children }) => {
       })
   }, [])
 
+  React.useEffect(() => {
+    walletRuntime.keypair?.lock()
+    walletRuntime.accountId = null
+  }, [])
+
   useEffect(
     () =>
       reaction(

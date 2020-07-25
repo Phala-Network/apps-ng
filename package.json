@@ -40,7 +40,8 @@
     "@polkadot/types": "^1.26.0-beta.1",
     "@polkadot/util": "^2.18.1",
     "@polkadot/util-crypto": "^2.18.1",
-    "@polkadot/wasm-crypto": "^1.2.1"
+    "@polkadot/wasm-crypto": "^1.2.1",
+    "semantic-ui-react": "^1.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "7.9.6",

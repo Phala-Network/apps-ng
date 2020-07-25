@@ -66,9 +66,11 @@ function Balances ({}) {
   }]
   return (<>
     <h1>Balances</h1>
-    <p><a onClick={() => store.walletRuntime.query('FreeBalance', () => {
-      return { account: ss58ToHex('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty') }
-    })}>query</a></p>
+    <p><a onClick={() => console.log(store.walletRuntime.query(
+      'Metadata',
+      null,
+      3
+    )) }>query</a></p>
     {/*<Transfer assets={false} accountId={accountId} ecdhChannel={ecdhChannel}/>*/}
     {/*<TransferToChain assets={false} accountId={accountId} ecdhChannel={ecdhChannel}/>*/}
     {/*<Query contractId={2} plans={queryPlan}/>*/}

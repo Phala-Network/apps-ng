@@ -1,16 +1,18 @@
 // import { useStore } from '@/store'
 import { LAYOUT_ROUTE } from '@/utils/route'
 import NormalPageWrapper from '@/components/NormalPageWrapper'
+import { useStore } from '@/store'
+import { toJS } from 'mobx'
 import { Menu, Container } from 'semantic-ui-react'
 import { observer } from 'mobx-react'
 import Router, { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import Balance from './Balances'
 import Assets from './Assets'
 import UnlockRequired from './UnlockRequired'
 
-const DEFAULT_PAGE = 'balances'
+const DEFAULT_PAGE = 'assets'
 
 const PAGES = {
   balances: {
@@ -41,16 +43,10 @@ const pushRoute = (page) => Router.push(LAYOUT_ROUTE, `/wallet/${page.slugName}`
 const Tab = ({ currentPage }) => {
   return <Menu pointing secondary>
     <Container>
-      <TabItem currentPage={currentPage} page={PAGES.balances} />
+      {/*<TabItem currentPage={currentPage} page={PAGES.balances} />*/}
       <TabItem currentPage={currentPage} page={PAGES.assets} />
+      <TabLogoutItem />
     </Container>
-    {/*<Menu.Menu position='right'>*/}
-    {/*  <Menu.Item*/}
-    {/*    name='logout'*/}
-    {/*    active={activeItem === 'logout'}*/}
-    {/*    onClick={this.handleItemClick}*/}
-    {/*  />*/}
-    {/*</Menu.Menu>*/}
   </Menu>
 }
 
@@ -62,13 +58,31 @@ const TabItem = ({ currentPage, page, ...props }) => {
     {...props}
   />
 }
+const TabLogoutItem = observer(() => {
+  const { wallet, walletRuntime } = useStore()
+
+  const doLogout = useCallback(() => {
+    walletRuntime.accountId = null
+    wallet.unsetAccount()
+  }, [wallet, walletRuntime])
+
+  return walletRuntime.accountId === wallet.accountId
+    ? <Menu.Item
+      position='right'
+      name='Lock Wallet'
+      link
+      icon='lock'
+      onClick={doLogout}
+    />
+    : null
+})
 
 const Wallet = () => {
   const router = useRouter()
   const page = PAGES[router.query.slug?.[1] || DEFAULT_PAGE] || PAGES.notFound
 
   const RenderedComponent = useMemo(() => page.component, [page])
-  // todo: unlockRequired
+
   return <WalletWrapper>
     <Tab currentPage={page} />
     <WalletContent>

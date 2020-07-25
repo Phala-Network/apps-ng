@@ -70,7 +70,6 @@ class PRuntime {
     const q = signQuery(payload, this.keypair)
     const respPayload = await this.reqTyped('query', q)
     // Decode payload
-    console.log(respPayload)
     return decodePayload(this.channel, respPayload)
   }
 

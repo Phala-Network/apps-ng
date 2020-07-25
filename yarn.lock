@@ -25504,9 +25504,9 @@ resolve@1.1.7:
   languageName: node
   linkType: hard
 
-"semantic-ui-react@npm:^0.88.2":
-  version: 0.88.2
-  resolution: "semantic-ui-react@npm:0.88.2"
+"semantic-ui-react@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "semantic-ui-react@npm:1.0.0"
   dependencies:
     "@babel/runtime": ^7.1.2
     "@semantic-ui-react/event-stack": ^3.1.0
@@ -25522,7 +25522,7 @@ resolve@1.1.7:
   peerDependencies:
     react: ^16.8.0
     react-dom: ^16.8.0
-  checksum: bbce7a9f63c3153023fb93f0a96c5db743abdcc4c7187aa50332ba560cbb3a793cb26588c2d5aa848b3964f71a65b8e0eabc3f19bd3c197af09ce0faadbb56cd
+  checksum: dd692346cfca951c6fc8fc34d78f137b0736a08fcb6da398151f97ebdfc16ebe749d1bbc8fabd2ae8bbe88045855e1e735cf1ea06b787642dd5aea17f81022f3
   languageName: node
   linkType: hard
 

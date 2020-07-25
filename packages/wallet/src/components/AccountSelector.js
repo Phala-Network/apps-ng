@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { InputAddress } from '@polkadot/react-components'
+import { InputAddress as Input } from '@polkadot/react-components'
+import styled from 'styled-components'
 
-function AccountSelector ({ className, onChange }) {
+const InputAddress = styled(Input)`
+  margin-right: 9px;
+`
+
+function AccountSelector ({ onChange }) {
   const [accountId, setAccountId] = useState(null)
 
   useEffect(
@@ -12,18 +17,11 @@ function AccountSelector ({ className, onChange }) {
   )
 
   return (
-    <section className={`template--AccountSelector ${className}`}>
-      <h2>选择账户</h2>
-      <div className='ui--row'>
-        <div className='large'>
-          <InputAddress
-            label='我的默认账户'
-            onChange={setAccountId}
-            type='account'
-          />
-        </div>
-      </div>
-    </section>
+    <InputAddress
+      label='Accounts'
+      onChange={setAccountId}
+      type='account'
+    />
   )
 }
 

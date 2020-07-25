@@ -10,7 +10,6 @@ export const DEFAULT_ROUTE = '/wallet'
 
 export const _findRouteComponent = (source, [ first, ...rest ]) => {
   const next = source[first]
-  console.log(source, next)
 
   if (!next) {
     return null
