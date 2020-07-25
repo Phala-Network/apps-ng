@@ -1,14 +1,18 @@
 import { observer } from 'mobx-react'
 import Section from '../Section'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Icon, Menu, Table } from 'semantic-ui-react'
 import AssetsTable from './AssetsTable'
 import { Balance, TotalIssuance } from '@polkadot/react-query'
 import { useStore } from '@/store'
+import TransferModal from '@phala/accounts/Accounts/modals/Transfer'
 
 const OnChainSection = observer(() => {
   const { walletRuntime } = useStore()
-  return (
+  const [transferModal, showTransferModal] = useState(false)
+
+  return <>
+    {transferModal && <TransferModal onClose={() => showTransferModal(false)}/>}
     <Section>
       <Menu secondary>
         <Menu.Item>
@@ -33,12 +37,12 @@ const OnChainSection = observer(() => {
           </Table.Cell>
           <Table.Cell textAlign="center">
             <Button icon labelPosition='left' color="black"><Icon name="chess board" />Transfer off-chain</Button>
-            <Button icon labelPosition='left' color="blue"><Icon name="send" />Transfer</Button>
+            <Button icon labelPosition='left' color="blue" onClick={() => showTransferModal(true)}><Icon name="send" />Transfer</Button>
           </Table.Cell>
         </Table.Row>
       </AssetsTable>
     </Section>
-  )
+  </>
 })
 
 export default OnChainSection

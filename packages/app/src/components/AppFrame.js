@@ -3,6 +3,7 @@ import React from 'react'
 import styled from "styled-components"
 import { Menu, Icon } from "semantic-ui-react"
 import { RouteLink, MENU_ROUTES } from '@/utils/route'
+import Status from './Status'
 
 const AppFrameWrapper = styled.div`
   display: flex;
@@ -66,6 +67,7 @@ const AppFrame = ({ children }) => {
         </AppFrameMenu>
       </AppFrameMenuWrapper>
       <AppFrameContent>
+        <Status />
         {children}
       </AppFrameContent>
     </AppFrameWrapper>
