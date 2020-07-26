@@ -1,13 +1,19 @@
 import PageLoading from '@/components/PageLoading'
-import { toJS } from 'mobx'
+import { TxButton } from '@polkadot/react-components'
 import { observer } from 'mobx-react'
+import { CONTRACT_ASSETS } from '../../utils/constants'
+import TransferOnChain from '../TransferOnChain'
+import NewAsset from '../NewAsset'
 import Section from '../Section'
+import Transfer from '../Transfer'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Menu, Table, Button, Icon, Checkbox } from 'semantic-ui-react'
+import { Menu, Table, Button, Icon, Checkbox, Popup } from 'semantic-ui-react'
 import AssetsTable from './AssetsTable'
 import { useStore } from '@/store'
 import { Balance } from '@polkadot/react-components'
 import BN from 'bn.js'
+import { encryptObj } from '@phala/runtime/utils'
+import { toApi } from '@phala/runtime/models'
 
 const OffChainSection = observer(() => {
   const { walletRuntime, wallet } = useStore()
@@ -80,16 +86,109 @@ const AssetRow = observer(({ asset, children, forcedShown = false }) => {
 })
 
 const MainAssetRowAction = () => {
+  const [transferChainModal, showTransferChainModal] = useState(false)
+  const [newAssetModal, setNewAssetModal] = useState(false)
+  const [transferModal, showChainModal] = useState(false)
+
   return <>
-    <Button icon labelPosition='left' color="green"><Icon name="chess board" />Transfer on-chain</Button>
-    <Button icon labelPosition='left' color="violet"><Icon name="th" />Make new asset</Button>
-    <Button icon labelPosition='left' color="blue"><Icon name="send" />Transfer</Button>
+    {transferChainModal && <TransferOnChain
+      onClose={() => showTransferChainModal(false)}
+      onSuccess={() => {
+        alert('Success!')
+        showTransferChainModal(false)
+      }}
+    />}
+    {newAssetModal && <NewAsset
+      onClose={() => setNewAssetModal(false)}
+      onSuccess={() => {
+        alert('Success!')
+        setNewAssetModal(false)
+      }}
+    />}
+    {transferModal && <Transfer
+      onClose={() => showChainModal(false)}
+      onSuccess={() => {
+        alert('Success!')
+        showChainModal(false)
+      }}
+    />}
+    <Button icon labelPosition='left' color="green" onClick={() => showTransferChainModal(true)}><Icon name="chess board" />Transfer on-chain</Button>
+    <Button icon labelPosition='left' color="violet" onClick={() => setNewAssetModal(true)}><Icon name="th" />Make new asset</Button>
+    <Button icon labelPosition='left' color="blue" onClick={() => showChainModal(true)}><Icon name="send" />Transfer</Button>
   </>
 }
 
 const AssetRowAction = ({ asset }) => {
+  const [transferModal, showChainModal] = useState(false)
+
   return <>
-    <Button icon labelPosition='left' color="blue"><Icon name="send" />Transfer</Button>
+    {transferModal && <Transfer
+      asset={asset}
+      onClose={() => showChainModal(false)}
+      onSuccess={() => {
+        alert('Success!')
+        showChainModal(false)
+      }}
+    />}
+    <Button icon labelPosition='left' color="blue" onClick={() => showChainModal(true)}><Icon name="send" />Transfer</Button>
+    <DestroyAssetButton asset={asset} />
+  </>
+}
+
+const DestroyAssetButton = ({ asset }) => {
+  const { walletRuntime: { accountId } } = useStore()
+
+  return <>
+    {accountId === asset.ownerAccountId &&
+      <Popup
+        content={<DestroyAsset asset={asset} />}
+        on='click'
+        pinned
+        trigger={<Button icon labelPosition='left' color="red"><Icon name="delete" />Destroy</Button>}
+      />}
+  </>
+}
+
+const DestroyAsset = ({ asset }) => {
+  const [command, setCommand] = useState(null)
+  const { walletRuntime: { ecdhChannel, accountId } } = useStore()
+
+  const createCommand = async obj => {
+    if (!ecdhChannel) {
+      return ''
+    }
+    console.log('obj', obj)
+    const cipher = await encryptObj(ecdhChannel, obj)
+    const apiCipher = toApi(cipher)
+    return JSON.stringify({ Cipher: apiCipher })
+  }
+
+  useEffect(() => {
+    if (!asset?.id) {
+      setCommand(null)
+      return
+    }
+    createCommand({
+      Destroy: {
+        id: asset?.Id
+      }
+    })
+      .then(setCommand)
+  }, [asset?.id, ecdhChannel])
+
+  return <>
+    Click
+    <TxButton
+      isDisabled={!command}
+      accountId={accountId}
+      icon='paper-plane'
+      label="Confirm"
+      color="red"
+      params={[CONTRACT_ASSETS, command]}
+      tx='phalaModule.pushCommand'
+      onSuccess={() => alert('Success')}
+    />
+    to continue.
   </>
 }
 

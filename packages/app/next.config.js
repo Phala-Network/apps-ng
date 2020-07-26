@@ -15,6 +15,9 @@ module.exports = withPlugins([
   withTM,
   withImages
 ], {
+  env: {
+    APP_PHALA_URL: process.env.APP_PHALA_URL
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.node = {

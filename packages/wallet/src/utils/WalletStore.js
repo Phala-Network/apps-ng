@@ -3,7 +3,7 @@ import { createPersistStore } from '@/store/store'
 
 export const WalletStore = types
   .model('WalletStore', {
-    runtimeEndpointUrl: types.optional(types.string, 'https://dp.phala.network/tee-api/'),
+    runtimeEndpointUrl: types.optional(types.string, `https://${process.env.APP_PHALA_URL}/tee-api/`),
     accountId: types.optional(types.string, ''),
     showInvalidAssets: types.optional(types.boolean, true)
   })

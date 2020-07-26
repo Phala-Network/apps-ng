@@ -1,4 +1,4 @@
-import { ss58ToHex } from '@phala/runtime'
+import { ss58ToHex, hexToSs58 } from '@phala/runtime'
 import { observable, toJS } from 'mobx'
 import { cryptoWaitReady } from '@polkadot/util-crypto'
 import keyring from '@polkadot/ui-keyring'
@@ -64,6 +64,10 @@ export const WalletRuntimeStore = observable.object({
     const assetsMeta = ((
       await this.query('Metadata', null, CONTRACT_ASSETS)
     )?.Metadata?.metadata || [])
+      .map(i => {
+        i.ownerAccountId = hexToSs58('0x' + i.owner)
+        return i
+      })
 
     const mainAssetTotalIssuance = (
       (
