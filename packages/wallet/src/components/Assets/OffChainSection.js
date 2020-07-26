@@ -164,13 +164,13 @@ const DestroyAsset = ({ asset }) => {
   }
 
   useEffect(() => {
-    if (!asset?.id) {
+    if (typeof asset?.id !== 'number') {
       setCommand(null)
       return
     }
     createCommand({
       Destroy: {
-        id: asset?.Id
+        id: asset?.id
       }
     })
       .then(setCommand)
