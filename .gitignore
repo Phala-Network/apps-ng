@@ -24,6 +24,7 @@ NOTES.md
 # build output
 dist
 .next
+out
 
 # dependencies
 node_modules
@@ -47,6 +48,7 @@ test/**/next-env.d.ts
 
 # Editors
 **/.idea
+**/out
 
 # examples
 examples/**/out
