@@ -15,6 +15,7 @@ module.exports = withPlugins([
   withTM,
   withImages
 ], {
+  target: 'serverless',
   env: {
     APP_PHALA_URL: process.env.APP_PHALA_URL
   },
