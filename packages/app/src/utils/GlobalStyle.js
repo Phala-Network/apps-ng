@@ -17,6 +17,18 @@ const GlobalStyle = createGlobalStyle`
     min-width: 1280px;
     overflow-x: auto;
   }
+  
+  .ui.modal .content .ui--Labelled-content {
+    margin-bottom: 12px;
+  }
+  .ui.modal .content .labelExtra {
+    padding-right: 30px;
+  }
+  
+  .ui.modal .content .ui--Labelled-content .ui.input,
+  .ui.modal .content .ui--Labelled-content .ui.search {
+    width: calc(100% - 24px)
+  }
 `
 
 export default () => {
