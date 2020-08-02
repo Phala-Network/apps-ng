@@ -224,7 +224,7 @@ function Create ({ className = '', onClose, onStatusChange, seed: propsSeed, typ
       const status = createAccount(`${seed}${derivePath}`, pairType, options, password, t<string>('created account'));
 
       toggleConfirmation();
-      onStatusChange(status);
+      onStatusChange && onStatusChange(status);
       onClose();
     },
     [api, derivePath, isDevelopment, isValid, name, onClose, onStatusChange, pairType, password, seed, t, toggleConfirmation]
