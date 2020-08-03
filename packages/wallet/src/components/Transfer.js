@@ -1,4 +1,5 @@
 import { useStore } from '@/store'
+import { ModalLine } from './TransferOffChain'
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, InputAddress, InputBalance, TxButton } from '@polkadot/react-components'
 import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
@@ -54,9 +55,9 @@ export default function Transfer ({ asset, onClose, onSuccess }) {
         <div className='large'>
           <InputAddress label='recipient address for this transfer' onChange={setRecipientId} type='all'/>
           <InputBalance label='amount to transfer' onChange={setAmount} tokenUnit={symbol}/>
+          <ModalLine>Make a transfer from any account you control to another account. Transfer fees and
+            per-transaction fees apply and will be calculated upon submission.</ModalLine>
         </div>
-        <p className='small'>Make a transfer from any account you control to another account. Transfer fees and
-          per-transaction fees apply and will be calculated upon submission.</p>
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
