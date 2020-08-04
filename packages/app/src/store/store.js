@@ -16,6 +16,6 @@ export const createPersistStore = (name, model, defaultValue = {}, options = {})
 
 export default function createStore () {
   return {
-    settings: createPersistStore('settings', SettingsStore)
+    settings: createPersistStore('settings', SettingsStore, { id: 'appSettings' })
   }
 }

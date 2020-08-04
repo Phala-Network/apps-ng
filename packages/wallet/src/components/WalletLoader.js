@@ -21,7 +21,10 @@ const StoreInjector = (({ children }) => {
     if (typeof appStore.wallet !== 'undefined') {
       return
     }
-    appStore.wallet = createWalletStore()
+    appStore.wallet = createWalletStore({
+      appSettings: appStore.settings
+    })
+    window.store = appStore
   }, [appStore])
 
   useEffect(

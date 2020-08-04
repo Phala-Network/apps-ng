@@ -1,28 +1,36 @@
 import { types } from 'mobx-state-tree'
 import { createPersistStore } from '@/store/store'
+import SettingsStore from '@/store/settings'
 
-export const WalletStore = types
-  .model('WalletStore', {
-    runtimeEndpointUrl: types.optional(types.string, `https://${process.env.APP_PHALA_URL}/tee-api/`),
-    accountId: types.optional(types.string, ''),
-    showInvalidAssets: types.optional(types.boolean, true)
-  })
-  .views(self => ({}))
-  .actions(self => ({
-    setAccount (accountId) {
-      if (!accountId?.length) {
-        return
+export const createWalletStore = (defaultValue = {}, options = {}) => {
+  const WalletStore = types
+    .model('WalletStore', {
+      accountId: types.optional(types.string, ''),
+      showInvalidAssets: types.optional(types.boolean, true)
+    })
+    .views(self => ({
+      get runtimeEndpointUrl () {
+        return self.appSettings.phalaTeeApiUrl
+      },
+      get appSettings () {
+        return defaultValue.appSettings
       }
-      self.accountId = accountId
-    },
-    unsetAccount () {
-      self.accountId = ''
-    },
-    toggleShowInvalidAssets () {
-      self.showInvalidAssets = !self.showInvalidAssets
-    }
-  }))
+    }))
+    .actions(self => ({
+      setAccount (accountId) {
+        if (!accountId?.length) {
+          return
+        }
+        self.accountId = accountId
+      },
+      unsetAccount () {
+        self.accountId = ''
+      },
+      toggleShowInvalidAssets () {
+        self.showInvalidAssets = !self.showInvalidAssets
+      }
+    }))
 
-export const createWalletStore = () => createPersistStore('wallet', WalletStore, {}, {})
+  return createPersistStore('wallet', WalletStore, defaultValue)
+}
 
-export default WalletStore

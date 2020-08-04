@@ -1,5 +1,6 @@
 import React from 'react'
-import { Table } from 'semantic-ui-react'
+import { Button, Table } from 'semantic-ui-react'
+import styled from 'styled-components'
 
 const AssetsTable = ({ children, ...props }) => {
   return <Table size="large" celled {...props}>
@@ -17,5 +18,9 @@ const AssetsTable = ({ children, ...props }) => {
     </Table.Body>
   </Table>
 }
+
+export const AssetsTableActionButton = styled(Button)`
+  margin: 3px 3px !important;
+`
 
 export default AssetsTable

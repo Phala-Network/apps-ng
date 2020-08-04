@@ -1,10 +1,13 @@
 import ApiRequired from '@/utils/ApiRequired'
 import { Container } from 'semantic-ui-react'
 
-export default function NormalPageWrapper ({ children }) {
+export default function NormalPageWrapper ({ children, hasContainer = true }) {
   return <ApiRequired>
-    <Container>
-      {children}
-    </Container>
+    {hasContainer
+      ? <Container>
+        {children}
+      </Container>
+      : children}
+
   </ApiRequired>
 }

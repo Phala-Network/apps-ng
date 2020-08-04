@@ -42,11 +42,11 @@ const pushRoute = (page) => Router.push(LAYOUT_ROUTE, `/wallet/${page.slugName}`
 
 const Tab = ({ currentPage }) => {
   return <Menu pointing secondary>
-    <Container>
+    {/*<Container>*/}
       {/*<TabItem currentPage={currentPage} page={PAGES.balances} />*/}
       <TabItem currentPage={currentPage} page={PAGES.assets} />
       <TabLogoutItem />
-    </Container>
+    {/*</Container>*/}
   </Menu>
 }
 
@@ -86,7 +86,7 @@ const Wallet = () => {
   return <WalletWrapper>
     <Tab currentPage={page} />
     <WalletContent>
-      <NormalPageWrapper>
+      <NormalPageWrapper hasContainer={false}>
         {page.unlockRequired
           ? <UnlockRequired>
             <RenderedComponent />
@@ -101,10 +101,12 @@ const WalletWrapper = styled.div`
   display: flex;
   box-sizing: border-box;
   flex-flow: column nowrap;
+  height: 100%;
 `
 
 const WalletContent = styled.div`
   padding: 12px 12px;
+  height: 100%;
 `
 
 export default Wallet

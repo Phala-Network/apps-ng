@@ -1,6 +1,7 @@
 import PageLoading from '@/components/PageLoading'
 import { TxButton } from '@polkadot/react-components'
 import { observer } from 'mobx-react'
+import styled from 'styled-components'
 import { CONTRACT_ASSETS } from '../../utils/constants'
 import TransferOnChain from '../TransferOnChain'
 import NewAsset from '../NewAsset'
@@ -8,12 +9,16 @@ import Section from '../Section'
 import Transfer from '../Transfer'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Menu, Table, Button, Icon, Checkbox, Popup } from 'semantic-ui-react'
-import AssetsTable from './AssetsTable'
+import _AssetsTable, { AssetsTableActionButton } from './AssetsTable'
 import { useStore } from '@/store'
 import { Balance } from '@polkadot/react-components'
 import BN from 'bn.js'
 import { encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
+
+const AssetsTable = styled(_AssetsTable)`
+  margin-top: calc(1em - 20px) !important;
+`
 
 const OffChainSection = observer(() => {
   const { walletRuntime, wallet } = useStore()
@@ -112,9 +117,11 @@ const MainAssetRowAction = () => {
         showChainModal(false)
       }}
     />}
-    <Button icon labelPosition='left' color="green" onClick={() => showTransferChainModal(true)}><Icon name="chess board" />Transfer on-chain</Button>
-    <Button icon labelPosition='left' color="violet" onClick={() => setNewAssetModal(true)}><Icon name="th" />Make new asset</Button>
-    <Button icon labelPosition='left' color="blue" onClick={() => showChainModal(true)}><Icon name="send" />Transfer</Button>
+    <>
+      <AssetsTableActionButton icon labelPosition='left' color="green" onClick={() => showTransferChainModal(true)}><Icon name="chess board" />Transfer on-chain</AssetsTableActionButton>
+      <AssetsTableActionButton icon labelPosition='left' color="violet" onClick={() => setNewAssetModal(true)}><Icon name="th" />Make new asset</AssetsTableActionButton>
+      <AssetsTableActionButton icon labelPosition='left' color="blue" onClick={() => showChainModal(true)}><Icon name="send" />Transfer</AssetsTableActionButton>
+    </>
   </>
 }
 
@@ -130,7 +137,7 @@ const AssetRowAction = ({ asset }) => {
         showChainModal(false)
       }}
     />}
-    <Button icon labelPosition='left' color="blue" onClick={() => showChainModal(true)}><Icon name="send" />Transfer</Button>
+    <AssetsTableActionButton icon labelPosition='left' color="blue" onClick={() => showChainModal(true)}><Icon name="send" />Transfer</AssetsTableActionButton>
     <DestroyAssetButton asset={asset} />
   </>
 }
@@ -144,7 +151,7 @@ const DestroyAssetButton = ({ asset }) => {
         content={<DestroyAsset asset={asset} />}
         on='click'
         pinned
-        trigger={<Button icon labelPosition='left' color="red"><Icon name="delete" />Destroy</Button>}
+        trigger={<AssetsTableActionButton icon labelPosition='left' color="red"><Icon name="delete" />Destroy</AssetsTableActionButton>}
       />}
   </>
 }

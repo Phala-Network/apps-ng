@@ -28,9 +28,10 @@ const AppFrameMenu = styled(Menu).attrs({
 `
 
 const AppFrameMenuWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   z-index: 10;
   width: 100%;
+  min-width: 1280px;
   background: #e8e8e8;
 `
 
