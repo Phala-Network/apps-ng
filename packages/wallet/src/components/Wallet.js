@@ -101,7 +101,7 @@ const WalletWrapper = styled.div`
   display: flex;
   box-sizing: border-box;
   flex-flow: column nowrap;
-  height: 100%;
+  min-height: 100%;
 `
 
 const WalletContent = styled.div`
