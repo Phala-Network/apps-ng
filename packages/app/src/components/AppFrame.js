@@ -1,49 +1,17 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from "styled-components"
-import { Menu, Icon } from "semantic-ui-react"
 import { RouteLink, MENU_ROUTES } from '@/utils/route'
+import * as constants from '@/utils/style/constants'
+import Container from '@/components/Container'
+import PhalaLogo from '@/components/PhalaLogo'
+import StopCircleIcon from '@zeit-ui/react-icons/StopCircle'
+// import FileFunctionIcon from '@zeit-ui/react-icons/fileFunction'
+import SettingsIcon from '@zeit-ui/react-icons/settings'
+import UnlockIcon from '@zeit-ui/react-icons/unlock'
+import UsersIcon from '@zeit-ui/react-icons/users'
+
 import Status from './Status'
-
-const AppFrameWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
-  flex-direction: column;
-  background: #e8e8e8;
-`
-
-const AppFrameMenu = styled(Menu).attrs({
-  secondary: true,
-  size: 'large'
-})`
-  box-sizing: border-box;
-  background-color: white !important;
-  margin: 15px 18px !important;
-  border-radius: 12px !important;
-  padding: 9px 6px;
-
-`
-
-const AppFrameMenuWrapper = styled.div`
-  position: absolute;
-  z-index: 10;
-  width: 100%;
-  min-width: 1280px;
-  background: #e8e8e8;
-`
-
-const AppFrameContent = styled.div`
-  height: 0;
-  flex: 1;
-  box-sizing: border-box;
-  background-color: white;
-  margin: 96px 18px 21px;
-  border-radius: 12px;
-  padding: 15px 21px;
-`
 
 const AppFrameRouteLink = ({ href, icon, name, position = undefined }) => {
   const router = useRouter()
@@ -54,25 +22,94 @@ const AppFrameRouteLink = ({ href, icon, name, position = undefined }) => {
   </RouteLink>
 }
 
+const AppFrameWrapper = styled.div`
+  padding: calc(${constants.NAV_HEIGHT}px + ${constants.CONTAINER_PADDING}px) 0 ${constants.CONTAINER_PADDING}px;
+`
+
+const NavBarWrapper = styled.nav`
+  width: 100%;
+  height: 72px;
+  background: rgba(0, 0, 0, 0.96);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .21);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: saturate(180%) blur(5px);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  place-content: center;
+  align-items: flex-end;
+  padding: 0 0 17px 0;
+`
+
+const NavBarButtonWrapper = styled.div`
+  display: flex;
+  box-shadow: 0 0 0 1.5px ${props => props.active ? '#FFFFFF' : 'transparent'} inset;
+  box-sizing: border-box;
+  border-radius: 6px;
+  flex-direction: row;
+  align-items: flex-end;
+  place-content: center;
+  padding: 0 15px 7px 12px;
+  transition: box-shadow .2s;
+  cursor: default;
+  
+  &:hover, &:active {
+    box-shadow: 0 0 0 1.5px #FFFFFF inset;
+  }
+`
+
+const NavBarButtonLabel = styled.p`
+  font-size: 17px;
+  line-height: 20px;
+  margin: 0 0 0 12px;
+`
+
+const FillFlex = styled.div`
+  flex: 1;
+`
+
+const NavLogoSpacer = styled.p`
+  width: 54px;
+`
+
+const NavItemSpacer = styled.p`
+  width: 21px;
+`
+
+const NavBar = () => {
+  return <NavBarWrapper>
+    <Container>
+      <PhalaLogo />
+      <NavLogoSpacer />
+      <NavBarButton href="WALLET" name="Wallet" icon={StopCircleIcon} />
+      <NavItemSpacer />
+      <NavBarButton href="ACCOUNTS" name="Accounts" icon={UsersIcon} />
+      <FillFlex />
+      <NavBarButton href="SETTINGS" name="Settings" icon={SettingsIcon} />
+      <NavItemSpacer />
+      <NavBarButton href="SETTINGS" name="ALICE" icon={UnlockIcon} />
+    </Container>
+  </NavBarWrapper>
+}
+
+const NavBarButton = ({ href, icon, name }) => {
+  const router = useRouter()
+  const Icon = icon
+
+  return <RouteLink href={href} >
+    <NavBarButtonWrapper active={MENU_ROUTES[href] === `/${router?.query.slug?.[0]}`}>
+      <Icon size={21} />
+      <NavBarButtonLabel>{name}</NavBarButtonLabel>
+    </NavBarButtonWrapper>
+  </RouteLink>
+}
+
 const AppFrame = ({ children }) => {
-  return (
-    <AppFrameWrapper>
-      <AppFrameMenuWrapper>
-        <AppFrameMenu>
-          <Menu.Item header>
-            Phala Apps
-          </Menu.Item>
-          <AppFrameRouteLink href="WALLET" name="Wallet" icon="bullseye" />
-          <AppFrameRouteLink href="ACCOUNTS" name="Accounts" icon="id card outline" />
-          <AppFrameRouteLink href="SETTINGS" name="Settings" icon="cog" position='right' />
-        </AppFrameMenu>
-      </AppFrameMenuWrapper>
-      <AppFrameContent>
-        <Status />
-        {children}
-      </AppFrameContent>
-    </AppFrameWrapper>
-  )
+  return <AppFrameWrapper>
+    <NavBar />
+    {children}
+  </AppFrameWrapper>
 }
 
 export default AppFrame

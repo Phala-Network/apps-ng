@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { createGlobalStyle } from 'styled-components'
+import { CssBaseline } from '@zeit-ui/react'
 import Head from 'next/head'
 import PolkadotStyle from '@polkadot/react-components/styles'
+import * as constants from './constants'
 
 const GlobalStyle = createGlobalStyle`
   body, html {
     padding: 0;
     margin: 0;
-    min-width: 1280px;
+    min-width: ${constants.PAGE_MIN_WIDTH}px;
   }
   
   html {
@@ -15,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   }
   
   #__next {
-    min-width: 1280px;
+    min-width: ${constants.PAGE_MIN_WIDTH}px;
     overflow-x: auto;
   }
 `
@@ -26,7 +28,7 @@ export default () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const handleWidth = () => {
-        setWidth(screen.width <= 1280 ? 1280 : 'device-width')
+        setWidth(screen.width <= 1024 ? 1024 : 'device-width')
       }
       handleWidth()
       window.addEventListener('resize', handleWidth)
@@ -35,11 +37,13 @@ export default () => {
   }, [])
 
   return <>
-    <GlobalStyle />
     <PolkadotStyle uiHighlight="#469c22" />
+    <CssBaseline />
+    <GlobalStyle />
     <Head>
       <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-svg-core@1.2.30/styles.css"/>
       <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"/>
+      <link rel="stylesheet" href="//fonts.loli.net/css2?family=Recursive:wght@400;600&display=swap" />
       <meta
         name="viewport"
         content={`width=${width}`}

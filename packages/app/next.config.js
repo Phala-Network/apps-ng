@@ -8,7 +8,8 @@ function resolve (...args) {
 
 const withTM = require('next-transpile-modules')([
   resolve('packages'),
-  resolve('vendor/polkadot-apps/packages')
+  resolve('vendor/polkadot-apps/packages'),
+  resolve('@zeit-ui/react')
 ])
 
 module.exports = withPlugins([
