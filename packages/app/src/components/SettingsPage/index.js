@@ -48,7 +48,7 @@ const _SettingsPage = () => {
     successModal.setVisible(true)
   }, [apiUrlInput.state, phalaTeeApiUrlInput.state, successModal, settings])
 
-  return <Page size="small">
+  return <Page size="small" style={{ minHeight: 'unset' }}>
     <Modal {...successModal.bindings}>
       <Modal.Title>Success</Modal.Title>
       <Modal.Content>
