@@ -1,9 +1,10 @@
 import App from "next/app"
 import { ThemeProvider } from "styled-components"
 import GlobalStyle from '@/utils/style'
-import { useTheme, ZeitProvider } from '@zeit-ui/react'
+import { useTheme, ZeitProvider, useMediaQuery } from '@zeit-ui/react'
 import darkTheme from '@zeit-ui/react/styles/themes/dark'
 import 'mobx-react-lite/batchingForReactDom'
+import { useCallback } from "react"
 
 const zeitUiTheme = {
   ...darkTheme,
@@ -22,14 +23,23 @@ const WrappedApp = ({ children }) => {
   </ThemeProvider>
 }
 
+const _App = ({ Component, pageProps }) => {
+  const isMobile = useMediaQuery('mobile')
+  const theme = useCallback(() => ({
+    ...zeitUiTheme,
+    isMobile
+  }), [zeitUiTheme])
+
+  return <ZeitProvider theme={theme}>
+    <WrappedApp>
+      <GlobalStyle />
+      <Component {...pageProps} />
+    </WrappedApp>
+  </ZeitProvider>
+}
+
 export default class MyApp extends App {
   render() {
-    const { Component, pageProps } = this.props
-    return <ZeitProvider theme={zeitUiTheme}>
-      <WrappedApp>
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </WrappedApp>
-    </ZeitProvider>
+    return <_App {...this.props} />
   }
 }

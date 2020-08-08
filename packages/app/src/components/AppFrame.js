@@ -13,6 +13,8 @@ import UsersIcon from '@zeit-ui/react-icons/users'
 
 import Status from './Status'
 
+import CurrentInfoButton from './accounts/CurrentInfoButton'
+
 const AppFrameRouteLink = ({ href, icon, name, position = undefined }) => {
   const router = useRouter()
   return <RouteLink href={href} >
@@ -29,20 +31,21 @@ const AppFrameWrapper = styled.div`
 const NavBarWrapper = styled.nav`
   width: 100%;
   height: 72px;
-  background: rgba(0, 0, 0, 0.96);
+  background: rgba(0, 0, 0, 0.9);
   box-shadow: 0 1px 0 rgba(255, 255, 255, .21);
-  border: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: saturate(180%) blur(5px);
   position: fixed;
   left: 0;
   top: 0;
   display: flex;
-  place-content: center;
+  place-content: flex-start;
   align-items: flex-end;
   padding: 0 0 17px 0;
+  z-index: 100;
+  overflow-x: auto;
 `
 
-const NavBarButtonWrapper = styled.div`
+export const NavBarButtonWrapper = styled.div`
   display: flex;
   box-shadow: 0 0 0 1.5px ${props => props.active ? '#FFFFFF' : 'transparent'} inset;
   box-sizing: border-box;
@@ -53,13 +56,14 @@ const NavBarButtonWrapper = styled.div`
   padding: 0 15px 7px 12px;
   transition: box-shadow .2s;
   cursor: default;
+  z-index: 100;
   
   &:hover, &:active {
     box-shadow: 0 0 0 1.5px #FFFFFF inset;
   }
 `
 
-const NavBarButtonLabel = styled.p`
+export const NavBarButtonLabel = styled.p`
   font-size: 17px;
   line-height: 20px;
   margin: 0 0 0 12px;
@@ -88,10 +92,12 @@ const NavBar = () => {
       <FillFlex />
       <NavBarButton href="SETTINGS" name="Settings" icon={SettingsIcon} />
       <NavItemSpacer />
-      <NavBarButton href="SETTINGS" name="ALICE" icon={UnlockIcon} />
+      {/* <NavBarButton href="SETTINGS" name="ALICE" icon={UnlockIcon} /> */}
+      <CurrentInfoButton />
     </Container>
   </NavBarWrapper>
 }
+
 
 const NavBarButton = ({ href, icon, name }) => {
   const router = useRouter()
