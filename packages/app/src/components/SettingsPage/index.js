@@ -1,88 +1,90 @@
 import { useStore } from '@/store'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react'
-import React, { useCallback, useEffect, useState } from 'react'
-import { Header, Container as _Container, Form, Modal, Button, Icon } from 'semantic-ui-react'
-import styled from 'styled-components'
-
-const Container = styled(_Container)`
-  padding: 24px 0;
-`
-
-const HeaderDivider = styled.div`
-  width: 100%;
-  height: 15px;
-`
+import React, { useCallback, useEffect } from 'react'
+import {
+  Page,
+  Input,
+  useInput,
+  Card,
+  Spacer,
+  Button,
+  useToasts,
+  useModal,
+  Modal,
+  Text
+} from '@zeit-ui/react'
 
 const _SettingsPage = () => {
   const { settings } = useStore()
 
-  const [values, setValues] = useState(toJS(settings))
-  const [open, setOpen] = useState(false)
+  const apiUrlInput = useInput('')
+  const phalaTeeApiUrlInput = useInput('')
+
+  const [, setToast] = useToasts()
+  const successModal = useModal()
 
   useEffect(() => {
-    setValues(toJS(settings))
-  }, [settings, settings.apiUrl, settings.phalaTeeApiUrl])
+    apiUrlInput.setState(settings.apiUrl)
+    phalaTeeApiUrlInput.setState(settings.phalaTeeApiUrl)
+  }, [
+    settings.apiUrl,
+    settings.phalaTeeApiUrl
+  ])
 
-  const handleSave = useCallback(e => {
-    if (!(values.phalaTeeApiUrl && values.apiUrl)) { return }
-    settings.applyValues(values)
-    setOpen(true)
+  const doSave = useCallback(e => {
     e.preventDefault()
-  }, [settings, values])
+    if (!(apiUrlInput.state && phalaTeeApiUrlInput.state)) {
+      setToast({
+        type: "error",
+        text: 'Invalid input!'
+      })
 
-  const handleChange = useCallback((e, { name, value: _value }) => {
-    setValues(p => ({ ...p, [name]: _value }))
-  }, [setValues])
+      return
+    }
+    settings.applyValues({
+      apiUrl: apiUrlInput.state,
+      phalaTeeApiUrl: phalaTeeApiUrlInput.state
+    })
+    successModal.setVisible(true)
+  }, [apiUrlInput.state, phalaTeeApiUrlInput.state, successModal, settings])
 
-  return <>
-    <Modal
-      open={open}
-      size='small'
-    >
-      <Header>
-        Notification
-      </Header>
+  return <Page size="small">
+    <Modal {...successModal.bindings}>
+      <Modal.Title>Success</Modal.Title>
       <Modal.Content>
-        <p>
-          Settings have been saved and will take effect after refreshing the page.
-        </p>
+        <Text>
+          Settings have been saved. Reload the page to take effect.
+        </Text>
       </Modal.Content>
-      <Modal.Actions>
-        <Button color='grey' onClick={() => setOpen(false)}>
-          <Icon name='check' /> Got it
-        </Button>
-        <Button color='green' onClick={() => location.reload(true)}>
-          <Icon name='refresh' /> Refresh Page
-        </Button>
-      </Modal.Actions>
+      <Modal.Action passive onClick={() => successModal.setVisible(false)}>Cancel</Modal.Action>
+      <Modal.Action onClick={() => location.reload()}>Reload</Modal.Action>
     </Modal>
-    <Container>
-      <Header as='h2'>Settings</Header>
-      <HeaderDivider />
-      <Form onSubmit={handleSave}>
-        <Form.Input
-          error={!values.apiUrl && 'Please enter WebSocket Endpoint URL.'}
-          fluid
-          value={values.apiUrl}
-          name="apiUrl"
-          label='WebSocket Endpoint URL'
-          placeholder='WebSocket Endpoint'
-          onChange={handleChange}
+    <Page.Content>
+      <h2>Settings</h2>
+      <Spacer y={1.5} />
+      <Card>
+        <h5>WebSocket Endpoint URL</h5>
+        <Input
+          {...apiUrlInput.bindings}
+          width="100%"
         />
-        <Form.Input
-          error={!values.phalaTeeApiUrl && 'Please enter Phala TEE API Endpoint.'}
-          fluid
-          value={values.phalaTeeApiUrl}
-          label='Phala TEE API Endpoint'
-          name="phalaTeeApiUrl"
-          placeholder='Phala TEE API Endpoint'
-          onChange={handleChange}
+        <Spacer y={1.5} />
+        <h5>Phala TEE API Endpoint</h5>
+        <Input
+          {...phalaTeeApiUrlInput.bindings}
+          width="100%"
         />
-        <Button color='green' type='submit'>Save</Button>
-      </Form>
-    </Container>
-  </>
+      </Card>
+      <Spacer y={1.5} />
+      <Button
+        type="secondary"
+        auto
+        onClick={doSave}
+      >
+        Save
+      </Button>
+    </Page.Content>
+  </Page>
 }
 
 const SettingsPage = observer(_SettingsPage)
