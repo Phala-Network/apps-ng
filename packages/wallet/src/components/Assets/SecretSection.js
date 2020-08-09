@@ -19,6 +19,7 @@ import {
   PlusSquare as PlusSquareIcon
 } from '@zeit-ui/react-icons'
 import { useEffect, useMemo } from 'react'
+import TransferModal from './TransferModal'
 
 const LeftDecorationWrapper = styled.div`
   display: flex;
@@ -200,6 +201,7 @@ const SecretBlock = ({ children, ...props }) => {
 const PHA = observer(() => {
   const { walletRuntime } = useStore()
   const convertToNativeModal = useModal()
+  const transferModal = useModal()
   
   useEffect(() => {
     walletRuntime.updateMainAsset()
@@ -217,6 +219,7 @@ const PHA = observer(() => {
 
   return <>
     <ConvertToNativeModal {...convertToNativeModal} />
+    <TransferModal {...transferModal} />
     <SecretBlock>
       <LeftDecoration />
       <Info symbol="Secret PHA" balance={walletRuntime.mainAsset?.balance} />
@@ -227,7 +230,12 @@ const PHA = observer(() => {
           name="Convert to PHA"
           onClick={() => convertToNativeModal.setVisible(true)}
         />
-        <Button type="secondaryLight" icon={SendIcon} name="Secret Transfer" />
+        <Button
+          type="secondaryLight"
+          icon={SendIcon}
+          name="Secret Transfer"
+          onClick={() => transferModal.setVisible(true)}
+        />
       </Button.Group>
     </SecretBlock>
   </>
@@ -288,16 +296,26 @@ const AssetItem = observer(({ itemIndex }) => {
   const ownerAddress = useMemo(() => hexToSs58('0x' + item.metadata.owner), [item.metadata.owner])
   const isOwner = useMemo(() => (ownerAddress === address), [ownerAddress,address])
 
+  const transferModal = useModal()
+
   if (!isOwner && balance.isZero() && !showInvalidAssets) { return null }
 
-  return <AssetBlock>
-    <LeftDecoration />
-    <Info balance={balance} symbol={item.metadata.symbol} />
-    <Button.Group>
-      <Button type="secondaryLight" icon={SendIcon} name="Secret Transfer" />
-      {isOwner && <DestroyButton {...item.metadata} />}
-    </Button.Group>
-  </AssetBlock>
+  return <>
+    <TransferModal asset={item.metadata} {...transferModal} />
+    <AssetBlock>
+      <LeftDecoration />
+      <Info balance={balance} symbol={item.metadata.symbol} />
+      <Button.Group>
+        <Button
+          type="secondaryLight"
+          icon={SendIcon}
+          name="Secret Transfer"
+          onClick={() => transferModal.setVisible(true)}
+        />
+        {isOwner && <DestroyButton {...item.metadata} />}
+      </Button.Group>
+    </AssetBlock>
+  </>
 })
 
 const Assets = observer(() => {

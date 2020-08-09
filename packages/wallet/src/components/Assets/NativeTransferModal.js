@@ -38,7 +38,7 @@ const NativeTransferModal = ({ bindings, setVisible }) => {
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Transfered.'
+      text: 'Transferred.'
     })
     onClose()
   }, [setIsBusy])
@@ -74,7 +74,7 @@ const NativeTransferModal = ({ bindings, setVisible }) => {
     <TxButton
       accountId={account.address || ''}
       onClick={doSend}
-      params={[addressInput.state, amount]}
+      params={[addressInput.state.trim(), amount]}
       tx='balances.transfer'
       withSpinner
       onStart={onStart}

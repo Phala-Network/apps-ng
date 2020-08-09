@@ -5,53 +5,24 @@ import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import getUnitAmount from '@/utils/getUnitAmount'
 import { CONTRACT_ASSETS, CONTRACT_BALANCE } from '../../utils/constants'
-import { encryptObj } from '@phala/runtime/utils'
+import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
 
 const TransferModal = ({ asset, bindings, setVisible }) => {
   const { account, walletRuntime } = useStore()
-  const { assetSymbols, ecdhChannel } = walletRuntime
+  const { ecdhChannel } = walletRuntime
 
-  const symbolInput = useInput('')
+  const contractId = asset ? CONTRACT_ASSETS : CONTRACT_BALANCE
+
+  const assetId = asset?.id
+  const assetSymbol = asset?.symbol || 'PHA'
+
+  const addressInput = useInput('')
   const valueInput = useInput('')
   const [isBusy, setIsBusy] = useState(false)
   const [command, setCommand] = useState('')
   const [, setToast] = useToasts()
-
-  const symbolError = useMemo(() => {
-    const val = symbolInput.state
-
-    if (!symbolInput.state.length) {
-      return null
-    }
-
-    if (!val.toLowerCase().match(/^[a-z]+$/)) {
-      return 'bad symbol'
-    }
-    if (val.length <= 2) {
-      return 'too short'
-    }
-    if (val.length > 9) {
-      return 'too long'
-    }
-    if (assetSymbols.find(t => t.toLowerCase() === val.toLowerCase())) {
-      return 'conflict'
-    }
-
-    return null
-  }, [assetSymbols, symbolInput.state])
-
-  const symbol = useMemo(() => symbolInput.state.trim().toUpperCase(), [symbolInput.state])
-
-  const unit = useMemo(() => {
-    if (!!symbolError) {
-      return 'Unit'
-    }
-    if (!symbol.length) {
-      return 'Unit'
-    }
-    return symbol
-  }, [symbol, symbolError])
+  const [addressError, setAddressError] = useState(false)
 
   const amount = useMemo(() => {
     const [, _value] = getUnitAmount(valueInput.state)
@@ -61,30 +32,50 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   const [innerDisabled, setInnerDisabled] = useState(false)
 
   const disabled = useMemo(() => !(
-    !innerDisabled && symbolInput.state.trim().length && !symbolError && (parseInt(amount) > 0)
-  ), [amount, symbolError, symbolInput.state, innerDisabled])
+    !innerDisabled && !addressError && addressInput.state.trim().length && (parseInt(amount) > 0)
+  ), [amount, addressError, addressInput.state, innerDisabled])
 
   useEffect(() => {
     setInnerDisabled(true)
-    ;(async () => {
-      const obj = {
-        Issue: {
-          symbol,
-          total: amount
-        }
-      }
-      const cipher = await encryptObj(ecdhChannel, obj)
-      const apiCipher = toApi(cipher)
-      setCommand(JSON.stringify({ Cipher: apiCipher }))
+    let pubkeyHex
+    try {
+      pubkeyHex = ss58ToHex(addressInput.state.trim())
+      setAddressError(false)
+    } catch (error) {
       setInnerDisabled(false)
-    })()
-  }, [ecdhChannel, symbol, amount])
+      setAddressError(true)
+    }
+
+    if (pubkeyHex) {
+      ;(async () => {
+        const obj = asset
+          ? {
+            Transfer: {
+              id: assetId,
+              dest: pubkeyHex,
+              value: amount.toString()
+            }
+          }
+          : {
+            Transfer: {
+              dest: pubkeyHex,
+              value: amount.toString()
+            }
+          }
+        console.log(obj)
+        const cipher = await encryptObj(ecdhChannel, obj)
+        const apiCipher = toApi(cipher)
+        setCommand(JSON.stringify({ Cipher: apiCipher }))
+        setInnerDisabled(false)
+      })()
+    }
+  }, [addressInput.state, ecdhChannel, assetId, amount])
 
   const reset = useCallback(() => {
     setIsBusy(false)
-    symbolInput.reset()
+    addressInput.reset()
     valueInput.reset()
-  }, [setIsBusy, symbolInput, valueInput])
+  }, [setIsBusy, addressInput, valueInput])
 
   const onStart = useCallback(() => {
     setIsBusy(true)
@@ -93,14 +84,14 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   const onFailed = useCallback(e => {
     setIsBusy(false)
     setToast({
-      text: 'Failed to issue.',
+      text: 'Failed to transfer.',
       type: 'error'
     })
   }, [setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Successfully issued, the asset will appear soon.'
+      text: 'Transferred.'
     })
     onClose()
   }, [setIsBusy])
@@ -120,17 +111,16 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
     <Modal.Title>issue secret token</Modal.Title>
     <Modal.Content>
       <Input
-        {...symbolInput.bindings}
-        placeholder="Symbol"
+        {...addressInput.bindings}
+        placeholder="Send to address"
         width="100%"
-        status={!!symbolError ? 'error' : undefined}
-        labelRight={symbolError}
+        status={addressError ? 'error' : undefined}
       />
       <Spacer y={.5} />
       <Input
         {...valueInput.bindings}
         placeholder="Amount"
-        labelRight={unit}
+        labelRight={assetSymbol}
         width="100%"
       />
     </Modal.Content>
@@ -140,7 +130,7 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
       : <TxButton
         accountId={account.address || ''}
         onClick={doSend}
-        params={[asset ? CONTRACT_ASSETS : CONTRACT_BALANCE, command]}
+        params={[contractId, command]}
         tx='phalaModule.pushCommand'
         withSpinner
         onStart={onStart}
