@@ -1,11 +1,9 @@
 import { types } from 'mobx-state-tree'
 import { createPersistStore } from '@/store/store'
-import SettingsStore from '@/store/settings'
 
 export const createWalletStore = (defaultValue = {}, options = {}) => {
   const WalletStore = types
     .model('WalletStore', {
-      accountId: types.optional(types.string, ''),
       showInvalidAssets: types.optional(types.boolean, true)
     })
     .views(self => ({
@@ -14,18 +12,15 @@ export const createWalletStore = (defaultValue = {}, options = {}) => {
       },
       get appSettings () {
         return defaultValue.appSettings
+      },
+      get appAccount () {
+        return defaultValue.appAccount
+      },
+      get accountId () {
+        return self.appAccount.address
       }
     }))
     .actions(self => ({
-      setAccount (accountId) {
-        if (!accountId?.length) {
-          return
-        }
-        self.accountId = accountId
-      },
-      unsetAccount () {
-        self.accountId = ''
-      },
       toggleShowInvalidAssets () {
         self.showInvalidAssets = !self.showInvalidAssets
       }

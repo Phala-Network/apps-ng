@@ -3,26 +3,16 @@ import React from 'react'
 import styled from "styled-components"
 import { RouteLink, MENU_ROUTES } from '@/utils/route'
 import * as constants from '@/utils/style/constants'
-import Container from '@/components/Container'
+import Container from '@/components/NavContainer'
 import PhalaLogo from '@/components/PhalaLogo'
 import StopCircleIcon from '@zeit-ui/react-icons/StopCircle'
 // import FileFunctionIcon from '@zeit-ui/react-icons/fileFunction'
 import SettingsIcon from '@zeit-ui/react-icons/settings'
-import UnlockIcon from '@zeit-ui/react-icons/unlock'
 import UsersIcon from '@zeit-ui/react-icons/users'
 
 import Status from './Status'
 
 import CurrentInfoButton from './accounts/CurrentInfoButton'
-
-const AppFrameRouteLink = ({ href, icon, name, position = undefined }) => {
-  const router = useRouter()
-  return <RouteLink href={href} >
-    <Menu.Item position={position} active={MENU_ROUTES[href] === `/${router?.query.slug?.[0]}`} as="a">
-      <Icon name={icon} />{name}
-    </Menu.Item>
-  </RouteLink>
-}
 
 const AppFrameWrapper = styled.div`
   padding: calc(${constants.NAV_HEIGHT}px + ${constants.CONTAINER_PADDING}px) 0 ${constants.CONTAINER_PADDING}px;

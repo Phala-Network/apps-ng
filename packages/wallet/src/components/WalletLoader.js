@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useStore } from '@/store'
 import { createWalletStore } from '../utils/WalletStore'
 import { createWalletRuntimeStore } from '../utils/WalletRuntimeStore'
-import * as Crypto from '@phala/runtime/crypto'
-import PRuntime, { measure, encryptObj } from '@phala/runtime'
+import { measure } from '@phala/runtime'
+import PageLoading from '@/components/PageLoading'
 
 const StoreInjector = (({ children }) => {
   const appStore = useStore()
@@ -16,15 +16,18 @@ const StoreInjector = (({ children }) => {
       return
     }
 
-    appStore.walletRuntime = createWalletRuntimeStore()
+    appStore.walletRuntime = createWalletRuntimeStore({
+      appSettings: appStore.settings,
+      appAccount: appStore.account
+    })
 
     if (typeof appStore.wallet !== 'undefined') {
       return
     }
     appStore.wallet = createWalletStore({
-      appSettings: appStore.settings
+      appSettings: appStore.settings,
+      appAccount: appStore.account
     })
-    window.store = appStore
   }, [appStore])
 
   useEffect(
@@ -48,16 +51,7 @@ const WalletInit = ({ children }) => {
   const { wallet, walletRuntime } = appStore
 
   React.useEffect(() => {
-    Crypto.newChannel()
-      .then(ch => {
-        walletRuntime.ecdhChannel = ch
-        walletRuntime.ecdhShouldJoin = true
-      })
-  }, [])
-
-  React.useEffect(() => {
-    walletRuntime.keypair?.lock()
-    walletRuntime.accountId = null
+    walletRuntime.initEcdhChannel()
   }, [])
 
   useEffect(
@@ -65,9 +59,7 @@ const WalletInit = ({ children }) => {
       reaction(
         () => wallet.runtimeEndpointUrl,
         () => {
-          walletRuntime.error = false
-          walletRuntime.latency = 0
-          walletRuntime.info = null
+          walletRuntime.resetNetwork()
       }),
     []
   )
@@ -79,12 +71,7 @@ const WalletInit = ({ children }) => {
           if (!(walletRuntime.ecdhShouldJoin && walletRuntime.ecdhChannel && walletRuntime.info?.ecdhPublicKey)) {
             return
           }
-          Crypto.joinChannel(walletRuntime.ecdhChannel, walletRuntime.info.ecdhPublicKey)
-            .then(ch => {
-              walletRuntime.ecdhShouldJoin = false
-              walletRuntime.ecdhChannel = ch
-              console.log('joined channel:', toJS(ch))
-            })
+          walletRuntime.joinEcdhChannel()
         }),
     []
   )
@@ -96,11 +83,7 @@ const WalletInit = ({ children }) => {
           if (!(wallet.runtimeEndpointUrl && walletRuntime.ecdhChannel)) {
             return
           }
-          walletRuntime.pApi = new PRuntime({
-            endpoint: wallet.runtimeEndpointUrl,
-            channel: walletRuntime.ecdhChannel,
-            keypair: walletRuntime.keypair
-          })
+          walletRuntime.initPApi(wallet.runtimeEndpointUrl)
         }),
     []
   )
@@ -113,21 +96,22 @@ const WalletInit = ({ children }) => {
 
 const WalletLifecycle = observer(() => {
   const { walletRuntime } = useStore()
+
   useEffect(() => {
     if (!walletRuntime?.pApi) { return }
     const interval = setInterval(() => {
       measure((() =>
         walletRuntime.pApi.getInfo()
           .then(i => {
-            walletRuntime.info = i
+            walletRuntime.setInfo(i)
           })
           .catch(e => {
-            walletRuntime.error = true
+            walletRuntime.setError(e)
             console.warn('Error getting /info', e)
           })
       ))
         .then(dt => {
-          walletRuntime.latency = parseInt((l => l ? l * 0.8 + dt * 0.2 : dt)(walletRuntime.latency))
+          walletRuntime.setLatency(dt)
         })
     }, 1500)
     return () => clearInterval(interval)
@@ -135,10 +119,14 @@ const WalletLifecycle = observer(() => {
   return null
 })
 
-export default ({ children }) => (
-  <StoreInjector>
-    <WalletInit>
-      {children}
-    </WalletInit>
-  </StoreInjector>
-)
+export default observer(({ children }) => {
+  const { walletRuntime } = useStore()
+
+  return (
+    <StoreInjector>
+      <WalletInit>
+        {walletRuntime?.channelReady ? children : <PageLoading />}
+      </WalletInit>
+    </StoreInjector>
+  )
+})

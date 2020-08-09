@@ -7,13 +7,12 @@ const Container = styled.div`
   max-width: 1232px;
   min-width: ${constants.PAGE_MIN_WIDTH}px;
   ${({ isMobile }) => isMobile && `
-    min-width: unset;
-    max-width: unset;
+    min-width: ${680}px;
   `}
   width: 100%;
   padding: 0 ${constants.CONTAINER_PADDING}px;
   margin: 0 auto;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
 `
 
 export default (props) => {
