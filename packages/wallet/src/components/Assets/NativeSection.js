@@ -5,6 +5,7 @@ import { Balance as BalanceQuery } from '@polkadot/react-query'
 import { useStore } from "@/store"
 import Button from './Button'
 import ConvertToTeeModal from './ConvertToTeeModal'
+import NativeTransferModal from './NativeTransferModal'
 
 import {
   Link2 as LinkIcon,
@@ -136,9 +137,11 @@ const NativeSectionInnerWrapper = styled.div`
 
 const NativeSection = () => {
   const convertToTeeModal = useModal()
+  const nativeTransferModal = useModal()
 
   return <>
     <ConvertToTeeModal {...convertToTeeModal} />
+    <NativeTransferModal {...nativeTransferModal} />
     <NativeSectionWrapper>
       <Container>
         <NativeSectionInnerWrapper>
@@ -151,7 +154,12 @@ const NativeSection = () => {
               name="Convert to Secret PHA"
               onClick={() => convertToTeeModal.setVisible(true)}
             />
-            <Button type="secondaryDark" icon={SendIcon} name="Transfer" />
+            <Button
+              type="secondaryDark"
+              icon={SendIcon}
+              name="Transfer"
+              onClick={() => nativeTransferModal.setVisible(true)}
+            />
           </Button.Group>
         </NativeSectionInnerWrapper>
       </Container>
