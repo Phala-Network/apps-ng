@@ -9,14 +9,14 @@ import BN from 'bn.js'
 import { hexToSs58 } from '@phala/runtime'
 import IssueModal from './IssueModal'
 import ConvertToNativeModal from './ConvertToNativeModal'
+import DestroyButton from './DestroyButton'
 
 import {
   InfoFill as InfoFillIcon,
   Eye as EyeIcon,
   Send as SendIcon,
   Target as TargetIcon,
-  PlusSquare as PlusSquareIcon,
-  MinusSquare as MinusSquareIcon
+  PlusSquare as PlusSquareIcon
 } from '@zeit-ui/react-icons'
 import { useEffect, useMemo } from 'react'
 
@@ -295,7 +295,7 @@ const AssetItem = observer(({ itemIndex }) => {
     <Info balance={balance} symbol={item.metadata.symbol} />
     <Button.Group>
       <Button type="secondaryLight" icon={SendIcon} name="Secret Transfer" />
-      {isOwner && <Button type="remove" icon={MinusSquareIcon} name="Destroy Token" />}
+      {isOwner && <DestroyButton {...item.metadata} />}
     </Button.Group>
   </AssetBlock>
 })

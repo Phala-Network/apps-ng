@@ -63,7 +63,9 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
         return true
       },
       get assetSymbols () {
-        return self.assets.map(i => i.metadata.symbol)
+        const ret = self.assets.map(i => i.metadata.symbol)
+        ret.push('PHA')
+        return ret
       }
     }))
     .actions(self => ({
@@ -136,7 +138,7 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
           () => ({ availableOnly: false }),
           CONTRACT_ASSETS
         )
-        self.assets = res?.ListAssets?.assets || []
+        self.assets = (res?.ListAssets?.assets || []).reverse()
       })
     }))
 
