@@ -23,6 +23,10 @@ export const createWalletStore = (defaultValue = {}, options = {}) => {
     .actions(self => ({
       toggleShowInvalidAssets () {
         self.showInvalidAssets = !self.showInvalidAssets
+      },
+      setShowInvalidAssets (e) {
+        const value = !e.target.checked
+        self.showInvalidAssets = value
       }
     }))
 

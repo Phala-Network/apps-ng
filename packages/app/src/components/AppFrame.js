@@ -35,6 +35,7 @@ const NavBarWrapper = styled.nav`
   padding: 0 0 17px 0;
   z-index: 100;
   overflow-x: auto;
+  box-sizing: border-box;
 `
 
 export const NavBarButtonWrapper = styled.div`
