@@ -109,10 +109,10 @@ const GroupWrapper = styled.div`
 
 Button.Group = ({ children }) => {
   return <GroupWrapper>
-    {children.map ? children.map((i, idx) => <>
+    {children.map ? children.map((i, idx) => <React.Fragment key={`GroupWrapper-${idx}`}>
       {i}
       {idx !== children.length && <div style={{ height: 12 }} />}
-    </>) : children}
+    </React.Fragment>) : children}
   </GroupWrapper>
 }
 

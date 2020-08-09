@@ -1,7 +1,7 @@
 import { observer } from "mobx-react"
 import { useStore } from "../../store"
 import { Page, Card, Spacer } from "@zeit-ui/react"
-import LockIcon from '@zeit-ui/react-icons/lock'
+import { Lock as LockIcon } from '@zeit-ui/react-icons'
 
 const _UnlockRequired = () => {
   return <Page style={{ minHeight: 'unset' }}>

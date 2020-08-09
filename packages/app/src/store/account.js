@@ -23,9 +23,14 @@ export const AccountStore = types
     setKeypair: flow(function* (address) {
       if (!address) {
         self.keypair = undefined
+        return 
       }
       yield cryptoWaitReady()
-      self.keypair = keyring.getPair(address)
+      try {
+        self.keypair = keyring.getPair(address || '')
+      } catch (error) {
+        console.warn(address, error)
+      }
     }),
     lock () {
       self.locked = true

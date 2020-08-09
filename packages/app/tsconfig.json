@@ -8,6 +8,9 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@zeit-ui/react": [
+        "../../node_modules/@zeit-ui/react/esm"
+      ],
       "@zeit-ui/react/*": [
         "../../node_modules/@zeit-ui/react/esm/*"
       ],

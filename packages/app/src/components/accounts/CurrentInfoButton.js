@@ -6,8 +6,13 @@ import {
   NavBarButtonWrapper,
   NavBarButtonLabel
 } from '../AppFrame'
-import UnlockIcon from '@zeit-ui/react-icons/unlock'
-import LockIcon from '@zeit-ui/react-icons/lock'
+
+import {
+  Unlock as UnlockIcon,
+  Lock as LockIcon,
+  Key as KeyIcon
+} from '@zeit-ui/react-icons'
+
 import {
   Modal,
   useModal,
@@ -24,7 +29,6 @@ import {
 import { useStore } from '../../store'
 import { observer } from 'mobx-react'
 import { reaction } from 'mobx'
-import KeyIcon from '@zeit-ui/react-icons/key'
 
 const AccountSelectorItem = ({ address }) => {
   const accountInfo = useAccountInfo(address)

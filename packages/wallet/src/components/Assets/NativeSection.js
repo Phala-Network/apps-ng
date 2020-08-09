@@ -1,15 +1,18 @@
 import { observer } from "mobx-react"
 import styled from "styled-components"
 import Container from "@/components/Container"
-import LinkIcon from '@zeit-ui/react-icons/link2'
-import InfoFillIcon from '@zeit-ui/react-icons/infoFill'
 import { Balance as BalanceQuery } from '@polkadot/react-query'
 import { useStore } from "@/store"
 import Button from './Button'
-import EyeIcon from '@zeit-ui/react-icons/eye'
-import EyeOffIcon from '@zeit-ui/react-icons/eyeOff'
-import SendIcon from '@zeit-ui/react-icons/send'
-import MinusSquareIcon from '@zeit-ui/react-icons/minusSquare'
+
+import {
+  Link2 as LinkIcon,
+  InfoFill as InfoFillIcon,
+  Eye as EyeIcon,
+  EyeOff as EyeOffIcon,
+  Send as SendIcon,
+  MinusSquare as MinusSquareIcon
+} from '@zeit-ui/react-icons'
 
 
 const LeftDecorationWrapper = styled.div`

@@ -5,10 +5,12 @@ import { RouteLink, MENU_ROUTES } from '@/utils/route'
 import * as constants from '@/utils/style/constants'
 import Container from '@/components/NavContainer'
 import PhalaLogo from '@/components/PhalaLogo'
-import StopCircleIcon from '@zeit-ui/react-icons/StopCircle'
-// import FileFunctionIcon from '@zeit-ui/react-icons/fileFunction'
-import SettingsIcon from '@zeit-ui/react-icons/settings'
-import UsersIcon from '@zeit-ui/react-icons/users'
+import {
+  StopCircle as StopCircleIcon,
+  // FileFunction as FileFunctionIcon,
+  Settings as SettingsIcon,
+  Users as UsersIcon
+} from '@zeit-ui/react-icons'
 
 import Status from './Status'
 
