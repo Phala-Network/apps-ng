@@ -39,7 +39,7 @@ const ConvertToTeeModal = ({ bindings, setVisible }) => {
       text: 'Successfully submitted, the assets will appear soon.'
     })
     onClose()
-  }, [setIsBusy])
+  }, [onClose])
 
   const onClose = useCallback(() => {
     if (isBusy) { return }
