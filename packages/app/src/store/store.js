@@ -1,6 +1,6 @@
 import localForage from 'localforage'
 import { persist } from 'mst-persist'
-import SettingsStore from './settings'
+import createSettingsStore from './settings'
 import createAccountStore from './account'
 
 export const createPersistStore = (name, model, defaultValue = {}, options = {}) => {
@@ -17,7 +17,7 @@ export const createPersistStore = (name, model, defaultValue = {}, options = {})
 
 export default function createStore () {
   return {
-    settings: createPersistStore('settings', SettingsStore, { id: 'appSettings' }),
+    settings: createSettingsStore(),
     account: createAccountStore()
   }
 }

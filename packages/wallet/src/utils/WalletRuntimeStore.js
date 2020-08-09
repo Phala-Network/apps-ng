@@ -111,70 +111,31 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
       },
       setLatency (dt) {
         self.latency = parseInt((l => l ? l * 0.8 + dt * 0.2 : dt)(self.latency))
-      }
+      },
+      fullUpdate: flow(function* () {
+        yield self.updateMainAsset()
+        yield self.updateAssets()
+      }),
+      updateMainAsset: flow(function* () {
+        const res = yield self.query(
+          'FreeBalance',
+          () => ({ account: self.accountIdHex }),
+          CONTRACT_BALANCE
+        )
+        self.mainAsset = {
+          ...self.mainAsset, 
+          balance: res?.FreeBalance?.balance || '0'
+        }
+      }),
+      updateAssets: flow(function* () {
+        const res = yield self.query(
+          'ListAssets',
+          () => ({ availableOnly: false }),
+          CONTRACT_ASSETS
+        )
+        self.assets = res?.ListAssets?.assets || []
+      })
     }))
 
   return WalletRuntimeStore.create(defaultValue)
 }
-
-// export const WalletRuntimeStore = observable.object({
-//   ecdhChannel: null,
-//   ecdhShouldJoin: false,
-//   latency: 0,
-//   info: null,
-//   error: false,
-//   pApi: null,
-//   assets: [],
-//   mainAsset: null,
-
-
-
-//   async query (name, getPayload, contractId = 1) {
-//     this.checkChannelReady()
-//     const data = getPayload ? { [name]: getPayload() } : name
-//     return this.pApi.query(contractId, data)
-//   },
-//   unsetAssets () {
-//     this.assets = []
-//     this.mainAsset = null
-//   },
-//   async updateAssetMetadata () {
-//     const assetsMeta = ((
-//       await this.query('Metadata', null, CONTRACT_ASSETS)
-//     )?.Metadata?.metadata || [])
-//       .map(i => {
-//         i.ownerAccountId = hexToSs58('0x' + i.owner)
-//         return i
-//       })
-
-//     const mainAssetTotalIssuance = (
-//       (
-//         await this.query('TotalIssuance', null, CONTRACT_BALANCE)
-//       )?.TotalIssuance?.totalIssuance || '0')
-
-//     this.assets = assetsMeta
-//     this.mainAsset = {
-//       symbol: 'PHA',
-//       totalSupply: mainAssetTotalIssuance
-//     }
-//   },
-//   async updateMainAsset () {
-//     const res = await this.query('FreeBalance', () => ({ account: this.accountIdHex }), CONTRACT_BALANCE)
-//     this.mainAsset.balance = res?.FreeBalance?.balance || "0"
-//   },
-//   async updateSingleAssets (asset) {
-//     const res = await this.query('Balance', () => ({ account: this.accountIdHex, id: asset.id }), CONTRACT_ASSETS)
-//     asset.balance = res?.Balance?.balance || "0"
-//   },
-//   updateAssets () {
-//     return Promise.all(this.assets.map(i => this.updateSingleAssets(i)))
-//   },
-//   async fullUpdate () {
-//     await this.updateAssetMetadata()
-//     await this.updateMainAsset()
-//     await this.updateAssets()
-//   }
-// })
-
-// export default WalletRuntimeStore
-// export const createWalletRuntimeStore = () => WalletRuntimeStore

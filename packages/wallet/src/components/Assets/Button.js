@@ -3,7 +3,7 @@ import styled from "styled-components"
 const BLUE = '#040035'
 const GREEN = '#73FF9A'
 const TRANSPARENT = 'transparent'
-const WHITE = 'white'
+const WHITE = '#F2F2F2'
 const BLACK = 'black'
 const RED = '#FF004D'
 

@@ -111,6 +111,7 @@ const LockedModal = observer(({ setVisible, bindings }) => {
     setTimeout(() => {
       try {
         keypair.decodePkcs8(password)
+        onUnlocked()
       } catch (e) {
         setIsBusy(false)
         setToast({
@@ -118,8 +119,6 @@ const LockedModal = observer(({ setVisible, bindings }) => {
           text: e?.message || e || 'Failed to unlock.'
         })
       }
-
-      onUnlocked()
     }, 0)
   }, [keypair, isBusy, password, onUnlocked])
 
@@ -201,7 +200,7 @@ const AccountName = ({ address }) => {
 const CurrentInfoButton = () => {
   const { isApiConnected, isApiReady } = useApi()
   const unlockedModal = useModal()
-  const lockedModal = useModal()
+  const lockedModal = useModal(true)
 
   const { account } = useStore()
   const { locked, address } = account

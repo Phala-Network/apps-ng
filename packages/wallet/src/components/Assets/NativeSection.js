@@ -8,10 +8,8 @@ import Button from './Button'
 import {
   Link2 as LinkIcon,
   InfoFill as InfoFillIcon,
-  Eye as EyeIcon,
   EyeOff as EyeOffIcon,
-  Send as SendIcon,
-  MinusSquare as MinusSquareIcon
+  Send as SendIcon
 } from '@zeit-ui/react-icons'
 
 
@@ -102,7 +100,6 @@ const BalanceValue = styled(BalanceQuery)`
   }
 `
 
-
 const Info = observer(() => {
   const { account } = useStore()
 
@@ -144,9 +141,6 @@ const NativeSection = () => {
         <Button.Group>
           <Button type="primaryDark" icon={EyeOffIcon} name="Convert to Secret PHA" />
           <Button type="secondaryDark" icon={SendIcon} name="Transfer" />
-          {/* <Button type="primaryLight" icon={EyeIcon} name="Convert to PHA" />
-          <Button type="secondaryLight" icon={SendIcon} name="Secret Transfer" />
-          <Button type="remove" icon={MinusSquareIcon} name="Destroy Token" /> */}
         </Button.Group>
       </NativeSectionInnerWrapper>
     </Container>

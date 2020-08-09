@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { findRouteComponent } from '@/utils/route'
 import NotFound from '@/components/NotFound'
-import { useMemo } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Head from 'next/head'
 import { StoreProvider, useStore } from '@/store'
 import { observer } from 'mobx-react'
@@ -14,12 +14,27 @@ import { BlockAuthors, Events } from "@polkadot/react-query"
 import Signer from '@polkadot/react-signer'
 
 import AppFrame from './AppFrame'
+import { defaultApiUrl } from '@/store/settings'
 
 const AppWrapper = observer(({ children }) => {
   const { settings } = useStore()
 
+  useEffect(() => {
+    if (settings.apiUrl) { return }
+
+    const timeout = setTimeout(() => {
+      settings.applyValues({
+        apiUrl: defaultApiUrl
+      })
+    }, 100)
+
+    // todo: re-create keyring
+
+    return () => clearTimeout(timeout)
+  }, [settings.apiUrl])
+
   return <Queue>
-    <Api url={settings.apiUrl}>
+    {!!settings.apiUrl && <Api url={settings.apiUrl}>
       <BlockAuthors>
         <Events>
           <Signer>
@@ -27,7 +42,7 @@ const AppWrapper = observer(({ children }) => {
           </Signer>
         </Events>
       </BlockAuthors>
-    </Api>
+    </Api>}
   </Queue>
 })
 
