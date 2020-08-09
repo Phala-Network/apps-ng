@@ -26,20 +26,7 @@ export default function TransferOnChain ({ asset, onClose, onSuccess }) {
     setReady(true)
     console.log('dest', recipientId)
     const pubkeyHex = ss58ToHex(recipientId)
-    console.log(pubkeyHex)
-    ;(async () => {
-      let obj
-      obj = {
-        TransferToChain: {
-          dest: pubkeyHex,
-          value: amount.toString()
-        }
-      }
-      console.log('obj', obj)
-      const cipher = await encryptObj(ecdhChannel, obj)
-      const apiCipher = toApi(cipher)
-      setCommand(JSON.stringify({ Cipher: apiCipher }))
-    })()
+
   }, [ecdhChannel, recipientId, amount, asset?.id])
 
   return (<Modal header={'transfer on-chain'}>

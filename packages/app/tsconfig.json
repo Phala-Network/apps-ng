@@ -35,6 +35,12 @@
       "@phala/accounts": [
         "../../packages/accounts/src"
       ],
+      "@phala/react-signer/*": [
+        "../../packages/react-signer/src/*"
+      ],
+      "@phala/react-signer": [
+        "../../packages/react-signer/src"
+      ],
       "@polkadot/apps/*": [
         "../../vendor/polkadot-apps/packages/apps/src/*"
       ],

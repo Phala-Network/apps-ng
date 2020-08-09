@@ -4991,6 +4991,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@phala/react-signer@workspace:packages/react-signer":
+  version: 0.0.0-use.local
+  resolution: "@phala/react-signer@workspace:packages/react-signer"
+  dependencies:
+    "@babel/runtime": ^7.10.5
+  languageName: unknown
+  linkType: soft
+
 "@phala/runtime@workspace:packages/runtime":
   version: 0.0.0-use.local
   resolution: "@phala/runtime@workspace:packages/runtime"

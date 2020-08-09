@@ -11,7 +11,7 @@ import '@/utils/initLegacySettings'
 import { Api } from "@polkadot/react-api"
 import Queue from "@polkadot/react-components/Status/Queue"
 import { BlockAuthors, Events } from "@polkadot/react-query"
-import Signer from '@polkadot/react-signer'
+import Signer from '@phala/react-signer'
 
 import AppFrame from './AppFrame'
 import { defaultApiUrl } from '@/store/settings'
@@ -37,9 +37,8 @@ const AppWrapper = observer(({ children }) => {
     {!!settings.apiUrl && <Api url={settings.apiUrl}>
       <BlockAuthors>
         <Events>
-          <Signer>
-            {children}
-          </Signer>
+          <Signer />
+          {children}
         </Events>
       </BlockAuthors>
     </Api>}

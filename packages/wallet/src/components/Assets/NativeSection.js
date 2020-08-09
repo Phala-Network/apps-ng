@@ -4,6 +4,7 @@ import Container from "@/components/Container"
 import { Balance as BalanceQuery } from '@polkadot/react-query'
 import { useStore } from "@/store"
 import Button from './Button'
+import ConvertToTeeModal from './ConvertToTeeModal'
 
 import {
   Link2 as LinkIcon,
@@ -11,6 +12,7 @@ import {
   EyeOff as EyeOffIcon,
   Send as SendIcon
 } from '@zeit-ui/react-icons'
+import { useModal } from "@zeit-ui/react"
 
 
 const LeftDecorationWrapper = styled.div`
@@ -133,18 +135,28 @@ const NativeSectionInnerWrapper = styled.div`
 `
 
 const NativeSection = () => {
-  return <NativeSectionWrapper>
-    <Container>
-      <NativeSectionInnerWrapper>
-        <LeftDecoration />
-        <Info />
-        <Button.Group>
-          <Button type="primaryDark" icon={EyeOffIcon} name="Convert to Secret PHA" />
-          <Button type="secondaryDark" icon={SendIcon} name="Transfer" />
-        </Button.Group>
-      </NativeSectionInnerWrapper>
-    </Container>
-  </NativeSectionWrapper>
+  const convertToTeeModal = useModal()
+
+  return <>
+    <ConvertToTeeModal {...convertToTeeModal} />
+    <NativeSectionWrapper>
+      <Container>
+        <NativeSectionInnerWrapper>
+          <LeftDecoration />
+          <Info />
+          <Button.Group>
+            <Button
+              type="primaryDark"
+              icon={EyeOffIcon}
+              name="Convert to Secret PHA"
+              onClick={() => convertToTeeModal.setVisible(true)}
+            />
+            <Button type="secondaryDark" icon={SendIcon} name="Transfer" />
+          </Button.Group>
+        </NativeSectionInnerWrapper>
+      </Container>
+    </NativeSectionWrapper>
+  </>
 }
 
 export default observer(NativeSection)

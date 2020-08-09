@@ -62,6 +62,9 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
         }
         return true
       },
+      get assetSymbols () {
+        return self.assets.map(i => i.metadata.symbol)
+      }
     }))
     .actions(self => ({
       checkChannelReady () {

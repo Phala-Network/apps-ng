@@ -1,12 +1,14 @@
 import Container from '@/components/Container'
 import styled from 'styled-components'
-import { Checkbox, Loading } from '@zeit-ui/react'
+import { Checkbox, Loading, useModal } from '@zeit-ui/react'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import Button from './Button'
 import { Balance as BalanceDisplay } from '@polkadot/react-components'
 import BN from 'bn.js'
 import { hexToSs58 } from '@phala/runtime'
+import IssueModal from './IssueModal'
+import ConvertToNativeModal from './ConvertToNativeModal'
 
 import {
   InfoFill as InfoFillIcon,
@@ -197,6 +199,7 @@ const SecretBlock = ({ children, ...props }) => {
 
 const PHA = observer(() => {
   const { walletRuntime } = useStore()
+  const convertToNativeModal = useModal()
   
   useEffect(() => {
     walletRuntime.updateMainAsset()
@@ -212,14 +215,22 @@ const PHA = observer(() => {
     return () => clearInterval(interval)
   }, [walletRuntime])
 
-  return <SecretBlock>
-    <LeftDecoration />
-    <Info symbol="Secret PHA" balance={walletRuntime.mainAsset?.balance} />
-    <Button.Group>
-      <Button type="primaryLight" icon={EyeIcon} name="Convert to PHA" />
-      <Button type="secondaryLight" icon={SendIcon} name="Secret Transfer" />
-    </Button.Group>
-  </SecretBlock>
+  return <>
+    <ConvertToNativeModal {...convertToNativeModal} />
+    <SecretBlock>
+      <LeftDecoration />
+      <Info symbol="Secret PHA" balance={walletRuntime.mainAsset?.balance} />
+      <Button.Group>
+        <Button
+          type="primaryLight"
+          icon={EyeIcon}
+          name="Convert to PHA"
+          onClick={() => convertToNativeModal.setVisible(true)}
+        />
+        <Button type="secondaryLight" icon={SendIcon} name="Secret Transfer" />
+      </Button.Group>
+    </SecretBlock>
+  </>
 })
 
 const IssueLine = styled.p`
@@ -246,15 +257,18 @@ const IssueBlock = styled(SecretBlock)`
     opacity: .72;
   }
 `
+
 const Issue = () => {
-  return (
-    <IssueBlock>
+  const issueModal = useModal()
+  return <>
+    <IssueModal {...issueModal} />
+    <IssueBlock onClick={() => issueModal.setVisible(true)}>
       <IssueLine>
         <PlusSquareIcon size={24} />
         issue secret token	
       </IssueLine>
     </IssueBlock>
-  )
+  </>
 }
 
 const AssetBlock = styled(SecretBlock)`

@@ -61,9 +61,9 @@ export async function encrypt(channel, data) {
   const iv = Aead.generateIv()
   const cipher = await Aead.encrypt(iv, key, data)
   const pkData = await Crypto.dumpKeyData(channel.core.localPair.publicKey)
-  console.log('AGREED', channel.agreedSecretHex)
-  console.log('DATA', u8aToHex(new Uint8Array(data)))
-  console.log('CIPHER', u8aToHex(new Uint8Array(cipher)))
+  // console.log('AGREED', channel.agreedSecretHex)
+  // console.log('DATA', u8aToHex(new Uint8Array(data)))
+  // console.log('CIPHER', u8aToHex(new Uint8Array(cipher)))
   return {
     ivB64: base64.fromByteArray(iv),
     cipherB64: base64.fromByteArray(new Uint8Array(cipher)),
@@ -73,7 +73,7 @@ export async function encrypt(channel, data) {
 
 // Serialize and encrypt `obj` by AEAD-AES-GCM with the secret key derived by ECDH
 export async function encryptObj (channel, obj) {
-  console.log('encryptObj', [channel, obj])
+  // console.log('encryptObj', [channel, obj])
   const apiObj = Models.toApi(obj)
   const objJson = JSON.stringify(apiObj)
   const data = stringToU8a(objJson)
