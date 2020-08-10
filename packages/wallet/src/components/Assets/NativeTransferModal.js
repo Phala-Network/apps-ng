@@ -1,28 +1,24 @@
-import { Modal, useInput, Input, Spacer, useToasts, Popover, Button } from '@zeit-ui/react'
-import React, { useCallback, useState, useMemo, useEffect } from 'react'
+import { Modal, useInput, Input, Spacer, useToasts } from '@zeit-ui/react'
+import React, { useCallback, useState } from 'react'
 import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
-import getUnitAmount from '@/utils/getUnitAmount'
+import InputAmount, { BN_ZERO } from '@/components/InputAmount'
 
 const NativeTransferModal = ({ bindings, setVisible }) => {
   const { account } = useStore()
 
   const addressInput = useInput('')
-  const valueInput = useInput('')
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
 
-  const amount = useMemo(() => {
-    const [, _value] = getUnitAmount(valueInput.state)
-    return _value.toString()
-  }, [valueInput.state])
+  const [amount, setAmount] = useState(BN_ZERO) 
 
   const reset = useCallback(() => {
     setIsBusy(false)
     addressInput.reset()
-    valueInput.reset()
-  }, [setIsBusy, addressInput, valueInput])
+    setAmount(BN_ZERO)
+  }, [setIsBusy, addressInput])
 
   const onStart = useCallback(() => {
     setIsBusy(true)
@@ -63,18 +59,13 @@ const NativeTransferModal = ({ bindings, setVisible }) => {
         width="100%"
       />
       <Spacer y={.5} />
-      <Input
-        {...valueInput.bindings}
-        placeholder="Amount"
-        labelRight='Unit'
-        width="100%"
-      />
+      <InputAmount onChange={setAmount} />
     </Modal.Content>
     <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
     <TxButton
       accountId={account.address || ''}
       onClick={doSend}
-      params={[addressInput.state.trim(), amount]}
+      params={[addressInput.state.trim(), amount.toString()]}
       tx='balances.transfer'
       withSpinner
       onStart={onStart}

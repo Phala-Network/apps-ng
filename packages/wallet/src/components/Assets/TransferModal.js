@@ -3,10 +3,10 @@ import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
-import getUnitAmount from '@/utils/getUnitAmount'
 import { CONTRACT_ASSETS, CONTRACT_BALANCE } from '../../utils/constants'
 import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
+import InputAmount, { BN_ZERO } from '@/components/InputAmount'
 
 const TransferModal = ({ asset, bindings, setVisible }) => {
   const { account, walletRuntime } = useStore()
@@ -24,10 +24,7 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   const [, setToast] = useToasts()
   const [addressError, setAddressError] = useState(false)
 
-  const amount = useMemo(() => {
-    const [, _value] = getUnitAmount(valueInput.state)
-    return _value.toString()
-  }, [valueInput.state])
+  const [amount, setAmount] = useState(BN_ZERO) 
 
   const [innerDisabled, setInnerDisabled] = useState(false)
 
@@ -117,12 +114,7 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
         status={addressError ? 'error' : undefined}
       />
       <Spacer y={.5} />
-      <Input
-        {...valueInput.bindings}
-        placeholder="Amount"
-        labelRight={assetSymbol}
-        width="100%"
-      />
+      <InputAmount onChange={setAmount} symbol={assetSymbol} />
     </Modal.Content>
     <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
     {disabled

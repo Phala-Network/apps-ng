@@ -3,7 +3,7 @@ import BN from 'bn.js';
 import { BN_ZERO, BN_TEN, formatBalance } from '@polkadot/util';
 import { BitLengthOption } from '@polkadot/react-components/constants';
 
-const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
+export const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
 
 export const TokenUnit = (() => {
     class TokenUnit {
@@ -24,7 +24,7 @@ function getRegex(isDecimal) {
         ? `^(0|[1-9]\\d*)(\\${decimal}\\d*)?$`
         : '^(0|[1-9]\\d*)$');
 }
-function getSiOptions() {
+export function getSiOptions() {
     return formatBalance.getOptions().map(({ power, text, value }) => ({
         text: power === 0
             ? TokenUnit.abbr
@@ -80,7 +80,7 @@ function inputToBn(input, si, bitLength, isZeroable, maxValue) {
         isValidNumber(result, bitLength, isZeroable, maxValue)
     ];
 }
-function getValuesFromString(value, si, bitLength, isZeroable, maxValue) {
+export function getValuesFromString(value, si, bitLength, isZeroable, maxValue) {
     const [valueBn, isValid] = inputToBn(value, si, bitLength, isZeroable, maxValue);
     return [
         value,
@@ -100,4 +100,8 @@ function getValuesFromBn(valueBn, si) {
     ];
 }
 
+export const findSi = v => formatBalance.findSi(v)
+
 export default (string = '0') => getValuesFromString(string, formatBalance.findSi('-'), DEFAULT_BITLENGTH, true)
+
+export { BN_ZERO }

@@ -3,7 +3,9 @@ import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
-import getUnitAmount from '@/utils/getUnitAmount'
+
+import InputAmount, { BN_ZERO } from '@/components/InputAmount'
+
 import { CONTRACT_BALANCE } from '../../utils/constants'
 import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
@@ -12,16 +14,12 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
   const { account, walletRuntime } = useStore()
   const { ecdhChannel } = walletRuntime
 
-  const valueInput = useInput('')
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
   const [command, setCommand] = useState('')
   const [disabled, setDisabled] = useState(false)
 
-  const amount = useMemo(() => {
-    const [, _value] = getUnitAmount(valueInput.state)
-    return _value.toString()
-  }, [valueInput.state])
+  const [amount, setAmount] = useState(BN_ZERO)
 
   useEffect(() => {
     setDisabled(true)
@@ -30,7 +28,7 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
       const obj = {
         TransferToChain: {
           dest: pubkeyHex,
-          value: amount
+          value: amount.toString()
         }
       }
       const cipher = await encryptObj(ecdhChannel, obj)
@@ -42,8 +40,8 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
 
   const reset = useCallback(() => {
     setIsBusy(false)
-    valueInput.reset()
-  }, [setIsBusy, valueInput])
+    setAmount(BN_ZERO)
+  }, [setIsBusy, setAmount])
 
   const onStart = useCallback(() => {
     setIsBusy(true)
@@ -79,12 +77,7 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
   return <Modal {...bindings} disableBackdropClick>
     <Modal.Title>convert to native asset</Modal.Title>
     <Modal.Content>
-      <Input
-        {...valueInput.bindings}
-        placeholder="Amount"
-        labelRight="Unit"
-        width="100%"
-      />
+      <InputAmount onChange={setAmount} />
     </Modal.Content>
     <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
     <TxButton

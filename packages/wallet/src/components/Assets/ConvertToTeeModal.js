@@ -1,25 +1,21 @@
-import { Modal, useInput, Input, Spacer, useToasts } from '@zeit-ui/react'
-import React, { useCallback, useState, useMemo } from 'react'
+import { Modal, useToasts } from '@zeit-ui/react'
+import React, { useCallback, useState } from 'react'
 import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
-import getUnitAmount from '@/utils/getUnitAmount'
+import InputAmount, { BN_ZERO } from '@/components/InputAmount'
 
 const ConvertToTeeModal = ({ bindings, setVisible }) => {
   const { account } = useStore()
-  const valueInput = useInput('')
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
 
-  const amount = useMemo(() => {
-    const [, _value] = getUnitAmount(valueInput.state)
-    return _value.toString()
-  }, [valueInput.state])
+  const [amount, setAmount] = useState(BN_ZERO)
 
   const reset = useCallback(() => {
     setIsBusy(false)
-    valueInput.reset()
-  }, [setIsBusy, valueInput])
+    setAmount(BN_ZERO)
+  }, [setIsBusy, setAmount])
 
   const onStart = useCallback(() => {
     setIsBusy(true)
@@ -55,12 +51,7 @@ const ConvertToTeeModal = ({ bindings, setVisible }) => {
   return <Modal {...bindings} disableBackdropClick>
     <Modal.Title>convert to secret asset</Modal.Title>
     <Modal.Content>
-      <Input
-        {...valueInput.bindings}
-        placeholder="Amount"
-        labelRight="Unit"
-        width="100%"
-      />
+      <InputAmount onChange={setAmount} placeholder="Amount" />
     </Modal.Content>
     <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
     <TxButton
