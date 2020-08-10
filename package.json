@@ -12,7 +12,7 @@
     "vendor/polkadot-apps/packages/*"
   ],
   "scripts": {
-    "dev": "APP_PHALA_URL=dp.phala.network yarn workspace @phala/app dev",
+    "dev": "APP_PHALA_URL=poc2.phala.network yarn workspace @phala/app dev",
     "build": "yarn workspace @phala/app build",
     "start": "yarn workspace @phala/app start"
   },
