@@ -1,0 +1,18 @@
+{
+  "Assets": "Assets",
+  "Balances": "Balances",
+  "Cancel": "Cancel",
+  "Confirm": "Confirm",
+  "Create Token": "Create Token",
+  "Destroy Token": "Destroy Token",
+  "Enter the symbol of the token you will create.": "Enter the symbol of the token you will create.",
+  "Select an issued asset on the blockchain": "Select an issued asset on the blockchain",
+  "Select asset": "Select asset",
+  "Settings": "Settings",
+  "Submit": "Submit",
+  "Unlock account": "Unlock account",
+  "any text": "any text",
+  "message": "message",
+  "symbol": "symbol",
+  "total supply": "total supply"
+}
