@@ -173,7 +173,7 @@ const UnlockedModal = observer(({ setVisible, bindings }) => {
 
   return (
     <Modal {...bindings}>
-      <Modal.Title>Wallet is unlocked</Modal.Title>
+      <Modal.Title>Wallet unlocked</Modal.Title>
       <Modal.Subtitle>Do you want to lock the wallet?</Modal.Subtitle>
       <Modal.Action passive onClick={() => setVisible(false)}>Cancel</Modal.Action>
       <Modal.Action onClick={doLock}>Lock</Modal.Action>

@@ -108,7 +108,7 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings}>
-    <Modal.Title>issue secret token</Modal.Title>
+    <Modal.Title>secret transfer</Modal.Title>
     <Modal.Content>
       <Input
         {...addressInput.bindings}
