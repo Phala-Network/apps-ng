@@ -9,7 +9,8 @@ import {
   StopCircle as StopCircleIcon,
   // FileFunction as FileFunctionIcon,
   Settings as SettingsIcon,
-  Users as UsersIcon
+  Users as UsersIcon,
+  Sidebar as SidebarIcon
 } from '@zeit-ui/react-icons'
 
 import Status from './Status'
@@ -81,11 +82,13 @@ const NavBar = () => {
       <NavLogoSpacer />
       <NavBarButton href="WALLET" name="Wallet" icon={StopCircleIcon} />
       <NavItemSpacer />
-      <NavBarButton href="ACCOUNTS" name="Accounts" icon={UsersIcon} />
+      <NavBarButtonWrapper onClick={() => window.open('/legacy.html', '_blank')}>
+        <SidebarIcon size={21} />
+        <NavBarButtonLabel>Legacy App</NavBarButtonLabel>
+      </NavBarButtonWrapper>
       <FillFlex />
       <NavBarButton href="SETTINGS" name="Settings" icon={SettingsIcon} />
       <NavItemSpacer />
-      {/* <NavBarButton href="SETTINGS" name="ALICE" icon={UnlockIcon} /> */}
       <CurrentInfoButton />
     </Container>
   </NavBarWrapper>

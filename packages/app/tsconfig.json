@@ -29,12 +29,6 @@
       "@phala/runtime": [
         "../../packages/runtime/src"
       ],
-      "@phala/accounts/*": [
-        "../../packages/accounts/src/*"
-      ],
-      "@phala/accounts": [
-        "../../packages/accounts/src"
-      ],
       "@phala/react-signer/*": [
         "../../packages/react-signer/src/*"
       ],
