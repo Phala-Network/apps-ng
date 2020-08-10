@@ -167,7 +167,7 @@ const Head = observer(() => {
           <Checkbox
             checked={!wallet.showInvalidAssets}
             onChange={wallet.setShowInvalidAssets}
-          >Hide invalid assets</Checkbox>
+          >Hide assets with zero balance</Checkbox>
         </CheckboxWrapper>
 
         <HeadDesc>
