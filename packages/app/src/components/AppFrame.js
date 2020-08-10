@@ -84,7 +84,7 @@ const NavBar = () => {
       <NavItemSpacer />
       <NavBarButtonWrapper onClick={() => window.open('/legacy.html', '_blank')}>
         <SidebarIcon size={21} />
-        <NavBarButtonLabel>Legacy App</NavBarButtonLabel>
+        <NavBarButtonLabel>Polkadot UI</NavBarButtonLabel>
       </NavBarButtonWrapper>
       <FillFlex />
       <NavBarButton href="SETTINGS" name="Settings" icon={SettingsIcon} />
