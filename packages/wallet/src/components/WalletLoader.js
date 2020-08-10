@@ -99,7 +99,7 @@ const WalletLifecycle = observer(() => {
 
   useEffect(() => {
     if (!walletRuntime?.pApi) { return }
-    const interval = setInterval(() => {
+    const doGetInfo = () => {
       measure((() =>
         walletRuntime.pApi.getInfo()
           .then(i => {
@@ -113,7 +113,9 @@ const WalletLifecycle = observer(() => {
         .then(dt => {
           walletRuntime.setLatency(dt)
         })
-    }, 1500)
+    }
+    const interval = setInterval(doGetInfo, 5000)
+    doGetInfo()
     return () => clearInterval(interval)
   }, [walletRuntime?.pApi])
   return null
