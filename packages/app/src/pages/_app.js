@@ -25,10 +25,30 @@ const WrappedApp = ({ children }) => {
 
 const _App = ({ Component, pageProps }) => {
   const isMobile = useMediaQuery('mobile')
+  const isXS = useMediaQuery('xs')
+  const isSM = useMediaQuery('sm')
+  const isMD = useMediaQuery('md')
+  const isLG = useMediaQuery('lg')
+  const isXL = useMediaQuery('xl')
+
   const theme = useCallback(() => ({
     ...zeitUiTheme,
-    isMobile
-  }), [zeitUiTheme])
+    isMobile,
+    isXS,
+    isSM,
+    isMD,
+    isLG,
+    isXL,
+    mediaQueryMatch: `${isXS ? 'xs' : '' }${isSM ? 'sm' : '' }${isMD ? 'md' : '' }${isLG ? 'lg' : '' }${isXL ? 'xl' : '' }`
+  }), [
+    zeitUiTheme,
+    isMobile,
+    isXS,
+    isSM,
+    isMD,
+    isLG,
+    isXL
+  ])
 
   return <ZeitProvider theme={theme}>
     <WrappedApp>

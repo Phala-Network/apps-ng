@@ -1,6 +1,6 @@
 import Container from '@/components/Container'
 import styled from 'styled-components'
-import { Checkbox, Loading, useModal } from '@zeit-ui/react'
+import { Checkbox, Loading, useModal, useTheme } from '@zeit-ui/react'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import Button from './Button'
@@ -27,6 +27,10 @@ const LeftDecorationWrapper = styled.div`
   align-items: center;
   place-content: flex-start;
   margin: 0 36px 0 0;
+
+  ${({ theme: { isXS } }) => isXS && `
+    margin: 0 24px 0 0;
+  `}
 `
 
 const LeftDecorationTop = styled.div`
@@ -91,6 +95,8 @@ const BalanceValue = styled(BalanceDisplay)`
   color: #F2F2F2;
   text-indent: -1px;
   margin: 0;
+  white-space: break-spaces;
+  word-break: break-word;
 
   & .ui--FormatBalance-value > .ui--FormatBalance-postfix {
     opacity: 1;
@@ -98,7 +104,7 @@ const BalanceValue = styled(BalanceDisplay)`
   }
 `
 
-const Info = ({ symbol, balance }) => {
+const Info = ({ symbol, balance, children }) => {
   const balanceValue = useMemo(() => new BN(balance || "0"), [balance])
 
   return <InfoWrapper>
@@ -111,6 +117,7 @@ const Info = ({ symbol, balance }) => {
       <BalanceHead>balance</BalanceHead>
       <BalanceValue withCurrency={false} value={balanceValue} labelPost={` ${symbol}`} params={'dummy'} />
     </Balance>
+    {children}
   </InfoWrapper>
 }
 
@@ -119,6 +126,11 @@ const HeadWrapper = styled.div`
   flex-flow: row nowrap;
   align-items: flex-end;
   padding: 0 36px 30px;
+
+  ${({ theme: { isXS } }) => isXS && `
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  `}
 `
 
 const HeadLine = styled.h3`
@@ -139,10 +151,19 @@ const HeadDesc = styled.p`
     vertical-align: text-top;
     margin-right: 6px;
   }
+
+  ${({ theme: { isXS } }) => isXS && `
+    font-size: 13px;
+    line-height: 16px;
+  `}
 `
 
 const CheckboxWrapper = styled.div`
   flex: 1;
+  ${({ theme: { isXS } }) => isXS && `
+    margin: 24px 0 0 0;
+  `}
+
   & label {
     display: block !important;
     font-size: 16px !important;
@@ -159,21 +180,29 @@ const CheckboxWrapper = styled.div`
 
 const Head = observer(() => {
   const { wallet } = useStore()
+  const { isXS } = useTheme()
+
   return (
     <Container>
       <HeadWrapper>
         <HeadLine>Secret assets</HeadLine>
-        <CheckboxWrapper>
+        {!isXS && <CheckboxWrapper>
           <Checkbox
             checked={!wallet.showInvalidAssets}
             onChange={wallet.setShowInvalidAssets}
           >Hide assets with zero balance</Checkbox>
-        </CheckboxWrapper>
+        </CheckboxWrapper>}
 
         <HeadDesc>
-          <InfoFillIcon size={18} />
+          {!isXS && <InfoFillIcon size={18} />}
           These assets are invisible on the chain.
         </HeadDesc>
+        {isXS && <CheckboxWrapper>
+          <Checkbox
+            checked={!wallet.showInvalidAssets}
+            onChange={wallet.setShowInvalidAssets}
+          >Hide assets with zero balance</Checkbox>
+        </CheckboxWrapper>}
       </HeadWrapper>
     </Container>
   )
@@ -198,10 +227,29 @@ const SecretBlock = ({ children, ...props }) => {
   </Container>
 }
 
+const PHAButtonGroup = ({ convertToNativeModal, transferModal }) => {
+  return <Button.Group>
+    <Button
+      type="primaryLight"
+      icon={EyeIcon}
+      name="Convert to PHA"
+      onClick={() => convertToNativeModal.setVisible(true)}
+    />
+    <Button
+      type="secondaryLight"
+      icon={SendIcon}
+      name="Secret Transfer"
+      onClick={() => transferModal.setVisible(true)}
+    />
+  </Button.Group>
+}
+
 const PHA = observer(() => {
   const { walletRuntime } = useStore()
   const convertToNativeModal = useModal()
   const transferModal = useModal()
+
+  const { isXS } = useTheme()
   
   useEffect(() => {
     walletRuntime.updateMainAsset()
@@ -222,21 +270,10 @@ const PHA = observer(() => {
     <TransferModal {...transferModal} />
     <SecretBlock>
       <LeftDecoration />
-      <Info symbol="Secret PHA" balance={walletRuntime.mainAsset?.balance} />
-      <Button.Group>
-        <Button
-          type="primaryLight"
-          icon={EyeIcon}
-          name="Convert to PHA"
-          onClick={() => convertToNativeModal.setVisible(true)}
-        />
-        <Button
-          type="secondaryLight"
-          icon={SendIcon}
-          name="Secret Transfer"
-          onClick={() => transferModal.setVisible(true)}
-        />
-      </Button.Group>
+      <Info symbol="Secret PHA" balance={walletRuntime.mainAsset?.balance}>
+        {isXS && <PHAButtonGroup convertToNativeModal={convertToNativeModal} transferModal={transferModal} />}
+      </Info>
+      {!isXS && <PHAButtonGroup convertToNativeModal={convertToNativeModal} transferModal={transferModal} />}
     </SecretBlock>
   </>
 })
@@ -284,12 +321,26 @@ const AssetBlock = styled(SecretBlock)`
   cursor: default;
 `
 
+const AssetItemButtonGroup = ({ isOwner, item, transferModal }) => {
+  return <Button.Group>
+    <Button
+      type="secondaryLight"
+      icon={SendIcon}
+      name="Secret Transfer"
+      onClick={() => transferModal.setVisible(true)}
+    />
+    {isOwner && <DestroyButton {...item.metadata} />}
+  </Button.Group>
+}
+
 const AssetItem = observer(({ itemIndex }) => {
   const {
     walletRuntime,
     wallet: { showInvalidAssets },
     account: { address }
   } = useStore()
+
+  const { isXS } = useTheme()
 
   const item = walletRuntime.assets[itemIndex]
   const balance = useMemo(() => new BN(item.balance || "0"), [item.balance])
@@ -304,16 +355,10 @@ const AssetItem = observer(({ itemIndex }) => {
     <TransferModal asset={item.metadata} {...transferModal} />
     <AssetBlock>
       <LeftDecoration />
-      <Info balance={balance} symbol={item.metadata.symbol} />
-      <Button.Group>
-        <Button
-          type="secondaryLight"
-          icon={SendIcon}
-          name="Secret Transfer"
-          onClick={() => transferModal.setVisible(true)}
-        />
-        {isOwner && <DestroyButton {...item.metadata} />}
-      </Button.Group>
+      <Info balance={balance} symbol={item.metadata.symbol}>
+        {isXS && <AssetItemButtonGroup isOwner={isOwner} item={item} transferModal={transferModal} />}
+      </Info>
+      {!isXS && <AssetItemButtonGroup isOwner={isOwner} item={item} transferModal={transferModal} />}
     </AssetBlock>
   </>
 })

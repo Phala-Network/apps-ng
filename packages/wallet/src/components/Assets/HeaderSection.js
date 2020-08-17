@@ -9,6 +9,11 @@ const HeaderSectionWrapper = styled.div`
   align-items: flex-end;
   place-content: space-between;
   padding: 21px 36px 36px;
+  ${({ theme: { isXS } }) => isXS && `
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    place-content: space-between;
+  `}
 `
 
 const Header = styled.h2`
@@ -27,6 +32,8 @@ const AccountLine = styled.p`
   font-feature-settings: 'ss01' on, 'ss05' on;
   color: #9B9B9B;
   margin: 0 0 6px;
+  max-width: 100%;
+  word-break: break-all;
 `
 
 const HeaderSection = () => {

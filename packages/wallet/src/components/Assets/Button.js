@@ -105,6 +105,10 @@ const GroupWrapper = styled.div`
   flex-flow: column nowrap;
   align-items: flex-end;
   margin: 38px 0 0 0;
+
+  ${({ theme: { isXS } }) => isXS && `
+    align-items: flex-start;
+  `}
 `
 
 Button.Group = ({ children }) => {

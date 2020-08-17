@@ -13,8 +13,7 @@ import {
   EyeOff as EyeOffIcon,
   Send as SendIcon
 } from '@zeit-ui/react-icons'
-import { useModal } from "@zeit-ui/react"
-
+import { useModal, useTheme } from "@zeit-ui/react"
 
 const LeftDecorationWrapper = styled.div`
   display: flex;
@@ -22,6 +21,10 @@ const LeftDecorationWrapper = styled.div`
   align-items: center;
   place-content: flex-start;
   margin: 0 36px 0 0;
+
+  ${({ theme: { isXS } }) => isXS && `
+    margin: 0 24px 0 0;
+  `}
 `
 
 const LeftDecorationTop = styled.div`
@@ -61,6 +64,11 @@ const InfoHead = styled.div`
   flex-flow: row nowrap;
   align-items: flex-end;
   margin: 0 0 21px;
+  ${({ theme: { isXS } }) => isXS && `
+    flex-flow: column;
+    align-items: flex-start;
+    overflow: visible;
+  `}
 `
 const InfoHeadMain = styled.h4`
   font-weight: 600;
@@ -79,6 +87,11 @@ const InfoHeadDesc = styled.p`
     vertical-align: text-top;
     margin-right: 6px;
   }
+
+  ${({ theme: { isXS } }) => isXS && `
+    font-size: 13px;
+    line-height: 16px;
+  `}
 `
 const Balance = styled.div`
   display: flex;
@@ -103,8 +116,9 @@ const BalanceValue = styled(BalanceQuery)`
   }
 `
 
-const Info = observer(() => {
+const Info = observer(({ children }) => {
   const { account } = useStore()
+  const { isXS } = useTheme()
 
   return <InfoWrapper>
     <InfoHead>
@@ -112,7 +126,7 @@ const Info = observer(() => {
         PHA
       </InfoHeadMain>
       <InfoHeadDesc>
-        <InfoFillIcon size={18} />
+        {!isXS && <InfoFillIcon size={18} />}
         These assets are visible on the chain.
       </InfoHeadDesc>
     </InfoHead>
@@ -120,6 +134,7 @@ const Info = observer(() => {
       <BalanceHead>balance</BalanceHead>
       <BalanceValue params={account.address} />
     </Balance>
+    {children}
   </InfoWrapper>
 })
 
@@ -135,7 +150,25 @@ const NativeSectionInnerWrapper = styled.div`
   padding: 0 36px 0 24px;
 `
 
+const ModalButtonGroup = ({ convertToTeeModal, nativeTransferModal }) => {
+  return <Button.Group>
+    <Button
+      type="primaryDark"
+      icon={EyeOffIcon}
+      name="Convert to Secret PHA"
+      onClick={() => convertToTeeModal.setVisible(true)}
+    />
+    <Button
+      type="secondaryDark"
+      icon={SendIcon}
+      name="Transfer"
+      onClick={() => nativeTransferModal.setVisible(true)}
+    />
+  </Button.Group>
+}
+
 const NativeSection = () => {
+  const { isXS } = useTheme()
   const convertToTeeModal = useModal()
   const nativeTransferModal = useModal()
 
@@ -146,21 +179,10 @@ const NativeSection = () => {
       <Container>
         <NativeSectionInnerWrapper>
           <LeftDecoration />
-          <Info />
-          <Button.Group>
-            <Button
-              type="primaryDark"
-              icon={EyeOffIcon}
-              name="Convert to Secret PHA"
-              onClick={() => convertToTeeModal.setVisible(true)}
-            />
-            <Button
-              type="secondaryDark"
-              icon={SendIcon}
-              name="Transfer"
-              onClick={() => nativeTransferModal.setVisible(true)}
-            />
-          </Button.Group>
+          <Info>
+            {isXS && <ModalButtonGroup convertToTeeModal={convertToTeeModal} nativeTransferModal={nativeTransferModal} />}
+          </Info>
+          {!isXS && <ModalButtonGroup convertToTeeModal={convertToTeeModal} nativeTransferModal={nativeTransferModal} />}
         </NativeSectionInnerWrapper>
       </Container>
     </NativeSectionWrapper>
