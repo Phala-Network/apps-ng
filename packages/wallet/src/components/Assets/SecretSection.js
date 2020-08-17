@@ -4,7 +4,7 @@ import { Checkbox, Loading, useModal } from '@zeit-ui/react'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import Button from './Button'
-import { Balance as BalanceDisplay } from '@polkadot/react-components'
+import { FormatBalance as BalanceDisplay } from '@polkadot/react-query'
 import BN from 'bn.js'
 import { hexToSs58 } from '@phala/runtime'
 import IssueModal from './IssueModal'
@@ -109,7 +109,7 @@ const Info = ({ symbol, balance }) => {
     </InfoHead>
     <Balance>
       <BalanceHead>balance</BalanceHead>
-      <BalanceValue balance={balanceValue} params={'dummy'} />
+      <BalanceValue withCurrency={false} value={balanceValue} labelPost={` ${symbol}`} params={'dummy'} />
     </Balance>
   </InfoWrapper>
 }

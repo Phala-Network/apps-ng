@@ -28,7 +28,8 @@
     "next": "latest",
     "next-transpile-modules": "^3.3.0",
     "react": "^16.8.3",
-    "react-dom": "^16.8.3"
+    "react-dom": "^16.8.3",
+    "redux-persist-weapp-storage": "^1.2.0"
   },
   "resolutions": {
     "next": "latest",
