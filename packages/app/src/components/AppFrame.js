@@ -13,6 +13,8 @@ import {
   Sidebar as SidebarIcon
 } from '@zeit-ui/react-icons'
 
+import { Breadcrumbs } from '@zeit-ui/react'
+
 import Status from './Status'
 
 import CurrentInfoButton from './accounts/CurrentInfoButton'
@@ -78,7 +80,7 @@ const NavItemSpacer = styled.p`
 const NavBar = () => {
   return <NavBarWrapper>
     <Container>
-      <PhalaLogo />
+      <PhalaLogo onClick={() => window.open('https://phala.network/', '_blank')} />
       <NavLogoSpacer />
       <NavBarButton href="WALLET" name="Wallet" icon={StopCircleIcon} />
       <NavItemSpacer />
@@ -107,10 +109,25 @@ const NavBarButton = ({ href, icon, name }) => {
   </RouteLink>
 }
 
+const _Breadcrumbs = styled(Breadcrumbs)`
+  margin: 6px auto 12px !important;
+  width: 100%;
+  place-content: center;
+`
+
 const AppFrame = ({ children }) => {
   return <AppFrameWrapper>
     <NavBar />
     {children}
+    <_Breadcrumbs separator="" size="small">
+      <Breadcrumbs.Item> </Breadcrumbs.Item>
+      <Breadcrumbs.Item href="https://github.com/Phala-Network" target="_blank">Github</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="https://forum.phala.network/" target="_blank">Forum</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="https://t.me/phalanetwork" target="_blank">Telegram</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="https://discord.gg/FUtZzYH" target="_blank">Discord</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="https://twitter.com/PhalaNetwork" target="_blank">Twitter</Breadcrumbs.Item>
+      <Breadcrumbs.Item> </Breadcrumbs.Item>
+    </_Breadcrumbs>
   </AppFrameWrapper>
 }
 

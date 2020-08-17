@@ -7,7 +7,7 @@ const Container = styled.div`
   max-width: 1232px;
   min-width: ${constants.PAGE_MIN_WIDTH}px;
   ${({ isMobile }) => isMobile && `
-    min-width: ${680}px;
+    min-width: ${720}px;
   `}
   width: 100%;
   padding: 0 ${constants.CONTAINER_PADDING}px;
