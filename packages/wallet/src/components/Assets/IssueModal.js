@@ -4,6 +4,7 @@ import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import getUnitAmount from '@/utils/getUnitAmount'
+import { useTranslation } from 'react-i18next'
 import { CONTRACT_ASSETS } from '../../utils/constants'
 import { encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
@@ -18,6 +19,8 @@ const IssueModal = ({ bindings, setVisible }) => {
   const [command, setCommand] = useState('')
   const [, setToast] = useToasts()
 
+  const { t } = useTranslation()
+
   const symbolError = useMemo(() => {
     const val = symbolInput.state
 
@@ -26,20 +29,20 @@ const IssueModal = ({ bindings, setVisible }) => {
     }
 
     if (!val.toLowerCase().match(/^[a-z]+$/)) {
-      return 'bad symbol'
+      return t('bad symbol')
     }
     if (val.length <= 2) {
-      return 'too short'
+      return t('too short')
     }
     if (val.length > 9) {
-      return 'too long'
+      return t('too long')
     }
     if (assetSymbols.find(t => t.toLowerCase() === val.toLowerCase())) {
-      return 'conflict'
+      return t('conflict')
     }
 
     return null
-  }, [assetSymbols, symbolInput.state])
+  }, [t, assetSymbols, symbolInput.state])
 
   const symbol = useMemo(() => symbolInput.state.trim().toUpperCase(), [symbolInput.state])
 
@@ -93,17 +96,17 @@ const IssueModal = ({ bindings, setVisible }) => {
   const onFailed = useCallback(e => {
     setIsBusy(false)
     setToast({
-      text: 'Failed to issue.',
+      text: t('Failed to issue.'),
       type: 'error'
     })
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Successfully issued, the asset will appear soon.'
+      text: t('Successfully issued, the asset will appear soon.')
     })
     onClose()
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onClose = useCallback(() => {
     if (isBusy) { return }
@@ -117,11 +120,11 @@ const IssueModal = ({ bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings}>
-    <Modal.Title>issue secret token</Modal.Title>
+    <Modal.Title>{t('issue secret token')}</Modal.Title>
     <Modal.Content>
       <Input
         {...symbolInput.bindings}
-        placeholder="Symbol"
+        placeholder={t('Symbol')}
         width="100%"
         status={!!symbolError ? 'error' : undefined}
         labelRight={symbolError}
@@ -129,14 +132,14 @@ const IssueModal = ({ bindings, setVisible }) => {
       <Spacer y={.5} />
       <Input
         {...valueInput.bindings}
-        placeholder="Amount"
+        placeholder={t('Amount')}
         labelRight={unit}
         width="100%"
       />
     </Modal.Content>
-    <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
+    <Modal.Action disabled={isBusy} passive onClick={onClose}>{t('Cancel')}</Modal.Action>
     {disabled
-      ? <Button disabled>Submit</Button>
+      ? <Button disabled>{t('Submit')}</Button>
       : <TxButton
         accountId={account.address || ''}
         onClick={doSend}
@@ -147,7 +150,7 @@ const IssueModal = ({ bindings, setVisible }) => {
         onFailed={onFailed}
         onSuccess={onSuccess}
       >
-        Submit
+        {t('Submit')}
       </TxButton>}
   </Modal>
 }

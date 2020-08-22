@@ -10,6 +10,8 @@ import { CONTRACT_BALANCE } from '../../utils/constants'
 import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
 
+import { useTranslation } from 'react-i18next'
+
 const ConvertToNativeModal = ({ bindings, setVisible }) => {
   const { account, walletRuntime } = useStore()
   const { ecdhChannel } = walletRuntime
@@ -20,6 +22,8 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
   const [disabled, setDisabled] = useState(false)
 
   const [amount, setAmount] = useState(BN_ZERO)
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     setDisabled(true)
@@ -51,17 +55,17 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
     setIsBusy(false)
     e && console.warn(e)
     setToast({
-      text: 'Failed to submit.',
+      text: t('Failed to submit.'),
       type: 'error'
     })
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Successfully submitted, the assets will appear soon.'
+      text: t('Successfully submitted, the assets will appear soon.')
     })
     onClose()
-  }, [onClose])
+  }, [t, onClose])
 
   const onClose = useCallback(() => {
     if (isBusy) { return }
@@ -75,11 +79,11 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings} disableBackdropClick>
-    <Modal.Title>convert to native asset</Modal.Title>
+    <Modal.Title>{t('convert to native asset')}</Modal.Title>
     <Modal.Content>
       <InputAmount onChange={setAmount} />
     </Modal.Content>
-    <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
+    <Modal.Action disabled={isBusy} passive onClick={onClose}>{t('Cancel')}</Modal.Action>
     <TxButton
       accountId={account.address || ''}
       onClick={doSend}
@@ -91,7 +95,7 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
       onSuccess={onSuccess}
       disabled={disabled}
     >
-      Submit
+      {t('Submit')}
     </TxButton>
   </Modal>
 }

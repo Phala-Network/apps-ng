@@ -3,6 +3,7 @@ import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
+import { useTranslation } from 'react-i18next'
 import { CONTRACT_ASSETS, CONTRACT_BALANCE } from '../../utils/constants'
 import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
@@ -31,6 +32,8 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   const disabled = useMemo(() => !(
     !innerDisabled && !addressError && addressInput.state.trim().length && (parseInt(amount) > 0)
   ), [amount, addressError, addressInput.state, innerDisabled])
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     setInnerDisabled(true)
@@ -81,17 +84,17 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   const onFailed = useCallback(e => {
     setIsBusy(false)
     setToast({
-      text: 'Failed to transfer.',
+      text: t('Failed to transfer.'),
       type: 'error'
     })
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Transferred.'
+      text: t('Transferred.')
     })
     onClose()
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onClose = useCallback(() => {
     if (isBusy) { return }
@@ -105,18 +108,18 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings}>
-    <Modal.Title>secret transfer</Modal.Title>
+    <Modal.Title>{t('secret transfer')}</Modal.Title>
     <Modal.Content>
       <Input
         {...addressInput.bindings}
-        placeholder="Send to address"
+        placeholder={t('Send to address')}
         width="100%"
         status={addressError ? 'error' : undefined}
       />
       <Spacer y={.5} />
       <InputAmount onChange={setAmount} symbol={assetSymbol} />
     </Modal.Content>
-    <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
+    <Modal.Action disabled={isBusy} passive onClick={onClose}>{t('Cancel')}</Modal.Action>
     {disabled
       ? <Button disabled>Submit</Button>
       : <TxButton
@@ -129,7 +132,7 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
         onFailed={onFailed}
         onSuccess={onSuccess}
       >
-        Submit
+        {t('Submit')}
       </TxButton>}
   </Modal>
 }

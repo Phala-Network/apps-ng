@@ -1,4 +1,5 @@
 import Container from '@/components/Container'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Checkbox, Loading, useModal, useTheme } from '@zeit-ui/react'
 import { observer } from 'mobx-react'
@@ -106,6 +107,7 @@ const BalanceValue = styled(BalanceDisplay)`
 
 const Info = ({ symbol, balance, children }) => {
   const balanceValue = useMemo(() => new BN(balance || "0"), [balance])
+  const { t } = useTranslation()
 
   return <InfoWrapper>
     <InfoHead>
@@ -114,7 +116,7 @@ const Info = ({ symbol, balance, children }) => {
       </InfoHeadMain>
     </InfoHead>
     <Balance>
-      <BalanceHead>balance</BalanceHead>
+      <BalanceHead>{t('balance')}</BalanceHead>
       <BalanceValue withCurrency={false} value={balanceValue} labelPost={` ${symbol}`} params={'dummy'} />
     </Balance>
     {children}
@@ -182,26 +184,28 @@ const Head = observer(() => {
   const { wallet } = useStore()
   const { isXS } = useTheme()
 
+  const { t } = useTranslation()
+
   return (
     <Container>
       <HeadWrapper>
-        <HeadLine>Secret assets</HeadLine>
+        <HeadLine>{t('Secret assets')}</HeadLine>
         {!isXS && <CheckboxWrapper>
           <Checkbox
             checked={!wallet.showInvalidAssets}
             onChange={wallet.setShowInvalidAssets}
-          >Hide assets with zero balance</Checkbox>
+          >{t('Hide assets with zero balance')}</Checkbox>
         </CheckboxWrapper>}
 
         <HeadDesc>
           {!isXS && <InfoFillIcon size={18} />}
-          These assets are invisible on the chain.
+          {t('These assets are invisible on the chain.')}
         </HeadDesc>
         {isXS && <CheckboxWrapper>
           <Checkbox
             checked={!wallet.showInvalidAssets}
             onChange={wallet.setShowInvalidAssets}
-          >Hide assets with zero balance</Checkbox>
+          >{t('Hide assets with zero balance')}</Checkbox>
         </CheckboxWrapper>}
       </HeadWrapper>
     </Container>
@@ -228,17 +232,19 @@ const SecretBlock = ({ children, ...props }) => {
 }
 
 const PHAButtonGroup = ({ convertToNativeModal, transferModal }) => {
+  const { t } = useTranslation()
+
   return <Button.Group>
     <Button
       type="primaryLight"
       icon={EyeIcon}
-      name="Convert to PHA"
+      name={t('Convert to PHA')}
       onClick={() => convertToNativeModal.setVisible(true)}
     />
     <Button
       type="secondaryLight"
       icon={SendIcon}
-      name="Secret Transfer"
+      name={t('Secret Transfer')}
       onClick={() => transferModal.setVisible(true)}
     />
   </Button.Group>
@@ -250,6 +256,8 @@ const PHA = observer(() => {
   const transferModal = useModal()
 
   const { isXS } = useTheme()
+
+  const { t } = useTranslation()
   
   useEffect(() => {
     walletRuntime.updateMainAsset()
@@ -270,7 +278,7 @@ const PHA = observer(() => {
     <TransferModal {...transferModal} />
     <SecretBlock>
       <LeftDecoration />
-      <Info symbol="Secret PHA" balance={walletRuntime.mainAsset?.balance}>
+      <Info symbol={t('Secret PHA')} balance={walletRuntime.mainAsset?.balance}>
         {isXS && <PHAButtonGroup convertToNativeModal={convertToNativeModal} transferModal={transferModal} />}
       </Info>
       {!isXS && <PHAButtonGroup convertToNativeModal={convertToNativeModal} transferModal={transferModal} />}
@@ -305,12 +313,14 @@ const IssueBlock = styled(SecretBlock)`
 
 const Issue = () => {
   const issueModal = useModal()
+  const { t } = useTranslation()
+
   return <>
     <IssueModal {...issueModal} />
     <IssueBlock onClick={() => issueModal.setVisible(true)}>
       <IssueLine>
         <PlusSquareIcon size={24} />
-        issue secret token	
+        {t('issue secret token')}
       </IssueLine>
     </IssueBlock>
   </>
@@ -322,11 +332,13 @@ const AssetBlock = styled(SecretBlock)`
 `
 
 const AssetItemButtonGroup = ({ isOwner, item, transferModal }) => {
+  const { t } = useTranslation()
+
   return <Button.Group>
     <Button
       type="secondaryLight"
       icon={SendIcon}
-      name="Secret Transfer"
+      name={t('Secret Transfer')}
       onClick={() => transferModal.setVisible(true)}
     />
     {isOwner && <DestroyButton {...item.metadata} />}

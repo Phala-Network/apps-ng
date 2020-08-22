@@ -4,6 +4,7 @@ import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import InputAmount, { BN_ZERO } from '@/components/InputAmount'
+import { useTranslation } from 'react-i18next'
 
 const ConvertToTeeModal = ({ bindings, setVisible }) => {
   const { account } = useStore()
@@ -11,6 +12,8 @@ const ConvertToTeeModal = ({ bindings, setVisible }) => {
   const [, setToast] = useToasts()
 
   const [amount, setAmount] = useState(BN_ZERO)
+
+  const { t } = useTranslation()
 
   const reset = useCallback(() => {
     setIsBusy(false)
@@ -25,17 +28,17 @@ const ConvertToTeeModal = ({ bindings, setVisible }) => {
     setIsBusy(false)
     e && console.warn(e)
     setToast({
-      text: 'Failed to submit.',
+      text: t('Failed to submit.'),
       type: 'error'
     })
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Successfully submitted, the assets will appear soon.'
+      text: t('Successfully submitted, the assets will appear soon.')
     })
     onClose()
-  }, [onClose])
+  }, [t, onClose])
 
   const onClose = useCallback(() => {
     if (isBusy) { return }
@@ -49,11 +52,11 @@ const ConvertToTeeModal = ({ bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings} disableBackdropClick>
-    <Modal.Title>convert to secret asset</Modal.Title>
+    <Modal.Title>{t('convert to secret asset')}</Modal.Title>
     <Modal.Content>
-      <InputAmount onChange={setAmount} placeholder="Amount" />
+      <InputAmount onChange={setAmount} placeholder={t('Amount')} />
     </Modal.Content>
-    <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
+    <Modal.Action disabled={isBusy} passive onClick={onClose}>{t('Cancel')}</Modal.Action>
     <TxButton
       accountId={account.address || ''}
       onClick={doSend}
@@ -64,7 +67,7 @@ const ConvertToTeeModal = ({ bindings, setVisible }) => {
       onFailed={onFailed}
       onSuccess={onSuccess}
     >
-      Submit
+      {t('Submit')}
     </TxButton>
   </Modal>
 }

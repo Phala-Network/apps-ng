@@ -4,6 +4,7 @@ import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import InputAmount, { BN_ZERO } from '@/components/InputAmount'
+import { useTranslation } from 'react-i18next'
 
 const NativeTransferModal = ({ bindings, setVisible }) => {
   const { account } = useStore()
@@ -12,7 +13,8 @@ const NativeTransferModal = ({ bindings, setVisible }) => {
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
 
-  const [amount, setAmount] = useState(BN_ZERO) 
+  const [amount, setAmount] = useState(BN_ZERO)
+  const { t } = useTranslation()
 
   const reset = useCallback(() => {
     setIsBusy(false)
@@ -27,17 +29,17 @@ const NativeTransferModal = ({ bindings, setVisible }) => {
   const onFailed = useCallback(e => {
     setIsBusy(false)
     setToast({
-      text: 'Failed to transfer.',
+      text: t('Failed to transfer.'),
       type: 'error'
     })
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Transferred.'
+      text: t('Transferred.')
     })
     onClose()
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onClose = useCallback(() => {
     if (isBusy) { return }
@@ -51,17 +53,17 @@ const NativeTransferModal = ({ bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings}>
-    <Modal.Title>Transfer</Modal.Title>
+    <Modal.Title>{t('Transfer')}</Modal.Title>
     <Modal.Content>
       <Input
         {...addressInput.bindings}
-        placeholder="Send to address"
+        placeholder={t('Send to address')}
         width="100%"
       />
       <Spacer y={.5} />
       <InputAmount onChange={setAmount} />
     </Modal.Content>
-    <Modal.Action disabled={isBusy} passive onClick={onClose}>Cancel</Modal.Action>
+    <Modal.Action disabled={isBusy} passive onClick={onClose}>{t('Cancel')}</Modal.Action>
     <TxButton
       accountId={account.address || ''}
       onClick={doSend}
@@ -73,7 +75,7 @@ const NativeTransferModal = ({ bindings, setVisible }) => {
       onSuccess={onSuccess}
       disabled={!addressInput.state.trim().length}
     >
-      Submit
+      {t('Submit')}
     </TxButton>
   </Modal>
 }

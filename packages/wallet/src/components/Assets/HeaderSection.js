@@ -1,5 +1,6 @@
 import Container from '@/components/Container'
 import { observer } from 'mobx-react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useStore } from '@/store'
 
@@ -38,10 +39,11 @@ const AccountLine = styled.p`
 
 const HeaderSection = () => {
   const { account } = useStore()
+  const { t } = useTranslation()
 
   return <Container>
     <HeaderSectionWrapper>
-      <Header>Wallet</Header>
+      <Header>{t('Wallet')}</Header>
       <AccountLine>{account.address}</AccountLine>
     </HeaderSectionWrapper>
   </Container>

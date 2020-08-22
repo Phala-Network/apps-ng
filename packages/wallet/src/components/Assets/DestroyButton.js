@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import Button from './Button'
 import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import {
@@ -18,6 +19,8 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
   const [, setToast] = useToasts()
   const [command, setCommand] = useState('')
   const [disabled, setDisabled] = useState(false)
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     setDisabled(true)
@@ -40,17 +43,17 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
     setIsBusy(false)
     e && console.warn(e)
     setToast({
-      text: 'Failed to submit.',
+      text: t('Failed to submit.'),
       type: 'error'
     })
-  }, [setIsBusy])
+  }, [t, setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: 'Successfully destroyed, the assets will disappear soon.'
+      text: t('Successfully destroyed, the assets will disappear soon.')
     })
     onClose()
-  }, [onClose])
+  }, [t, onClose])
 
   const onClose = useCallback(() => {
     if (isBusy) { return }
@@ -63,8 +66,8 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings} disableBackdropClick>
-    <Modal.Title>Confirm</Modal.Title>
-    <Modal.Subtitle>do you want to destroy the secret token({symbol})?</Modal.Subtitle>
+    <Modal.Title>{t('Confirm')}</Modal.Title>
+    <Modal.Subtitle>{t('do you want to destroy the secret token({{symbol}})?', { symbol })}</Modal.Subtitle>
     <Spacer y={1} />
     <TxButton
       accountId={account.address || ''}
@@ -77,21 +80,22 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
       onSuccess={onSuccess}
       disabled={disabled}
     >
-      Submit
+      {t('Submit')}
     </TxButton>
-    <Modal.Action onClick={onClose}>Cancel</Modal.Action>
+    <Modal.Action onClick={onClose}>{t('Cancel')}</Modal.Action>
   </Modal>
 })
 
 const DestroyButton = ({ id, symbol }) => {
   const modal = useModal()
+  const { t } = useTranslation()
 
   return <>
     <DestroyModal id={id} symbol={symbol} {...modal} />
     <Button
       type="remove"
       icon={MinusSquareIcon}
-      name="Destroy Token"
+      name={t('Destroy Token')}
       onClick={() => modal.setVisible(true)}
     />
   </>

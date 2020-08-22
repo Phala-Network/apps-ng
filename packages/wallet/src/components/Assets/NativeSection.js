@@ -1,4 +1,5 @@
 import { observer } from "mobx-react"
+import { useTranslation } from 'react-i18next'
 import styled from "styled-components"
 import Container from "@/components/Container"
 import { Balance as BalanceQuery } from '@polkadot/react-query'
@@ -120,6 +121,8 @@ const Info = observer(({ children }) => {
   const { account } = useStore()
   const { isXS } = useTheme()
 
+  const { t } = useTranslation()
+
   return <InfoWrapper>
     <InfoHead>
       <InfoHeadMain>
@@ -127,11 +130,11 @@ const Info = observer(({ children }) => {
       </InfoHeadMain>
       <InfoHeadDesc>
         {!isXS && <InfoFillIcon size={18} />}
-        These assets are visible on the chain.
+        {t('These assets are visible on the chain.')}
       </InfoHeadDesc>
     </InfoHead>
     <Balance>
-      <BalanceHead>balance</BalanceHead>
+      <BalanceHead>{t('balance')}</BalanceHead>
       <BalanceValue params={account.address} />
     </Balance>
     {children}
@@ -151,17 +154,19 @@ const NativeSectionInnerWrapper = styled.div`
 `
 
 const ModalButtonGroup = ({ convertToTeeModal, nativeTransferModal }) => {
+  const { t } = useTranslation()
+
   return <Button.Group>
     <Button
       type="primaryDark"
       icon={EyeOffIcon}
-      name="Convert to Secret PHA"
+      name={t('Convert to Secret PHA')}
       onClick={() => convertToTeeModal.setVisible(true)}
     />
     <Button
       type="secondaryDark"
       icon={SendIcon}
-      name="Transfer"
+      name={t('Transfer')}
       onClick={() => nativeTransferModal.setVisible(true)}
     />
   </Button.Group>
