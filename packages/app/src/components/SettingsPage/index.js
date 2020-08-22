@@ -1,6 +1,6 @@
 import { useStore } from '@/store'
 import { observer } from 'mobx-react'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import {
   Page,
   Input,
@@ -11,9 +11,10 @@ import {
   useToasts,
   useModal,
   Modal,
-  Text
+  Text,
+  Select
 } from '@zeit-ui/react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, I18nContext } from 'react-i18next'
 
 const _SettingsPage = () => {
   const { settings } = useStore()
@@ -25,6 +26,8 @@ const _SettingsPage = () => {
   const successModal = useModal()
 
   const { t } = useTranslation()
+
+  const { i18n: { language } } = useContext(I18nContext)
 
   useEffect(() => {
     apiUrlInput.setState(settings.apiUrl)
@@ -65,6 +68,25 @@ const _SettingsPage = () => {
     <Page.Content>
       <h2>{t('Settings')}</h2>
       <Spacer y={1.5} />
+
+      <h3>{t('Appearance')}</h3>
+      <Spacer y={0.8} />
+      <Card>
+        <h5>{t('Language')}</h5>
+        <Select
+          width="100%"
+          initialValue={language}
+          onChange={settings.setLanguage}
+        >
+          <Select.Option value="zh">中文</Select.Option>
+          <Select.Option value="en">English</Select.Option>
+        </Select>
+      </Card>
+
+      <Spacer y={1.5} />
+
+      <h3>{t('Connection')}</h3>
+      <Spacer y={0.8} />
       <Card>
         <h5>{t('WebSocket Endpoint URL')}</h5>
         <Input
@@ -77,15 +99,15 @@ const _SettingsPage = () => {
           {...phalaTeeApiUrlInput.bindings}
           width="100%"
         />
+        <Spacer y={1.5} />
+        <Button
+          type="secondary"
+          auto
+          onClick={doSave}
+        >
+          {t('Save')}
+        </Button>
       </Card>
-      <Spacer y={1.5} />
-      <Button
-        type="secondary"
-        auto
-        onClick={doSave}
-      >
-        {t('Save')}
-      </Button>
     </Page.Content>
   </Page>
 }

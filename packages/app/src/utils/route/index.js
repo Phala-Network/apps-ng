@@ -1,6 +1,6 @@
 import { MENU_ROUTES, COMPONENT_ROUTES } from './routes'
 import { LAYOUT_ROUTE, _findRouteComponent } from './utils'
-import Link from 'next/link'
+import { Link } from '@/utils/i18n'
 
 export const findRouteComponent = slug =>
   _findRouteComponent(COMPONENT_ROUTES, slug)

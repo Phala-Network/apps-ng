@@ -13,7 +13,7 @@ const withTM = require('next-transpile-modules')([
   resolve('@zeit-ui/react-icons')
 ])
 
-const { nextI18NextRewrites } = require('next-i18next/rewrites')
+// const { nextI18NextRewrites } = require('next-i18next/rewrites')
 const localeSubpaths = {
   en: 'en',
   zh: 'zh'
@@ -35,7 +35,7 @@ module.exports = withPlugins([
     }
     return config
   },
-  rewrites: async () => nextI18NextRewrites(localeSubpaths),
+  // rewrites: async () => nextI18NextRewrites(localeSubpaths),
   publicRuntimeConfig: {
     localeSubpaths
   },

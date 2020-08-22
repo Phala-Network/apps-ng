@@ -1,5 +1,7 @@
 import { useRouter } from "next/router"
+import { Router } from "@/utils/i18n"
 import { findRouteComponent } from '@/utils/route'
+import { LAYOUT_ROUTE, DEFAULT_ROUTE } from '@/utils/route/utils'
 import NotFound from '@/components/NotFound'
 import { useState, useEffect, useMemo } from "react"
 import Head from 'next/head'
@@ -54,19 +56,33 @@ function InjectHead () {
 const AppLoader = props => {
   const router = useRouter()
 
-  const RenderedComponent = useMemo(() => {
-    if (!router?.query?.slug) {
-      return NotFound
+  const slug = useMemo(() => {
+    if (!router?.query?.slug?.length) {
+      return undefined
     }
-    return findRouteComponent(router.query.slug) || NotFound
+    return router.query.slug.slice(1)
   }, [router?.query?.slug])
+
+  useEffect(() => {
+    if (!slug?.length) {
+      Router.replace(LAYOUT_ROUTE, DEFAULT_ROUTE)
+    }
+  }, [slug])
+
+  const RenderedComponent = useMemo(() => {
+    if (!slug?.length) {
+      return null
+    }
+
+    return findRouteComponent(slug) || NotFound
+  }, [slug])
 
   return (
     <StoreProvider>
       <AppWrapper>
         <AppFrame>
           <InjectHead />
-          <RenderedComponent {...props} />
+          {RenderedComponent && <RenderedComponent {...props} />}
         </AppFrame>
       </AppWrapper>
     </StoreProvider>

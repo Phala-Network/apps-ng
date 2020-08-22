@@ -5,6 +5,14 @@ const AppLoader = dynamic(
   { ssr: false }
 )
 
-export default props => {
+const DynamicRouteMatcher = props => {
   return <AppLoader {...props} />
 }
+
+DynamicRouteMatcher.getInitialProps = async () => {
+  return {
+    namespacesRequired: ['translation', 'phala'],
+  }
+}
+
+export default DynamicRouteMatcher
