@@ -13,6 +13,7 @@ import {
   Modal,
   Text
 } from '@zeit-ui/react'
+import { useTranslation } from 'react-i18next'
 
 const _SettingsPage = () => {
   const { settings } = useStore()
@@ -22,6 +23,8 @@ const _SettingsPage = () => {
 
   const [, setToast] = useToasts()
   const successModal = useModal()
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     apiUrlInput.setState(settings.apiUrl)
@@ -36,7 +39,7 @@ const _SettingsPage = () => {
     if (!(apiUrlInput.state && phalaTeeApiUrlInput.state)) {
       setToast({
         type: "error",
-        text: 'Invalid input!'
+        text: r('Invalid input!')
       })
 
       return
@@ -50,26 +53,26 @@ const _SettingsPage = () => {
 
   return <Page size="small" style={{ minHeight: 'unset' }}>
     <Modal {...successModal.bindings}>
-      <Modal.Title>Success</Modal.Title>
+      <Modal.Title>{t('Success')}</Modal.Title>
       <Modal.Content>
         <Text>
-          Settings have been saved. Reload the page to take effect.
+          {t('Settings have been saved. Reload the page to take effect.')}
         </Text>
       </Modal.Content>
-      <Modal.Action passive onClick={() => successModal.setVisible(false)}>Cancel</Modal.Action>
-      <Modal.Action onClick={() => location.reload()}>Reload</Modal.Action>
+      <Modal.Action passive onClick={() => successModal.setVisible(false)}>{t('Cancel')}</Modal.Action>
+      <Modal.Action onClick={() => location.reload()}>{t('Reload')}</Modal.Action>
     </Modal>
     <Page.Content>
-      <h2>Settings</h2>
+      <h2>{t('Settings')}</h2>
       <Spacer y={1.5} />
       <Card>
-        <h5>WebSocket Endpoint URL</h5>
+        <h5>{t('WebSocket Endpoint URL')}</h5>
         <Input
           {...apiUrlInput.bindings}
           width="100%"
         />
         <Spacer y={1.5} />
-        <h5>Phala TEE API Endpoint</h5>
+        <h5>{t('Phala TEE API Endpoint')}</h5>
         <Input
           {...phalaTeeApiUrlInput.bindings}
           width="100%"
@@ -81,7 +84,7 @@ const _SettingsPage = () => {
         auto
         onClick={doSave}
       >
-        Save
+        {t('Save')}
       </Button>
     </Page.Content>
   </Page>

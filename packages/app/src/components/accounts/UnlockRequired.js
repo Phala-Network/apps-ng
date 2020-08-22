@@ -2,16 +2,26 @@ import { observer } from "mobx-react"
 import { useStore } from "../../store"
 import { Page, Card, Spacer } from "@zeit-ui/react"
 import { Lock as LockIcon } from '@zeit-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 const _UnlockRequired = () => {
+  try {
+    console.log(useTranslation)
+    console.log(useTranslation())
+  } catch (e) {
+    console.log(e)
+  }
+
+  const { t } = useTranslation()
+  console.log(t)
   return <Page style={{ minHeight: 'unset' }}>
     <Card shadow>
       <h2>
         <LockIcon size={27} />
         <Spacer inline x={0.8} />
-        Wallet locked
+        {t('Wallet locked')}
       </h2>
-      <p>Unlock the wallet to continue.</p>
+      <p>{t('Unlock the wallet to continue.')}</p>
     </Card>
   </Page>
 }

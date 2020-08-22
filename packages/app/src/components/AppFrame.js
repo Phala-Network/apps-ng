@@ -18,6 +18,7 @@ import { Breadcrumbs } from '@zeit-ui/react'
 import Status from './Status'
 
 import CurrentInfoButton from './accounts/CurrentInfoButton'
+import { useTranslation } from 'react-i18next'
 
 const AppFrameWrapper = styled.div`
   padding: calc(${constants.NAV_HEIGHT}px + ${constants.CONTAINER_PADDING}px) 0 ${constants.CONTAINER_PADDING}px;
@@ -78,18 +79,19 @@ const NavItemSpacer = styled.p`
 `
 
 const NavBar = () => {
+  const { t } = useTranslation()
   return <NavBarWrapper>
     <Container>
       <PhalaLogo onClick={() => window.open('https://phala.network/', '_blank')} />
       <NavLogoSpacer />
-      <NavBarButton href="WALLET" name="Wallet" icon={StopCircleIcon} />
+      <NavBarButton href="WALLET" name={t('Wallet')} icon={StopCircleIcon} />
       <NavItemSpacer />
       <NavBarButtonWrapper onClick={() => window.open('/legacy.html', '_blank')}>
         <SidebarIcon size={21} />
         <NavBarButtonLabel>Polkadot UI</NavBarButtonLabel>
       </NavBarButtonWrapper>
       <FillFlex />
-      <NavBarButton href="SETTINGS" name="Settings" icon={SettingsIcon} />
+      <NavBarButton href="SETTINGS" name={t('Settings')} icon={SettingsIcon} />
       <NavItemSpacer />
       <CurrentInfoButton />
     </Container>

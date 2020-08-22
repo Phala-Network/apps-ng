@@ -5,6 +5,7 @@ import { useTheme, ZeitProvider, useMediaQuery } from '@zeit-ui/react'
 import darkTheme from '@zeit-ui/react/styles/themes/dark'
 import 'mobx-react-lite/batchingForReactDom'
 import { useCallback } from "react"
+import { appWithTranslation } from '@/utils/i18n'
 
 const zeitUiTheme = {
   ...darkTheme,
@@ -58,8 +59,10 @@ const _App = ({ Component, pageProps }) => {
   </ZeitProvider>
 }
 
-export default class MyApp extends App {
+class PhalaApp extends App {
   render() {
     return <_App {...this.props} />
   }
 }
+
+export default appWithTranslation(PhalaApp)

@@ -6,6 +6,7 @@ import {
   NavBarButtonWrapper,
   NavBarButtonLabel
 } from '../AppFrame'
+import { useTranslation } from 'react-i18next'
 
 import {
   Unlock as UnlockIcon,
@@ -50,9 +51,11 @@ const AccountSelector = observer((props) => {
   const { account } = useStore()
   const { address } = account
 
+  const { t } = useTranslation()
+
   if (!hasAccounts) {
     return <Text blockquote>
-      You don't have any accounts.
+      {t('You don\'t have any accounts.')}
     </Text>
   }
 
@@ -60,7 +63,7 @@ const AccountSelector = observer((props) => {
     <Select
       width="100%"
       initialValue={address}
-      placeholder="select account..."
+      placeholder={t("select account...")}
       onChange={val => account.setAccount(val)}
       {...props}
     >
@@ -90,6 +93,8 @@ const LockedModal = observer(({ setVisible, bindings }) => {
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
 
+  const { t } = useTranslation()
+
   const onUnlocked = useCallback(() => {
     setVisible(false)
     account.unlock()
@@ -116,7 +121,7 @@ const LockedModal = observer(({ setVisible, bindings }) => {
         setIsBusy(false)
         setToast({
           type: 'error',
-          text: e?.message || e || 'Failed to unlock.'
+          text: e?.message || e || t('Failed to unlock.')
         })
       }
     }, 0)
@@ -140,8 +145,8 @@ const LockedModal = observer(({ setVisible, bindings }) => {
       width={isMobile ? 'calc(100vw - 24px)' : '540px'}
       onClose={onClose}
     >
-      <Modal.Title>Wallet locked</Modal.Title>
-      <Modal.Subtitle>Select an account to continue.</Modal.Subtitle>
+      <Modal.Title>{t('Wallet locked')}</Modal.Title>
+      <Modal.Subtitle>{t('Select an account to continue.')}</Modal.Subtitle>
       <Modal.Content>
         <AccountSelector disabled={isBusy} />
         {(!!account.keypair && account.keypair.isLocked) && <>
@@ -157,8 +162,8 @@ const LockedModal = observer(({ setVisible, bindings }) => {
           </form>
         </>}
       </Modal.Content>
-      <Modal.Action passive onClick={onClose}>Cancel</Modal.Action>
-      <Modal.Action loading={isBusy} onClick={(keypair && !isBusy) ? doUnlock : undefined} disabled={!keypair}>Unlock</Modal.Action>
+      <Modal.Action passive onClick={onClose}>{t('Cancel')}</Modal.Action>
+      <Modal.Action loading={isBusy} onClick={(keypair && !isBusy) ? doUnlock : undefined} disabled={!keypair}>{t('Unlock')}</Modal.Action>
     </Modal>
   )
 })
@@ -171,12 +176,14 @@ const UnlockedModal = observer(({ setVisible, bindings }) => {
     setVisible(false)
   }, [account])
 
+  const { t } = useTranslation()
+
   return (
     <Modal {...bindings}>
-      <Modal.Title>Wallet unlocked</Modal.Title>
-      <Modal.Subtitle>Do you want to lock the wallet?</Modal.Subtitle>
-      <Modal.Action passive onClick={() => setVisible(false)}>Cancel</Modal.Action>
-      <Modal.Action onClick={doLock}>Lock</Modal.Action>
+      <Modal.Title>{t('Wallet unlocked')}</Modal.Title>
+      <Modal.Subtitle>{t('Do you want to lock the wallet?')}</Modal.Subtitle>
+      <Modal.Action passive onClick={() => setVisible(false)}>{t('Cancel')}</Modal.Action>
+      <Modal.Action onClick={doLock}>{t('Lock')}</Modal.Action>
     </Modal>
   )
 })
@@ -217,6 +224,8 @@ const CurrentInfoButton = () => {
     )
   }, [isApiReady, isApiConnected])
 
+  const { t } = useTranslation()
+
   if (!isApiReady || !isApiConnected) {
     return <NavBarButtonWrapper>
       <LoadingWrapper>
@@ -231,7 +240,7 @@ const CurrentInfoButton = () => {
     {locked
       ? <NavBarButtonWrapper onClick={() => lockedModal.setVisible(true)}>
         <LockIcon size={21} />
-        <NavBarButtonLabel>Locked</NavBarButtonLabel>
+        <NavBarButtonLabel>{t('Locked')}</NavBarButtonLabel>
       </NavBarButtonWrapper>
       : <NavBarButtonWrapper onClick={() => unlockedModal.setVisible(true)}>
         <UnlockIcon size={21} />
