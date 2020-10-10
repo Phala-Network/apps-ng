@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import { useStore } from '@/store'
 import { createWalletStore } from '../utils/WalletStore'
-import { createWalletRuntimeStore } from '../utils/WalletRuntimeStore'
+import { createAppRuntimeStore } from '../utils/AppRuntimeStore'
 import { measure } from '@phala/runtime'
 import PageLoading from '@/components/PageLoading'
 
@@ -16,7 +16,7 @@ const StoreInjector = (({ children }) => {
       return
     }
 
-    appStore.walletRuntime = createWalletRuntimeStore({
+    appStore.appRuntime = createAppRuntimeStore({
       appSettings: appStore.settings,
       appAccount: appStore.account
     })
@@ -26,7 +26,8 @@ const StoreInjector = (({ children }) => {
     }
     appStore.wallet = createWalletStore({
       appSettings: appStore.settings,
-      appAccount: appStore.account
+      appAccount: appStore.account,
+      appRuntime: appStore.appRuntime
     })
   }, [appStore])
 
@@ -48,10 +49,10 @@ const StoreInjector = (({ children }) => {
 
 const WalletInit = ({ children }) => {
   const appStore = useStore()
-  const { wallet, walletRuntime } = appStore
+  const { wallet, appRuntime } = appStore
 
   React.useEffect(() => {
-    walletRuntime.initEcdhChannel()
+    appRuntime.initEcdhChannel()
   }, [])
 
   useEffect(
@@ -59,7 +60,7 @@ const WalletInit = ({ children }) => {
       reaction(
         () => wallet.runtimeEndpointUrl,
         () => {
-          walletRuntime.resetNetwork()
+          appRuntime.resetNetwork()
       }),
     []
   )
@@ -68,10 +69,10 @@ const WalletInit = ({ children }) => {
     () =>
       autorun(
         () => {
-          if (!(walletRuntime.ecdhShouldJoin && walletRuntime.ecdhChannel && walletRuntime.info?.ecdhPublicKey)) {
+          if (!(appRuntime.ecdhShouldJoin && appRuntime.ecdhChannel && appRuntime.info?.ecdhPublicKey)) {
             return
           }
-          walletRuntime.joinEcdhChannel()
+          appRuntime.joinEcdhChannel()
         }),
     []
   )
@@ -80,10 +81,10 @@ const WalletInit = ({ children }) => {
     () =>
       autorun(
         () => {
-          if (!(wallet.runtimeEndpointUrl && walletRuntime.ecdhChannel)) {
+          if (!(wallet.runtimeEndpointUrl && appRuntime.ecdhChannel)) {
             return
           }
-          walletRuntime.initPApi(wallet.runtimeEndpointUrl)
+          appRuntime.initPApi(wallet.runtimeEndpointUrl)
         }),
     []
   )
@@ -95,39 +96,39 @@ const WalletInit = ({ children }) => {
 }
 
 const WalletLifecycle = observer(() => {
-  const { walletRuntime } = useStore()
+  const { appRuntime } = useStore()
 
   useEffect(() => {
-    if (!walletRuntime?.pApi) { return }
+    if (!appRuntime?.pApi) { return }
     const doGetInfo = () => {
       measure((() =>
-        walletRuntime.pApi.getInfo()
+        appRuntime.pApi.getInfo()
           .then(i => {
-            walletRuntime.setInfo(i)
+            appRuntime.setInfo(i)
           })
           .catch(e => {
-            walletRuntime.setError(e)
+            appRuntime.setError(e)
             console.warn('Error getting /info', e)
           })
       ))
         .then(dt => {
-          walletRuntime.setLatency(dt)
+          appRuntime.setLatency(dt)
         })
     }
     const interval = setInterval(doGetInfo, 5000)
     doGetInfo()
     return () => clearInterval(interval)
-  }, [walletRuntime?.pApi])
+  }, [appRuntime?.pApi])
   return null
 })
 
 export default observer(({ children }) => {
-  const { walletRuntime } = useStore()
+  const { appRuntime } = useStore()
 
   return (
     <StoreInjector>
       <WalletInit>
-        {walletRuntime?.channelReady ? children : <PageLoading />}
+        {appRuntime?.channelReady ? children : <PageLoading />}
       </WalletInit>
     </StoreInjector>
   )

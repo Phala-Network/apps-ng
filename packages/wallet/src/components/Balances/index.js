@@ -66,10 +66,10 @@ function Balances ({}) {
   }]
   return (<>
     <h1>Balances</h1>
-    <p><a onClick={() => console.log(store.walletRuntime.query(
+    <p><a onClick={() => console.log(store.appRuntime.query(
+      3,
       'Metadata',
-      null,
-      3
+      null
     )) }>query</a></p>
     {/*<Transfer assets={false} accountId={accountId} ecdhChannel={ecdhChannel}/>*/}
     {/*<TransferToChain assets={false} accountId={accountId} ecdhChannel={ecdhChannel}/>*/}

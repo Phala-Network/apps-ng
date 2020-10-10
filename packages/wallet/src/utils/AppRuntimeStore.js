@@ -4,10 +4,6 @@ import * as Crypto from '@phala/runtime/crypto'
 import PRuntime from '@phala/runtime'
 import { toJS } from 'mobx'
 
-import { cryptoWaitReady } from '@polkadot/util-crypto'
-import keyring from '@polkadot/ui-keyring'
-import { CONTRACT_BALANCE, CONTRACT_ASSETS } from '@phala/wallet/utils/constants'
-
 const anyType = types.custom({
   isTargetType: () => true,
   getValidationMessage: () => '',
@@ -15,8 +11,8 @@ const anyType = types.custom({
   toSnapshot: val => val
 })
 
-export const createWalletRuntimeStore = (defaultValue = {}) => {
-  const WalletRuntimeStore = types
+export const createAppRuntimeStore = (defaultValue = {}) => {
+  const AppRuntimeStore = types
     .model('WalletStore', {
       ecdhChannel: types.maybeNull(anyType),
       ecdhShouldJoin: types.optional(types.boolean, false),
@@ -24,8 +20,6 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
       info: types.maybeNull(anyType),
       error: types.maybeNull(anyType),
       pApi: types.maybeNull(anyType),
-      assets: types.array(anyType),
-      mainAsset: types.maybeNull(anyType),
     })
     .views(self => ({
       get runtimeEndpointUrl () {
@@ -61,11 +55,6 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
           return false
         }
         return true
-      },
-      get assetSymbols () {
-        const ret = self.assets.map(i => i.metadata.symbol)
-        ret.push('PHA')
-        return ret
       }
     }))
     .actions(self => ({
@@ -80,7 +69,7 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
           throw new Error('pRuntime not ready')
         }
       },
-      async query (name, getPayload, contractId = 1) {
+      async query (contractId, name, getPayload) {
         self.checkChannelReady()
         const data = getPayload ? { [name]: getPayload() } : name
         return self.pApi.query(contractId, data)
@@ -116,31 +105,8 @@ export const createWalletRuntimeStore = (defaultValue = {}) => {
       },
       setLatency (dt) {
         self.latency = parseInt((l => l ? l * 0.8 + dt * 0.2 : dt)(self.latency))
-      },
-      fullUpdate: flow(function* () {
-        yield self.updateMainAsset()
-        yield self.updateAssets()
-      }),
-      updateMainAsset: flow(function* () {
-        const res = yield self.query(
-          'FreeBalance',
-          () => ({ account: self.accountIdHex }),
-          CONTRACT_BALANCE
-        )
-        self.mainAsset = {
-          ...self.mainAsset, 
-          balance: res?.FreeBalance?.balance || '0'
-        }
-      }),
-      updateAssets: flow(function* () {
-        const res = yield self.query(
-          'ListAssets',
-          () => ({ availableOnly: false }),
-          CONTRACT_ASSETS
-        )
-        self.assets = (res?.ListAssets?.assets || []).reverse()
-      })
+      }
     }))
 
-  return WalletRuntimeStore.create(defaultValue)
+  return AppRuntimeStore.create(defaultValue)
 }

@@ -10,8 +10,8 @@ import { toApi } from '@phala/runtime/models'
 import InputAmount, { BN_ZERO } from '@/components/InputAmount'
 
 const TransferModal = ({ asset, bindings, setVisible }) => {
-  const { account, walletRuntime } = useStore()
-  const { ecdhChannel } = walletRuntime
+  const { account, appRuntime } = useStore()
+  const { ecdhChannel } = appRuntime
 
   const contractId = asset ? CONTRACT_ASSETS : CONTRACT_BALANCE
 

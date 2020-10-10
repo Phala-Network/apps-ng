@@ -13,8 +13,8 @@ import { toApi } from '@phala/runtime/models'
 import { useTranslation } from 'react-i18next'
 
 const ConvertToNativeModal = ({ bindings, setVisible }) => {
-  const { account, walletRuntime } = useStore()
-  const { ecdhChannel } = walletRuntime
+  const { account, appRuntime } = useStore()
+  const { ecdhChannel } = appRuntime
 
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()

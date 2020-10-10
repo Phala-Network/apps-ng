@@ -13,8 +13,8 @@ import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 
 const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
-  const { account, walletRuntime } = useStore()
-  const { ecdhChannel } = walletRuntime
+  const { account, appRuntime } = useStore()
+  const { ecdhChannel } = appRuntime
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
   const [command, setCommand] = useState('')
