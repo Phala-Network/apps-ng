@@ -75,21 +75,17 @@ export const createAppRuntimeStore = (defaultValue = {}) => {
         return self.pApi.query(contractId, data)
       },
       initEcdhChannel: flow(function* () {
-        console.log('[+] initChannel')
         const ch = yield Crypto.newChannel()
-        console.log('[+] shouldJoin = true')
         self.ecdhChannel = ch
         self.ecdhShouldJoin = true
       }),
       joinEcdhChannel: flow(function* () {
-        console.log('[+] joiningChannel')
         const ch = yield Crypto.joinChannel(self.ecdhChannel, self.info.ecdhPublicKey)
         self.ecdhChannel = ch
         self.ecdhShouldJoin = false
         console.log('Joined channel:', toJS(ch))
       }),
       initPApi (endpoint) {
-        console.log('[+] initPApi', {withEcdh: self.ecdhChannel, keypair: self.keypair})
         self.pApi = new PRuntime({
           endpoint,
           channel: self.ecdhChannel,

@@ -42,7 +42,7 @@ import settings from '@polkadot/ui-settings'
 const apiUrl = `wss://${process.env.APP_PHALA_URL}/ws`
 // set the default as retrieved here
 settings.set({ apiUrl })
-console.log('WS endpoint=', apiUrl)
+console.log('WS endpoint:', apiUrl)
 try {
   const types = store.get('types') || {}
   const names = Object.keys(types)

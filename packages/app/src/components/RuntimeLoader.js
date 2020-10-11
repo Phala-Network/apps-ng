@@ -64,7 +64,6 @@ const StoreInjector = observer(({ children }) => {
 const RuntimeInit = observer(({ children }) => {
   const appStore = useStore()
   const { settings, appRuntime } = appStore
-  console.log(111)
 
   React.useEffect(() => {
     appRuntime.initEcdhChannel()
@@ -84,7 +83,6 @@ const RuntimeInit = observer(({ children }) => {
     () =>
       autorun(
         () => {
-          console.log(appRuntime.ecdhShouldJoin, appRuntime.ecdhChannel, appRuntime.info?.ecdhPublicKey)
           if (!(appRuntime.ecdhShouldJoin && appRuntime.ecdhChannel && appRuntime.info?.ecdhPublicKey)) {
             return
           }
@@ -117,7 +115,6 @@ const RuntimeLifecycle = observer(() => {
   useEffect(() => {
     if (!appRuntime?.pApi) { return }
     const doGetInfo = () => {
-      console.log('info')
       measure((() =>
         appRuntime.pApi.getInfo()
           .then(i => {
