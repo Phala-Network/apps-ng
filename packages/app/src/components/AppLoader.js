@@ -3,7 +3,7 @@ import { Router } from "@/utils/i18n"
 import { findRouteComponent } from '@/utils/route'
 import { LAYOUT_ROUTE, DEFAULT_ROUTE } from '@/utils/route/utils'
 import NotFound from '@/components/NotFound'
-import { useState, useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import Head from 'next/head'
 import { StoreProvider, useStore } from '@/store'
 import { observer } from 'mobx-react'
@@ -16,6 +16,7 @@ import { BlockAuthors, Events } from "@polkadot/react-query"
 import Signer from '@phala/react-signer'
 
 import AppFrame from './AppFrame'
+import RuntimeLoader from './RuntimeLoader'
 import { defaultApiUrl } from '@/store/settings'
 
 const AppWrapper = observer(({ children }) => {
@@ -82,7 +83,9 @@ const AppLoader = props => {
       <AppWrapper>
         <AppFrame>
           <InjectHead />
-          {RenderedComponent && <RenderedComponent {...props} />}
+          <RuntimeLoader>
+            {RenderedComponent && <RenderedComponent {...props} />}
+          </RuntimeLoader>
         </AppFrame>
       </AppWrapper>
     </StoreProvider>

@@ -46,11 +46,15 @@ export const createWalletStore = (defaultValue = {}, options = {}) => {
         yield self.updateAssets()
       }),
       updateMainAsset: flow(function* () {
+        console.log('[-] updateMainAsset', {
+          forAccount: self.appRuntime.accountIdHex
+        })
         const res = yield self.appRuntime.query(
           CONTRACT_BALANCE,
           'FreeBalance',
           () => ({ account: self.appRuntime.accountIdHex })
         )
+        console.log('[-] got main assets query', {res})
         self.mainAsset = {
           ...self.mainAsset, 
           balance: res?.FreeBalance?.balance || '0'

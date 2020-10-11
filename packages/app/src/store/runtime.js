@@ -13,7 +13,7 @@ const anyType = types.custom({
 
 export const createAppRuntimeStore = (defaultValue = {}) => {
   const AppRuntimeStore = types
-    .model('WalletStore', {
+    .model('RuntimeStore', {
       ecdhChannel: types.maybeNull(anyType),
       ecdhShouldJoin: types.optional(types.boolean, false),
       latency: types.optional(types.number, 0),
@@ -75,17 +75,21 @@ export const createAppRuntimeStore = (defaultValue = {}) => {
         return self.pApi.query(contractId, data)
       },
       initEcdhChannel: flow(function* () {
+        console.log('[+] initChannel')
         const ch = yield Crypto.newChannel()
+        console.log('[+] shouldJoin = true')
         self.ecdhChannel = ch
         self.ecdhShouldJoin = true
       }),
       joinEcdhChannel: flow(function* () {
+        console.log('[+] joiningChannel')
         const ch = yield Crypto.joinChannel(self.ecdhChannel, self.info.ecdhPublicKey)
         self.ecdhChannel = ch
         self.ecdhShouldJoin = false
-        console.log('joined channel:', toJS(ch))
+        console.log('Joined channel:', toJS(ch))
       }),
       initPApi (endpoint) {
+        console.log('[+] initPApi', {withEcdh: self.ecdhChannel, keypair: self.keypair})
         self.pApi = new PRuntime({
           endpoint,
           channel: self.ecdhChannel,
