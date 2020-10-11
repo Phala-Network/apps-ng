@@ -1,10 +1,10 @@
 import { observer } from "mobx-react"
 import { useTranslation } from 'react-i18next'
 import styled from "styled-components"
+import Button from '@/components/Button'
 import Container from "@/components/Container"
 import { Balance as BalanceQuery } from '@polkadot/react-query'
 import { useStore } from "@/store"
-import Button from './Button'
 import ConvertToTeeModal from './ConvertToTeeModal'
 import NativeTransferModal from './NativeTransferModal'
 

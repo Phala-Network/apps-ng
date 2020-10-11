@@ -1,18 +1,18 @@
+import React, { useCallback, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import React, { useCallback, useState, useMemo, useEffect } from 'react'
-import {
-  MinusSquare as MinusSquareIcon
-} from '@zeit-ui/react-icons'
-import Button from '@/components/Button'
+import Button from './Button'
 import TxButton from '@/components/TxButton'
 import { Modal, useModal, useToasts, Spacer } from '@zeit-ui/react'
-import { CONTRACT_ASSETS } from '../../utils/constants'
 import { encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 
-const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
+const TxModal = observer(({
+  contractId, payload, onSuccessMsg, modalTitle, modalSubtitle,
+  onSuccessCallback, onFailedCallback,
+  setVisible, bindings
+}) => {
   const { account, appRuntime } = useStore()
   const { ecdhChannel } = appRuntime
   const [isBusy, setIsBusy] = useState(false)
@@ -23,17 +23,15 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
   const { t } = useTranslation()
 
   useEffect(() => {
+    if (!appRuntime?.channelReady) return
     setDisabled(true)
     ;(async () => {
-      const obj = {
-        Destroy: { id }
-      }
-      const cipher = await encryptObj(ecdhChannel, obj)
+      const cipher = await encryptObj(ecdhChannel, payload)
       const apiCipher = toApi(cipher)
       setCommand(JSON.stringify({ Cipher: apiCipher }))
       setDisabled(false)
     })()
-  }, [id])
+  }, [payload, appRuntime?.channelReady])
 
   const onStart = useCallback(() => {
     setIsBusy(true)
@@ -46,13 +44,15 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
       text: t('Failed to submit.'),
       type: 'error'
     })
+    if (onFailedCallback) onFailedCallback(e)
   }, [t, setIsBusy])
 
   const onSuccess = useCallback(() => {
     setToast({
-      text: t('Successfully destroyed, the assets will disappear soon.')
+      text: onSuccessMsg
     })
     onClose()
+    if (onSuccessCallback) onSuccessCallback()
   }, [t, onClose])
 
   const onClose = useCallback(() => {
@@ -66,13 +66,13 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
   }, [isBusy])
 
   return <Modal {...bindings} disableBackdropClick>
-    <Modal.Title>{t('Confirm')}</Modal.Title>
-    <Modal.Subtitle>{t('do you want to destroy the secret token({{symbol}})?', { symbol })}</Modal.Subtitle>
+    <Modal.Title>{modalTitle}</Modal.Title>
+    <Modal.Subtitle>{modalSubtitle}</Modal.Subtitle>
     <Spacer y={1} />
     <TxButton
       accountId={account.address || ''}
       onClick={doSend}
-      params={[CONTRACT_ASSETS, command]}
+      params={[contractId, command]}
       tx='phalaModule.pushCommand'
       withSpinner
       onStart={onStart}
@@ -86,19 +86,32 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
   </Modal>
 })
 
-const DestroyButton = ({ id, symbol }) => {
+const PushCommandButton = ({
+  contractId, payload,
+  onSuccessMsg, modalTitle, modalSubtitle,
+  onSuccessCallback, onFailedCallback,
+  buttonType, icon, name
+}) => {
   const modal = useModal()
-  const { t } = useTranslation()
 
   return <>
-    <DestroyModal id={id} symbol={symbol} {...modal} />
+    <TxModal
+      contractId={contractId}
+      payload={payload}
+      onSuccessMsg={onSuccessMsg}
+      modalTitle={modalTitle}
+      modalSubtitle={modalSubtitle}
+      onSuccessCallback={onSuccessCallback}
+      onFailedCallback={onFailedCallback}
+      {...modal}
+    />
     <Button
-      type="remove"
-      icon={MinusSquareIcon}
-      name={t('Destroy Token')}
+      type={buttonType}
+      icon={icon}
+      name={name}
       onClick={() => modal.setVisible(true)}
     />
   </>
 }
 
-export default DestroyButton
+export default PushCommandButton
