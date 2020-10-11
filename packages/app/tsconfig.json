@@ -23,6 +23,12 @@
       "@phala/wallet": [
         "../../packages/wallet/src"
       ],
+      "@phala/helloworld-app/*": [
+        "../../packages/helloworld-app/src/*"
+      ],
+      "@phala/helloworld-app": [
+        "../../packages/helloworld-app/src"
+      ],
       "@phala/runtime/*": [
         "../../packages/runtime/src/*"
       ],

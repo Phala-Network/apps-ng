@@ -10,7 +10,8 @@ import {
   // FileFunction as FileFunctionIcon,
   Settings as SettingsIcon,
   Users as UsersIcon,
-  Sidebar as SidebarIcon
+  Sidebar as SidebarIcon,
+  Box as BoxIcon
 } from '@zeit-ui/react-icons'
 
 import { Breadcrumbs } from '@zeit-ui/react'
@@ -85,6 +86,8 @@ const NavBar = () => {
       <PhalaLogo onClick={() => window.open('https://phala.network/', '_blank')} />
       <NavLogoSpacer />
       <NavBarButton href="WALLET" name={t('Wallet')} icon={StopCircleIcon} />
+      <NavItemSpacer />
+      <NavBarButton href="HELLOWORLDAPP" name={t('App')} icon={BoxIcon} />
       <NavItemSpacer />
       <NavBarButtonWrapper onClick={() => window.open('/legacy.html', '_blank')}>
         <SidebarIcon size={21} />
