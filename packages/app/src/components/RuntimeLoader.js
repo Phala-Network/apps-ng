@@ -6,43 +6,65 @@ import { createAppRuntimeStore } from '@/store/runtime'
 import { measure } from '@phala/runtime'
 import PageLoading from '@/components/PageLoading'
 
-const StoreInjector = (({ children }) => {
+const StoreInjector = observer(({ children }) => {
+  const [shouldInitRuntime, setShouldInitRuntime] = useState(false)
+
   const appStore = useStore()
-  const [shouldRenderContent, setShouldRenderContent] = useState(false)
+  window.__store = appStore
+
+  const keypair = appStore.account?.keypair
+  const locked = appStore.account?.locked
+  const address = appStore.account?.address
+
+  useEffect(() => {
+    if (locked) {
+      setShouldInitRuntime(false)
+      appStore.appRuntime = undefined
+    }
+  }, [address, locked])
 
   useEffect(() => {
     if (!appStore) {
       return
     }
-    if (typeof appStore.appRuntime !== 'undefined') {
+    if (!(!locked && address)) {
       return
     }
+    if (shouldInitRuntime) {
+      return
+    }
+
     appStore.appRuntime = createAppRuntimeStore({
       appSettings: appStore.settings,
       appAccount: appStore.account
     })
-    window.__store = appStore
-  }, [appStore])
+  }, [address, locked, appStore, shouldInitRuntime])
 
   useEffect(
-    () =>
+    () => {
+      if (!appStore?.appRuntime) {
+        return
+      }
+
       reaction(
         () => appStore.appRuntime,
         () => {
-          if (appStore.appRuntime && !shouldRenderContent) {
-            setShouldRenderContent(true)
+          if (appStore.appRuntime && !shouldInitRuntime) {
+            setShouldInitRuntime(true)
           }
         },
-        { fireImmediately: true }),
-    []
+        { fireImmediately: true })
+    },
+    [appStore?.appRuntime]
   )
 
-  return shouldRenderContent ? children : null
+  return shouldInitRuntime ? <RuntimeInit /> : null
 })
 
-const RuntimeInit = ({ children }) => {
+const RuntimeInit = observer(({ children }) => {
   const appStore = useStore()
   const { settings, appRuntime } = appStore
+  console.log(111)
 
   React.useEffect(() => {
     appRuntime.initEcdhChannel()
@@ -62,6 +84,7 @@ const RuntimeInit = ({ children }) => {
     () =>
       autorun(
         () => {
+          console.log(appRuntime.ecdhShouldJoin, appRuntime.ecdhChannel, appRuntime.info?.ecdhPublicKey)
           if (!(appRuntime.ecdhShouldJoin && appRuntime.ecdhChannel && appRuntime.info?.ecdhPublicKey)) {
             return
           }
@@ -86,7 +109,7 @@ const RuntimeInit = ({ children }) => {
     <RuntimeLifecycle />
     {children}
   </>
-}
+})
 
 const RuntimeLifecycle = observer(() => {
   const { appRuntime } = useStore()
@@ -94,6 +117,7 @@ const RuntimeLifecycle = observer(() => {
   useEffect(() => {
     if (!appRuntime?.pApi) { return }
     const doGetInfo = () => {
+      console.log('info')
       measure((() =>
         appRuntime.pApi.getInfo()
           .then(i => {
@@ -118,11 +142,5 @@ const RuntimeLifecycle = observer(() => {
 export default observer(({ children }) => {
   const { appRuntime } = useStore()
 
-  return (
-    <StoreInjector>
-      <RuntimeInit>
-        {appRuntime?.channelReady ? children : <PageLoading />}
-      </RuntimeInit>
-    </StoreInjector>
-  )
+  return <StoreInjector />
 })

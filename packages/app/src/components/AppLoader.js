@@ -83,9 +83,8 @@ const AppLoader = props => {
       <AppWrapper>
         <AppFrame>
           <InjectHead />
-          <RuntimeLoader>
-            {RenderedComponent && <RenderedComponent {...props} />}
-          </RuntimeLoader>
+          <RuntimeLoader />
+          {RenderedComponent && <RenderedComponent {...props} />}
         </AppFrame>
       </AppWrapper>
     </StoreProvider>
