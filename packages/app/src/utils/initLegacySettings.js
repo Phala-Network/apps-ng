@@ -8,6 +8,8 @@ import { registry } from '@polkadot/react-api'
 // import { extractIpfsDetails } from '@polkadot/react-hooks/useIpfs'
 import settings from '@polkadot/ui-settings'
 
+import { CLI_SUBSTRATE_API } from '@/utils/cliDefaults'
+
 // function getApiUrl () {
 //   // we split here so that both these forms are allowed
 //   //  - http://localhost:3000/?rpc=wss://substrate-rpc.parity.io/#/explorer
@@ -39,7 +41,7 @@ import settings from '@polkadot/ui-settings'
 //       : 'ws://127.0.0.1:9944' // nothing found, go local
 // }
 
-const apiUrl = `wss://${process.env.APP_PHALA_URL}/ws`
+const apiUrl = CLI_SUBSTRATE_API
 // set the default as retrieved here
 settings.set({ apiUrl })
 console.log('WS endpoint:', apiUrl)

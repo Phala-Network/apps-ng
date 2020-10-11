@@ -25,7 +25,9 @@ module.exports = withPlugins([
 ], {
   target: 'serverless',
   env: {
-    APP_PHALA_URL: process.env.APP_PHALA_URL
+    APP_PHALA_URL: process.env.APP_PHALA_URL,
+    SUBSTRATE_API: process.env.SUBSTRATE_API,
+    PRUNTIME_API: process.env.PRUNTIME_API
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

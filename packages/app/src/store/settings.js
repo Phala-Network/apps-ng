@@ -2,6 +2,7 @@ import { types } from 'mobx-state-tree'
 import { createPersistStore } from './store'
 import { reaction } from 'mobx'
 import { i18n } from '@/utils/i18n'
+import { CLI_SUBSTRATE_API, CLI_PRUNTIME_API } from '@/utils/cliDefaults'
 
 export const SettingsStore = types
   .model('SettingsStore', {
@@ -22,12 +23,12 @@ export const SettingsStore = types
     }
   }))
 
-export const defaultApiUrl = `wss://${process.env.APP_PHALA_URL}/ws`
+export const defaultApiUrl = CLI_SUBSTRATE_API
 
 export default () => {
   const store = createPersistStore('settings', SettingsStore, {
     id: 'appSettings',
-    phalaTeeApiUrl: `https://${process.env.APP_PHALA_URL}/tee-api/`
+    phalaTeeApiUrl: CLI_PRUNTIME_API
   })
 
   // do reactions here
