@@ -3,9 +3,11 @@
   "1 hr": "1 hr",
   "1 min": "1 min",
   "1 s": "1 s",
+  "Unknown": "Unknown",
   "everything": "everything",
-  "{{d}} days": "{{d}} days",
-  "{{h}} hrs": "{{h}} hrs",
-  "{{m}} mins": "{{m}} mins",
-  "{{s}} s": "{{s}} s"
+  "everything{{labelPost}}": "everything{{labelPost}}",
+  "{{days}} days": "{{days}} days",
+  "{{hours}} hrs": "{{hours}} hrs",
+  "{{minutes}} mins": "{{minutes}} mins",
+  "{{seconds}} s": "{{seconds}} s"
 }

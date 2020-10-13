@@ -1,5 +1,4 @@
 {
-  "nav.123-code": "Template",
   "nav.accounts": "Accounts",
   "nav.claims": "Claim Tokens",
   "nav.contracts": "Contracts",
@@ -13,7 +12,6 @@
   "nav.i18n": "I18n Translator",
   "nav.js": "Javascript",
   "nav.parachains": "Parachains",
-  "nav.phala-poc2": "Phala POC2",
   "nav.settings": "Settings",
   "nav.society": "Society",
   "nav.staking": "Staking",
