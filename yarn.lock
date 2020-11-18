@@ -3612,12 +3612,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@laminar/type-definitions@npm:^0.2.0-beta.141":
-  version: 0.2.0-beta.141
-  resolution: "@laminar/type-definitions@npm:0.2.0-beta.141"
+"@laminar/type-definitions@npm:^0.2.0-beta.134":
+  version: 0.2.0-beta.143
+  resolution: "@laminar/type-definitions@npm:0.2.0-beta.143"
   dependencies:
-    "@open-web3/orml-type-definitions": ^0.6.0-beta.6
-  checksum: bcb7af81484712ba51d462afcf9e8b9bf72ff5bfe63d6bd8d46408459e862e8709676aa727228a79cdbc0d41d0e4ca84e9a96fb6d6abace5ba71a1934af0d891
+    "@open-web3/orml-type-definitions": ^0.6.0-beta.26
+  checksum: aee1bb82e901b320abeb9bede01f7ebc640507f69438a31792505dabc6c3d0b7c9d7cd3001203e0c72b465308c4e1704c379d8d5d1fb98efcc05f5d79f1fe072
   languageName: node
   linkType: hard
 
@@ -4805,13 +4805,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@open-web3/orml-type-definitions@npm:^0.6.0-beta.6":
-  version: 0.6.0-beta.24
-  resolution: "@open-web3/orml-type-definitions@npm:0.6.0-beta.24"
-  checksum: 7f0afb5d7244f9c1f69cb5c49d9a085d6ce62c15a12f98ce432a8236917d1b3a71507c79997f17ef9f1f05657bfe9b689600a8a7c3980804569bb3432bba781e
-  languageName: node
-  linkType: hard
-
 "@phala/app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "@phala/app@workspace:packages/app"
@@ -5136,7 +5129,7 @@ __metadata:
     "@acala-network/type-definitions": ^0.4.0-beta.33
     "@babel/runtime": ^7.12.1
     "@edgeware/node-types": ^3.0.7
-    "@laminar/type-definitions": ^0.2.0-beta.141
+    "@laminar/type-definitions": ^0.2.0-beta.134
     "@polkadot/networks": ^4.0.2-12
     "@subsocial/types": ^0.4.7
   languageName: unknown
