@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useApi, useAccountInfo } from '@polkadot/react-hooks'
-import useAccounts from '@polkadot/react-hooks/useAccounts'
+import { useAccounts } from '@polkadot/react-hooks'
 import {
   NavBarButtonWrapper,
   NavBarButtonLabel
