@@ -71,18 +71,23 @@ const FillFlex = styled.div`
 `
 
 const NavLogoSpacer = styled.p`
-  width: 54px;
+  width: 27px;
 `
 
 const NavItemSpacer = styled.p`
   width: 21px;
 `
 
+const Logo = styled(PhalaLogo)`
+  transform: translateY(2px)
+`
+
+
 const NavBar = () => {
   const { t } = useTranslation()
   return <NavBarWrapper>
     <Container>
-      <PhalaLogo onClick={() => window.open('https://phala.network/', '_blank')} />
+      <Logo size={42} onClick={() => window.open('https://phala.network/', '_blank')} />
       <NavLogoSpacer />
       <NavBarButton href="WALLET" name={t('Wallet')} icon={StopCircleIcon} />
       <NavItemSpacer />
