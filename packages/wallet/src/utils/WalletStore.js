@@ -1,7 +1,7 @@
 import { types, flow } from 'mobx-state-tree'
 import { createPersistStore } from '@/store/store'
 
-import { CONTRACT_BALANCE, CONTRACT_ASSETS } from '@phala/wallet/utils/constants'
+import { CONTRACT_BALANCES, CONTRACT_ASSETS } from '@phala/wallet/utils/constants'
 
 const anyType = types.custom({
   isTargetType: () => true,
@@ -47,7 +47,7 @@ export const createWalletStore = (defaultValue = {}, options = {}) => {
       }),
       updateMainAsset: flow(function* () {
         const res = yield self.appRuntime.query(
-          CONTRACT_BALANCE,
+          CONTRACT_BALANCES,
           'FreeBalance',
           () => ({ account: self.appRuntime.accountIdHex })
         )

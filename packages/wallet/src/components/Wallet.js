@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import Balance from './Balances'
 import Assets from './Assets'
 
 const Wallet = () => {

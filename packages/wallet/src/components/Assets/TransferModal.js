@@ -4,7 +4,7 @@ import TxButton from '@/components/TxButton'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 import { useTranslation } from 'react-i18next'
-import { CONTRACT_ASSETS, CONTRACT_BALANCE } from '../../utils/constants'
+import { CONTRACT_ASSETS, CONTRACT_BALANCES } from '../../utils/constants'
 import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
 import InputAmount, { BN_ZERO } from '@/components/InputAmount'
@@ -13,7 +13,7 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
   const { account, appRuntime } = useStore()
   const { ecdhChannel } = appRuntime
 
-  const contractId = asset ? CONTRACT_ASSETS : CONTRACT_BALANCE
+  const contractId = asset ? CONTRACT_ASSETS : CONTRACT_BALANCES
 
   const assetId = asset?.id
   const assetSymbol = asset?.symbol || 'PHA'
