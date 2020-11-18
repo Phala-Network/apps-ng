@@ -56,7 +56,7 @@ const LeftDecoration = () => {
 
 const InfoWrapper = styled.div`
   color: #040035;
-  --zeit-icons-background: #73FF9A;
+  --zeit-icons-background: #D1FF52;
   padding: 24px 0 21px;
   flex: 1;
 `
@@ -143,7 +143,7 @@ const Info = observer(({ children }) => {
 
 const NativeSectionWrapper = styled.div`
   width: 100%;
-  background: #73FF9A;
+  background: #D1FF52;
   margin: 0 0 42px;
 `
 

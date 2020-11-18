@@ -62,7 +62,7 @@ const LeftDecoration = () => {
 
 const InfoWrapper = styled.div`
   color: #040035;
-  --zeit-icons-background: #73FF9A;
+  --zeit-icons-background: #D1FF52;
   padding: 24px 0 21px;
   flex: 1;
 `
