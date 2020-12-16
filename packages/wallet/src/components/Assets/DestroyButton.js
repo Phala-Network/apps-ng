@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
-import Button from './Button'
 import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import {
   MinusSquare as MinusSquareIcon
 } from '@zeit-ui/react-icons'
+import Button from '@/components/Button'
 import TxButton from '@/components/TxButton'
 import { Modal, useModal, useToasts, Spacer } from '@zeit-ui/react'
 import { CONTRACT_ASSETS } from '../../utils/constants'
@@ -13,8 +13,8 @@ import { observer } from 'mobx-react'
 import { useStore } from '@/store'
 
 const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
-  const { account, walletRuntime } = useStore()
-  const { ecdhChannel } = walletRuntime
+  const { account, appRuntime } = useStore()
+  const { ecdhChannel } = appRuntime
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
   const [command, setCommand] = useState('')

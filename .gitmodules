@@ -1,3 +1,4 @@
 [submodule "vendor/polkadot-apps"]
 	path = vendor/polkadot-apps
-	url = https://github.com/polkadot-js/apps.git
+	url = https://github.com/Phala-Network/polkadot-js-apps
+	branch = poc3

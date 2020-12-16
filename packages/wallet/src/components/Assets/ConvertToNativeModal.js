@@ -6,15 +6,15 @@ import { useStore } from '@/store'
 
 import InputAmount, { BN_ZERO } from '@/components/InputAmount'
 
-import { CONTRACT_BALANCE } from '../../utils/constants'
+import { CONTRACT_BALANCES } from '../../utils/constants'
 import { ss58ToHex, encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
 
 import { useTranslation } from 'react-i18next'
 
 const ConvertToNativeModal = ({ bindings, setVisible }) => {
-  const { account, walletRuntime } = useStore()
-  const { ecdhChannel } = walletRuntime
+  const { account, appRuntime } = useStore()
+  const { ecdhChannel } = appRuntime
 
   const [isBusy, setIsBusy] = useState(false)
   const [, setToast] = useToasts()
@@ -87,7 +87,7 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
     <TxButton
       accountId={account.address || ''}
       onClick={doSend}
-      params={[CONTRACT_BALANCE, command]}
+      params={[CONTRACT_BALANCES, command]}
       tx='phalaModule.pushCommand'
       withSpinner
       onStart={onStart}

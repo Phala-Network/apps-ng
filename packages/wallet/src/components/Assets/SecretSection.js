@@ -1,10 +1,10 @@
+import Button from '@/components/Button'
 import Container from '@/components/Container'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Checkbox, Loading, useModal, useTheme } from '@zeit-ui/react'
 import { observer } from 'mobx-react'
 import { useStore } from '@/store'
-import Button from './Button'
 import { FormatBalance as BalanceDisplay } from '@polkadot/react-query'
 import BN from 'bn.js'
 import { hexToSs58 } from '@phala/runtime'
@@ -62,7 +62,7 @@ const LeftDecoration = () => {
 
 const InfoWrapper = styled.div`
   color: #040035;
-  --zeit-icons-background: #73FF9A;
+  --zeit-icons-background: #D1FF52;
   padding: 24px 0 21px;
   flex: 1;
 `
@@ -251,7 +251,7 @@ const PHAButtonGroup = ({ convertToNativeModal, transferModal }) => {
 }
 
 const PHA = observer(() => {
-  const { walletRuntime } = useStore()
+  const { wallet } = useStore()
   const convertToNativeModal = useModal()
   const transferModal = useModal()
 
@@ -260,25 +260,25 @@ const PHA = observer(() => {
   const { t } = useTranslation()
   
   useEffect(() => {
-    walletRuntime.updateMainAsset()
+    wallet.updateMainAsset()
 
     const interval = setInterval(() => {
       try {
-        walletRuntime.updateMainAsset()
+        wallet.updateMainAsset()
       } catch (e) {
         console.warn(e)
       }
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [walletRuntime])
+  }, [wallet])
 
   return <>
     <ConvertToNativeModal {...convertToNativeModal} />
     <TransferModal {...transferModal} />
     <SecretBlock>
       <LeftDecoration />
-      <Info symbol={t('Secret PHA')} balance={walletRuntime.mainAsset?.balance}>
+      <Info symbol={t('Secret PHA')} balance={wallet.mainAsset?.balance}>
         {isXS && <PHAButtonGroup convertToNativeModal={convertToNativeModal} transferModal={transferModal} />}
       </Info>
       {!isXS && <PHAButtonGroup convertToNativeModal={convertToNativeModal} transferModal={transferModal} />}
@@ -347,14 +347,14 @@ const AssetItemButtonGroup = ({ isOwner, item, transferModal }) => {
 
 const AssetItem = observer(({ itemIndex }) => {
   const {
-    walletRuntime,
-    wallet: { showInvalidAssets },
+    wallet,
     account: { address }
   } = useStore()
 
   const { isXS } = useTheme()
 
-  const item = walletRuntime.assets[itemIndex]
+  const { showInvalidAssets } = wallet;
+  const item = wallet.assets[itemIndex]
   const balance = useMemo(() => new BN(item.balance || "0"), [item.balance])
   const ownerAddress = useMemo(() => hexToSs58('0x' + item.metadata.owner), [item.metadata.owner])
   const isOwner = useMemo(() => (ownerAddress === address), [ownerAddress,address])
@@ -376,24 +376,24 @@ const AssetItem = observer(({ itemIndex }) => {
 })
 
 const Assets = observer(() => {
-  const { walletRuntime } = useStore()
+  const { wallet } = useStore()
 
   useEffect(() => {
-    walletRuntime.updateAssets()
+    wallet.updateAssets()
 
     const interval = setInterval(() => {
       try {
-        walletRuntime.updateAssets()
+        wallet.updateAssets()
       } catch (e) {
         console.warn(e)
       }
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [walletRuntime])
+  }, [wallet])
 
-  return walletRuntime.assets
-    ? walletRuntime.assets.map((item, index) => (
+  return wallet.assets
+    ? wallet.assets.map((item, index) => (
       <AssetItem key={`Assets-${item.metadata.id}`} itemIndex={index} />
     ))
     : <Loading size="large" />

@@ -10,8 +10,9 @@ import { encryptObj } from '@phala/runtime/utils'
 import { toApi } from '@phala/runtime/models'
 
 const IssueModal = ({ bindings, setVisible }) => {
-  const { account, walletRuntime } = useStore()
-  const { assetSymbols, ecdhChannel } = walletRuntime
+  const { account, appRuntime, wallet } = useStore()
+  const { ecdhChannel } = appRuntime
+  const { assetSymbols } = wallet
 
   const symbolInput = useInput('')
   const valueInput = useInput('')
