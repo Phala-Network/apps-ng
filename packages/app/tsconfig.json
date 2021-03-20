@@ -23,6 +23,9 @@
       "@phala/wallet": [
         "../../packages/wallet/src"
       ],
+      "@phala/types-chain": [
+        "../../packages/types-chain/src"
+      ],
       "@phala/runtime/*": [
         "../../packages/runtime/src/*"
       ],
