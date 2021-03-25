@@ -7,4 +7,5 @@ import Phala3 from './phala-poc3';
 export const typesChain = {
   'Phala PoC-3': Phala3,
   'Phala PoC-4': Phala3,
+  'Phala Local Testnet': Phala3,
 };
