@@ -14,6 +14,7 @@ import { Api } from "@polkadot/react-api"
 import Queue from "@polkadot/react-components/Status/Queue"
 import { BlockAuthors, Events } from "@polkadot/react-query"
 import Signer from '@phala/react-signer'
+import { typesChain } from "@phala/types-chain"
 
 import AppFrame from './AppFrame'
 import RuntimeLoader from './RuntimeLoader'
@@ -37,14 +38,19 @@ const AppWrapper = observer(({ children }) => {
   }, [settings.apiUrl])
 
   return <Queue>
-    {!!settings.apiUrl && <Api url={settings.apiUrl}>
-      <BlockAuthors>
-        <Events>
-          <Signer />
-          {children}
-        </Events>
-      </BlockAuthors>
-    </Api>}
+    {!!settings.apiUrl && (
+      <Api 
+        url={settings.apiUrl}
+        initialTypesChain={typesChain}
+      >
+        <BlockAuthors>
+          <Events>
+            <Signer />
+            {children}
+          </Events>
+        </BlockAuthors>
+      </Api>
+    )}
   </Queue>
 })
 
