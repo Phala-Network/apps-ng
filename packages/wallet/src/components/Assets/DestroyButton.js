@@ -73,7 +73,7 @@ const DestroyModal = observer(({ id, symbol, bindings, setVisible }) => {
       accountId={account.address || ''}
       onClick={doSend}
       params={[CONTRACT_ASSETS, command]}
-      tx='phalaModule.pushCommand'
+      tx='phala.pushCommand'
       withSpinner
       onStart={onStart}
       onFailed={onFailed}

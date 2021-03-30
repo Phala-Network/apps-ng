@@ -88,7 +88,7 @@ const ConvertToNativeModal = ({ bindings, setVisible }) => {
       accountId={account.address || ''}
       onClick={doSend}
       params={[CONTRACT_BALANCES, command]}
-      tx='phalaModule.pushCommand'
+      tx='phala.pushCommand'
       withSpinner
       onStart={onStart}
       onFailed={onFailed}

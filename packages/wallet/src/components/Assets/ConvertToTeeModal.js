@@ -61,7 +61,7 @@ const ConvertToTeeModal = ({ bindings, setVisible }) => {
       accountId={account.address || ''}
       onClick={doSend}
       params={[amount ? amount.toString() : '']}
-      tx='phalaModule.transferToTee'
+      tx='phala.transferToTee'
       withSpinner
       onStart={onStart}
       onFailed={onFailed}

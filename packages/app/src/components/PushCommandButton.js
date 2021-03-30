@@ -73,7 +73,7 @@ const TxModal = observer(({
       accountId={account.address || ''}
       onClick={doSend}
       params={[contractId, command]}
-      tx='phalaModule.pushCommand'
+      tx='phala.pushCommand'
       withSpinner
       onStart={onStart}
       onFailed={onFailed}

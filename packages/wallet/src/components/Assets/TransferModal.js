@@ -126,7 +126,7 @@ const TransferModal = ({ asset, bindings, setVisible }) => {
         accountId={account.address || ''}
         onClick={doSend}
         params={[contractId, command]}
-        tx='phalaModule.pushCommand'
+        tx='phala.pushCommand'
         withSpinner
         onStart={onStart}
         onFailed={onFailed}
