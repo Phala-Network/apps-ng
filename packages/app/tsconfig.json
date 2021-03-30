@@ -17,14 +17,14 @@
       "@/*": ["src/*"],
       "@/utils/*": ["src/utils/*"],
       "@/components/*": ["src/components/*"],
+      "@phala/typedefs": [
+        "../../node_modules/@phala/typedefs/src"
+      ],
       "@phala/wallet/*": [
         "../../packages/wallet/src/*"
       ],
       "@phala/wallet": [
         "../../packages/wallet/src"
-      ],
-      "@phala/types-chain": [
-        "../../packages/types-chain/src"
       ],
       "@phala/runtime/*": [
         "../../packages/runtime/src/*"
