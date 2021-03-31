@@ -1,9 +1,9 @@
-// Copyright 2017-2020 @polkadot/react-signer authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2021 @polkadot/react-signer authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
+
 import { InputBalance, Modal, Toggle } from '@polkadot/react-components';
 import { BN_ZERO } from '@polkadot/util';
 
@@ -24,30 +24,28 @@ function Tip ({ className, onChange }: Props): React.ReactElement<Props> | null 
   }, [onChange, showTip, tip]);
 
   return (
-    <Modal.Columns className={className}>
-      <Modal.Column>
-        <Toggle
-          className='tipToggle'
-          label={
-            showTip
-              ? t<string>('Include an optional tip for faster processing')
-              : t<string>('Do not include a tip for the block author')
-          }
-          onChange={setShowTip}
-          value={showTip}
+    <Modal.Columns
+      className={className}
+      hint={t<string>('Adding an optional tip to the transaction could allow for higher priority, especially when the chain is busy.')}
+    >
+      <Toggle
+        className='tipToggle'
+        label={
+          showTip
+            ? t<string>('Include an optional tip for faster processing')
+            : t<string>('Do not include a tip for the block author')
+        }
+        onChange={setShowTip}
+        value={showTip}
+      />
+      {showTip && (
+        <InputBalance
+          help={t<string>('Add a tip to this extrinsic, paying the block author for greater priority')}
+          isZeroable
+          label={t<string>('Tip (optional)')}
+          onChange={setTip}
         />
-        {showTip && (
-          <InputBalance
-            help={t<string>('Add a tip to this extrinsic, paying the block author for greater priority')}
-            isZeroable
-            label={t<string>('Tip (optional)')}
-            onChange={setTip}
-          />
-        )}
-      </Modal.Column>
-      <Modal.Column>
-        <p>{t<string>('Adding an optional tip to the transaction could allow for higher priority, especially when the chain is busy.')}</p>
-      </Modal.Column>
+      )}
     </Modal.Columns>
   );
 }

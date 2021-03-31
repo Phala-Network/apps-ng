@@ -1,10 +1,11 @@
-// Copyright 2017-2020 @polkadot/react-signer authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2021 @polkadot/react-signer authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-import { SignerResult } from '@polkadot/api/types';
+import type { SignerResult } from '@polkadot/api/types';
 
 export interface AddressFlags {
+  accountOffset: number;
+  addressOffset: number;
   hardwareType?: string;
   isHardware: boolean;
   isMultisig: boolean;
@@ -17,6 +18,7 @@ export interface AddressFlags {
 
 export interface AddressProxy {
   isMultiCall: boolean;
+  isUnlockCached: boolean;
   multiRoot: string | null;
   proxyRoot: string | null;
   signAddress: string | null;
