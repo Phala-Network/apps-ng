@@ -9,7 +9,7 @@ import { DefinitionRpcExt } from '@polkadot/types/types';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
-import {  StatusContext } from '@polkadot/react-components';
+import { StatusContext } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { assert, isFunction } from '@polkadot/util';
 import { loggerFormat } from '@polkadot/util/logger';

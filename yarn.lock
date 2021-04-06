@@ -4856,12 +4856,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@phala/types-chain@workspace:packages/types-chain":
-  version: 0.0.0-use.local
-  resolution: "@phala/types-chain@workspace:packages/types-chain"
-  languageName: unknown
-  linkType: soft
-
 "@phala/wallet@workspace:packages/wallet":
   version: 0.0.0-use.local
   resolution: "@phala/wallet@workspace:packages/wallet"
@@ -4870,7 +4864,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@polkadot/api-contract@npm:^4.2.1":
+"@polkadot/api-contract@npm:4.2.1":
   version: 4.2.1
   resolution: "@polkadot/api-contract@npm:4.2.1"
   dependencies:
@@ -4900,7 +4894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/api@npm:^4.2.1":
+"@polkadot/api@npm:4.2.1":
   version: 4.2.1
   resolution: "@polkadot/api@npm:4.2.1"
   dependencies:
@@ -5587,7 +5581,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/types@npm:^4.2.1":
+"@polkadot/types@npm:4.2.1":
   version: 4.2.1
   resolution: "@polkadot/types@npm:4.2.1"
   dependencies:

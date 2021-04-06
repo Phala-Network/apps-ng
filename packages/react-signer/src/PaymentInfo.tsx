@@ -7,9 +7,8 @@ import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
-import { Trans } from 'react-i18next';
+import { Description } from "@zeit-ui/react";
 
-import { Expander, MarkWarning } from '@polkadot/react-components';
 import { useApi, useCall, useIsMountedRef } from '@polkadot/react-hooks';
 import { formatBalance, isFunction } from '@polkadot/util';
 
@@ -32,7 +31,7 @@ function PaymentInfo ({ accountId, className = '', extrinsic }: Props): React.Re
   const mountedRef = useIsMountedRef();
 
   useEffect((): void => {
-    accountId && extrinsic && isFunction(extrinsic.paymentInfo) && isFunction(api.rpc.payment?.queryInfo) &&
+    accountId && extrinsic && isFunction(extrinsic.paymentInfo) &&
       setTimeout((): void => {
         try {
           extrinsic
@@ -50,19 +49,7 @@ function PaymentInfo ({ accountId, className = '', extrinsic }: Props): React.Re
   }
 
   return (
-    <>
-      <Expander
-        className={className}
-        summary={
-          <Trans i18nKey='feesForSubmission'>
-            Fees of <span className='highlight'>{formatBalance(dispatchInfo.partialFee, { withSiFull: true })}</span> will be applied to the submission
-          </Trans>
-        }
-      />
-      {api.consts.balances && !api.tx.balances?.transfer.is(extrinsic) && balances?.accountId.eq(accountId) && balances.availableBalance.sub(dispatchInfo.partialFee).lte(api.consts.balances.existentialDeposit) && (
-        <MarkWarning content={t<string>('The account does not have enough free funds (excluding locked/bonded/reserved) available to cover the transaction fees without dropping the balance below the account existential amount.')} />
-      )}
-    </>
+    <Description title="fees for submission" content={formatBalance(dispatchInfo.partialFee, { withSiFull: true })} />
   );
 }
 
