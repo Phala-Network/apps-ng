@@ -14,7 +14,7 @@ import { Api } from "@polkadot/react-api"
 import Queue from "@polkadot/react-components/Status/Queue"
 import { BlockAuthors, Events } from "@polkadot/react-query"
 import Signer from '@phala/react-signer'
-import { typesChain } from "@phala/types-chain"
+import { typesChain } from "@phala/typedefs"
 
 import AppFrame from './AppFrame'
 import RuntimeLoader from './RuntimeLoader'

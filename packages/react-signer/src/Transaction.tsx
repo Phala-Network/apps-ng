@@ -2,6 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+// THIS FILE WAS MODIFIED BY PHALA.
+
 import { QueueTx } from '@polkadot/react-components/Status/types';
 
 import BN from 'bn.js';
@@ -28,7 +30,7 @@ function Transaction ({ className, currentItem: { accountId, extrinsic, isUnsign
     return null;
   }
 
-  const { meta, method, section } = registry.findMetaCall(extrinsic.callIndex);
+  const { meta, method, section } = extrinsic.registry.findMetaCall(extrinsic.callIndex);
   const args = meta?.args.map(({ name }) => name).join(', ') || '';
 
 

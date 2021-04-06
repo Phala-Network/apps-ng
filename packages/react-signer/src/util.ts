@@ -1,18 +1,35 @@
-// Copyright 2017-2020 @polkadot/react-signer authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2021 @polkadot/react-signer authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-import { QueueTx, QueueTxMessageSetStatus, QueueTxStatus } from '@polkadot/react-components/Status/types';
-import { AddressFlags } from './types';
+import type { KeyringPair } from '@polkadot/keyring/types';
+import type { QueueTx, QueueTxMessageSetStatus, QueueTxStatus } from '@polkadot/react-components/Status/types';
+import type { AddressFlags } from './types';
 
 import { SubmittableResult } from '@polkadot/api';
 import keyring from '@polkadot/ui-keyring';
 
 const NOOP = () => undefined;
+const NO_FLAGS = { accountOffset: 0, addressOffset: 0, isHardware: false, isMultisig: false, isProxied: false, isQr: false, isUnlockable: false, threshold: 0, who: [] };
+
+export const UNLOCK_MINS = 15;
+
+const LOCK_DELAY = UNLOCK_MINS * 60 * 1000;
+
+const lockCountdown: Record<string, number> = {};
+
+export function cacheUnlock (pair: KeyringPair): void {
+  lockCountdown[pair.address] = Date.now() + LOCK_DELAY;
+}
+
+export function lockAccount (pair: KeyringPair): void {
+  if ((Date.now() > (lockCountdown[pair.address] || 0)) && !pair.isLocked) {
+    pair.lock();
+  }
+}
 
 export function extractExternal (accountId: string | null): AddressFlags {
   if (!accountId) {
-    return { isHardware: false, isMultisig: false, isProxied: false, isQr: false, isUnlockable: false, threshold: 0, who: [] };
+    return NO_FLAGS;
   }
 
   let publicKey;
@@ -22,18 +39,31 @@ export function extractExternal (accountId: string | null): AddressFlags {
   } catch (error) {
     console.error(error);
 
-    return { isHardware: false, isMultisig: false, isProxied: false, isQr: false, isUnlockable: false, threshold: 0, who: [] };
+    return NO_FLAGS;
   }
 
   const pair = keyring.getPair(publicKey);
+  const { isExternal, isHardware, isInjected, isMultisig, isProxied } = pair.meta;
+  const isUnlockable = !isExternal && !isHardware && !isInjected;
+
+  if (isUnlockable) {
+    const entry = lockCountdown[pair.address];
+
+    if (entry && (Date.now() > entry) && !pair.isLocked) {
+      pair.lock();
+      lockCountdown[pair.address] = 0;
+    }
+  }
 
   return {
+    accountOffset: pair.meta.accountOffset as number || 0,
+    addressOffset: pair.meta.addressOffset as number || 0,
     hardwareType: pair.meta.hardwareType as string,
-    isHardware: !!pair.meta.isHardware,
-    isMultisig: !!pair.meta.isMultisig,
-    isProxied: !!pair.meta.isProxied,
-    isQr: !!pair.meta.isExternal && !pair.meta.isMultisig && !pair.meta.isProxied,
-    isUnlockable: !pair.meta.isExternal && !pair.meta.isHardware && !pair.meta.isInjected && pair.isLocked,
+    isHardware: !!isHardware,
+    isMultisig: !!isMultisig,
+    isProxied: !!isProxied,
+    isQr: !!isExternal && !isMultisig && !isProxied && !isHardware && !isInjected,
+    isUnlockable: isUnlockable && pair.isLocked,
     threshold: (pair.meta.threshold as number) || 0,
     who: ((pair.meta.who as string[]) || []).map(recodeAddress)
   };

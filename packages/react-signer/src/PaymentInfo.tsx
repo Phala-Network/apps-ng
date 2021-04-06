@@ -1,16 +1,18 @@
-// Copyright 2017-2020 @polkadot/react-signer authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2021 @polkadot/react-signer authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
-import { RuntimeDispatchInfo } from '@polkadot/types/interfaces';
+import type { SubmittableExtrinsic } from '@polkadot/api/promise/types';
+import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
+import type { RuntimeDispatchInfo } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
-import React, { useState, useEffect } from 'react';
-import { Trans } from 'react-i18next';
-import { Description } from '@zeit-ui/react'
-import { useApi, useIsMountedRef } from '@polkadot/react-hooks';
+import React, { useEffect, useState } from 'react';
+import { Description } from "@zeit-ui/react";
+
+import { useApi, useCall, useIsMountedRef } from '@polkadot/react-hooks';
 import { formatBalance, isFunction } from '@polkadot/util';
+
+import { useTranslation } from './translate';
 
 interface Props {
   accountId?: string | null;
@@ -22,13 +24,14 @@ interface Props {
 }
 
 function PaymentInfo ({ accountId, className = '', extrinsic }: Props): React.ReactElement<Props> | null {
+  const { t } = useTranslation();
   const { api } = useApi();
   const [dispatchInfo, setDispatchInfo] = useState<RuntimeDispatchInfo | null>(null);
+  const balances = useCall<DeriveBalancesAll>(api.derive.balances.all, [accountId]);
   const mountedRef = useIsMountedRef();
 
   useEffect((): void => {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    accountId && extrinsic && isFunction(extrinsic.paymentInfo) && isFunction(api.rpc.payment?.queryInfo) &&
+    accountId && extrinsic && isFunction(extrinsic.paymentInfo) &&
       setTimeout((): void => {
         try {
           extrinsic
@@ -36,12 +39,12 @@ function PaymentInfo ({ accountId, className = '', extrinsic }: Props): React.Re
             .then((info) => mountedRef.current && setDispatchInfo(info))
             .catch(console.error);
         } catch (error) {
-          console.error((error as Error).message);
+          console.error(error);
         }
       }, 0);
   }, [api, accountId, extrinsic, mountedRef]);
 
-  if (!dispatchInfo) {
+  if (!dispatchInfo || !extrinsic) {
     return null;
   }
 
