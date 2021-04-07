@@ -111,14 +111,18 @@ const BalanceValue = styled(BalanceDisplay)`
   }
 `;
 
-const Info = ({ symbol, balance, children }) => {
+const Info = ({ symbol, isPara, chainId, balance, children }) => {
   const balanceValue = useMemo(() => new BN(balance || "0"), [balance]);
   const { t } = useTranslation();
 
   return (
     <InfoWrapper>
       <InfoHead>
-        <InfoHeadMain>{symbol}</InfoHeadMain>
+        <InfoHeadMain>
+          {isPara ? `Para(${chainId})` : chainId}
+          {chainId && " / "}
+          {symbol}
+        </InfoHeadMain>
       </InfoHead>
       <Balance>
         <BalanceHead>{t("balance")}</BalanceHead>
@@ -373,20 +377,16 @@ const AssetBlock = styled(SecretBlock)`
   cursor: default;
 `;
 
-const AssetItemButtonGroup = ({
-  isOwner,
-  isParaChain,
-  item,
-}) => {
+const AssetItemButtonGroup = ({ isOwner, isParaChain, item }) => {
   const { t } = useTranslation();
   const transferModal = useModal();
 
   return (
     <>
-      <TransferModal 
-        asset={item.metadata} 
-        isParaChain={isParaChain} 
-        {...transferModal} 
+      <TransferModal
+        asset={item.metadata}
+        isParaChain={isParaChain}
+        {...transferModal}
       />
       <Button.Group>
         <Button
@@ -420,6 +420,7 @@ const AssetItem = observer(({ itemIndex }) => {
   const item = wallet.assets[itemIndex];
   const [symbol, setSymbol] = useState(item.metadata.symbol || "-");
   const [isParaChain, setIsParaChain] = useState(false);
+  const [chainId, setChainId] = useState(null);
 
   useEffect(() => {
     const {
@@ -435,7 +436,8 @@ const AssetItem = observer(({ itemIndex }) => {
       const rawData = api.createType("MultiLocation", Uint8Array.from(id)).asX3;
       const chainId = rawData[1].asParachain.toJSON();
       const chainName = rawData[2].asGeneralKey.toHuman();
-      setSymbol(`${chainId}/${chainName}`);
+      setSymbol(chainName);
+      setChainId(chainId);
       setIsParaChain(true);
     }
   }, [item]);
@@ -460,7 +462,12 @@ const AssetItem = observer(({ itemIndex }) => {
     <>
       <AssetBlock>
         <LeftDecoration />
-        <Info balance={balance} symbol={symbol}>
+        <Info
+          balance={balance}
+          symbol={symbol}
+          chainId={chainId}
+          isPara={!!chainId}
+        >
           {isXS && (
             <AssetItemButtonGroup
               isOwner={isOwner}
