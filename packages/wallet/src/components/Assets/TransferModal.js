@@ -52,8 +52,6 @@ const TransferModal = ({ asset, bindings, setVisible, isParaChain }) => {
 
   const { t } = useTranslation();
 
-  console.log({isBusy});
-
   useEffect(() => {
     setInnerDisabled(true);
     let pubkeyHex;
